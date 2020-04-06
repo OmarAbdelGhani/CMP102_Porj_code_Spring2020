@@ -329,7 +329,7 @@ void Restaurant::AddtoDemoQueue(Order* pOrd)
 //By OmarAbdelGhani
 
 void Restaurant::LoadFile() {
-	ifstream IF("C:/Omar/UNI 2/Data Structures/CMP102_Porj_code_Spring2020/Restaurant/Rest/input.txt", ios::in);
+	ifstream IF("input.txt", ios::in);
 	//IF.open("input.txt",ios::in);
 	if(IF.is_open()){
 	IF >> N; //initialize No. of Normal cooks
