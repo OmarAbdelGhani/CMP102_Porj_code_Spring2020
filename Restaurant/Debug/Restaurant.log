@@ -1,4 +1,4 @@
-﻿Build started 4/6/2020 11:07:57 PM.
+﻿Build started 4/6/2020 11:10:28 PM.
      1>Project "C:\Users\ASUS1\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Restaurant.vcxproj" on node 2 (Build target(s)).
        Project file contains ToolsVersion="14.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
      1>InitializeBuildStatus:
@@ -66,4 +66,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.64
+Time Elapsed 00:00:01.98
