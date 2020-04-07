@@ -21,15 +21,22 @@ void Restaurant::RunSimulation()
 	LoadFile();
 	LinkedList<Order*>Inservicelist1;
 	int i = 1;
-	
+	string ts;
+	string Nn,Nv,Ng;
 	int x = 1; // a variable to know after 5 time steps
+	string v;// to count the number of waiting  vip orders
+	string ve;// to count the number of waiting  vegan orders
+	string n ;// to count the number of waiting  normal orders
+	//bool first=true;
 	switch (mode)	//Add a function for each mode in next phases
 	{
 		
 	case MODE_INTR:
 		 // try changing to one
-		while (!EventsQueue.isEmpty()) {
+		
+		while (!EventsQueue.isEmpty()|| Inservicelist.getHead() ||!normalorder.isEmpty() || !VEGANOrder.isEmpty() || !VIPorder.isEmpty()) {
 			 //for(int i=0;i<20;i++) kanet kda abl ma a3adel
+			if (!EventsQueue.isEmpty()){
 			while (EventsQueue.getPtrToFront()->getItem()->getEventTime() == i) {//while the event time=the current time step
 				
 				ArrivalEvent* p = dynamic_cast<ArrivalEvent*>(EventsQueue.getPtrToFront()->getItem());
@@ -50,7 +57,21 @@ void Restaurant::RunSimulation()
 				if(!EventsQueue.getPtrToFront())
 					break;
 			}
-			pGUI->PrintMessage("Ts: "); //here you should also print i (timestep)
+			}
+			n=to_string(this->WaitNormal());
+			ve=to_string(this->WaitVegan());
+			v=to_string(this->WaitVIP());
+			ts=to_string((i));
+			Nn=to_string(N);
+			Nv=to_string(V);
+			Ng=to_string(G);
+			pGUI->PrintMessage("Ts: "+ts); //here you should also print i (timestep)
+			pGUI->PrintMessage("No. of Available Normal Cooks: "+Nn,15);
+			pGUI->PrintMessage("No. of Available Vegan Cooks: "+Ng,670);
+			pGUI->PrintMessage("No. of Available VIP Cooks: "+Nv,690);
+			pGUI->PrintMessage("No of Waiting Normal Orders: "+n,710);
+			pGUI->PrintMessage("No of Waiting Vegan Orders: "+ve,730);
+			pGUI->PrintMessage("No of Waiting VIP Orders: "+v,750);
 			i++;
 //		string p=itos(i);
 			//pGUI->PrintMessage("click to display the output of next time step");
@@ -101,9 +122,9 @@ void Restaurant::RunSimulation()
 				//so that we enter the if second time after 5 time steps when i = 5*x=5*2=10 and so on
 			}
 						
-						
+				//first=false;		
 		}
-	
+		
 
 		break;
 	case MODE_STEP:
@@ -114,7 +135,11 @@ void Restaurant::RunSimulation()
 		Just_A_Demo();
 
 	};
-
+	this->FillDrawingList();
+	pGUI->UpdateInterface();
+	pGUI->ResetDrawingList();
+	pGUI->PrintMessage("Finished,click to continue");
+	pGUI->waitForClick();
 }
 
 
@@ -384,7 +409,8 @@ void Restaurant::AddtoDemoQueue(Order* pOrd)
 //By OmarAbdelGhani
 
 void Restaurant::LoadFile() {
-	ifstream IF("input.txt", ios::in);
+	string name=pGUI->GetString();
+	ifstream IF(name, ios::in);
 	//IF.open("input.txt",ios::in);
 	if(IF.is_open()){
 	IF >> N; //initialize No. of Normal cooks
@@ -454,4 +480,56 @@ Order Restaurant::CancelById(int id) {
 	normalorder.dequeueWithOrderID(id, O);
 	return (*O);
 
+}
+
+int Restaurant::WaitNormal(){
+	if(normalorder.isEmpty())
+		return 0;
+	int count=0;
+	int first=(normalorder.getPtrToFront()->getItem()->GetID());
+	int curr;
+	Order *d;
+	do{
+		normalorder.dequeue(d);
+		normalorder.enqueue(d);
+		count++;
+		curr=(normalorder.getPtrToFront()->getItem()->GetID());
+	}
+	while(first!=curr);
+	return count;
+}
+
+int Restaurant::WaitVegan(){
+	if(VEGANOrder.isEmpty())
+		return 0;
+	int count=0;
+	int first=(VEGANOrder.getPtrToFront()->getItem()->GetID());
+	int curr;
+	Order *d;
+	do{
+		VEGANOrder.dequeue(d);
+		VEGANOrder.enqueue(d);
+		count++;
+		curr=(VEGANOrder.getPtrToFront()->getItem()->GetID());
+	}
+	while(first!=curr);
+	return count;
+}
+
+
+int Restaurant::WaitVIP(){
+	if(VIPorder.isEmpty())
+		return 0;
+	int count=0;
+	int first=(VIPorder.getPtrToFront()->getItem()->GetID());
+	int curr;
+	Order *d;
+	do{
+		VIPorder.dequeue(d);
+		VIPorder.enqueue(d,d->GetPriority());
+		count++;
+		curr=(VIPorder.getPtrToFront()->getItem()->GetID());
+	}
+	while(first!=curr);
+	return count;
 }

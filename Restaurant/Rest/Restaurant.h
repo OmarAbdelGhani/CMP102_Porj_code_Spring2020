@@ -90,6 +90,9 @@ public:
 	//By Omar AbdelGhani
 	void LoadFile();
 	Order CancelById(int);
+	int WaitNormal();
+	int WaitVegan();
+	int WaitVIP();
 
 };
 
