@@ -54,7 +54,7 @@ private:
 	Node<T>* frontPtr;
 public:
 	Queue();
-	Queue( const Queue<T>&);
+	Queue(const Queue<T>&);
 	bool isEmpty() const;
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);
@@ -62,6 +62,7 @@ public:
 	Node<T>* getPtrToFront();
 	bool dequeueWithOrderID(int ID, T& removed);
 	void printQueueData();
+	bool Exists(int key);
 	T* toArray(int& count);	//returns array of T (array if items)
 	~Queue();
 };
@@ -83,7 +84,7 @@ Queue<T>::Queue()	//CTOR makes an empty queue
 
 
 template<typename T>
-Queue<T>::Queue(const Queue<T>& src ) {
+Queue<T>::Queue(const Queue<T>& src) {
 	frontPtr = nullptr;
 	backPtr = nullptr;
 	Node<T>* pNode = src.frontPtr;
@@ -167,8 +168,8 @@ bool Queue<T>::dequeue(T& frntEntry)
 template <typename T>
 bool Queue<T>::dequeueWithOrderID(int ID, T& removed) { // bta5od el id w pass by refernce variable esmo removed dh ele hyt7t
 												// feh el order el mal8y
-	
-	
+
+
 	if (isEmpty()) {
 		return false; // OPERATION FAILED!!
 	}
@@ -276,5 +277,17 @@ void Queue<T>::printQueueData() {
 	}
 }
 
+template<typename T>
+bool Queue<T>::Exists(int Key) {
+	Node<Order*>* ptr = getPtrToFront();
+	while (ptr) {
+		if (ptr->getItem()->GetID() == Key) {
+			return true;
+		}
+		ptr = ptr->getNext();
+	}
+	return false;
+
+};
 
 #endif

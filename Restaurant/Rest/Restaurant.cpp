@@ -46,7 +46,7 @@ void Restaurant::RunSimulation()
 					
 				}
 				else if (q) {    //if it is a cancellation event
-					if (!(normalorder.isEmpty())) {
+					if (!(normalorder.isEmpty())&&normalorder.Exists(q->getOrderID())) {
 						// delete the corresponding normal order if found
 						q->Execute(this);
 					}
@@ -66,18 +66,17 @@ void Restaurant::RunSimulation()
 			Nv=to_string(V);
 			Ng=to_string(G);
 			pGUI->PrintMessage("Ts: "+ts); //here you should also print i (timestep)
-			pGUI->PrintMessage("No. of Available Normal Cooks: "+Nn,15);
-			pGUI->PrintMessage("No. of Available Vegan Cooks: "+Ng,670);
-			pGUI->PrintMessage("No. of Available VIP Cooks: "+Nv,690);
-			pGUI->PrintMessage("No of Waiting Normal Orders: "+n,710);
-			pGUI->PrintMessage("No of Waiting Vegan Orders: "+ve,730);
-			pGUI->PrintMessage("No of Waiting VIP Orders: "+v,750);
-			i++;
+			pGUI->PrintMessage("No. of Available Normal Cooks: "+Nn,670);
+			pGUI->PrintMessage("No. of Available Vegan Cooks: "+Ng,690);
+			pGUI->PrintMessage("No. of Available VIP Cooks: "+Nv,710);
+			pGUI->PrintMessage("No of Waiting Normal Orders: "+n,730);
+			pGUI->PrintMessage("No of Waiting Vegan Orders: "+ve,750);
+			pGUI->PrintMessage("No of Waiting VIP Orders: "+v,770);
 //		string p=itos(i);
 			//pGUI->PrintMessage("click to display the output of next time step");
 			
 			
-			pGUI->waitForClick();
+			
 			this->FillDrawingList();
 			pGUI->UpdateInterface();
 			pGUI->ResetDrawingList();
@@ -121,7 +120,8 @@ void Restaurant::RunSimulation()
 			
 				//so that we enter the if second time after 5 time steps when i = 5*x=5*2=10 and so on
 			}
-						
+				pGUI->waitForClick();
+				i++;		
 				//first=false;		
 		}
 		
@@ -228,7 +228,10 @@ void Restaurant::FillDrawingList()
 		Finishedlist.InsertEnd(r);
 		Finishedlist.DeleteFirst();
 		
-	}while (!(w==Finishedlist.getHead()->getItem()->GetID()));}/*
+	}
+	while (!(w==Finishedlist.getHead()->getItem()->GetID()));
+				}
+	/*
 	while (Finishedlist.DeleteNode(Finishedlist.getHead()->getItem())) {
 		Finishedlist.getHead()->getItem()->setStatus(DONE);
 		pGUI->AddToDrawingList(Finishedlist.getHead()->getItem());
@@ -239,7 +242,45 @@ void Restaurant::FillDrawingList()
 //It should get orders from orders lists/queues/stacks/whatever (same for Cooks)
 //To add orders it should call function  void GUI::AddToDrawingList(Order* pOrd);
 //To add Cooks it should call function  void GUI::AddToDrawingList(Cook* pCc);
+	int first;
+	int current;
+	Cook* curr;
+	first=NORMALcook.getHead()->getItem()->GetID();
+	do{
+		curr=NORMALcook.getHead()->getItem();
+		pGUI->AddToDrawingList(curr);
+		NORMALcook.InsertEnd(curr);
+		NORMALcook.DeleteFirst();
+		curr=NORMALcook.getHead()->getItem();
+		current=curr->GetID();
+	}
+	while(first!=current);
 
+	first=VEGANcook.getHead()->getItem()->GetID();
+	do{
+		curr=VEGANcook.getHead()->getItem();
+		pGUI->AddToDrawingList(curr);
+		VEGANcook.InsertEnd(curr);
+		VEGANcook.DeleteFirst();
+		curr=VEGANcook.getHead()->getItem();
+		current=curr->GetID();
+	}
+	while(first!=current);
+
+	first=VIPcook.getHead()->getItem()->GetID();
+	do{
+		curr=VIPcook.getHead()->getItem();
+		pGUI->AddToDrawingList(curr);
+		VIPcook.InsertEnd(curr);
+		VIPcook.DeleteFirst();
+		curr=VIPcook.getHead()->getItem();
+		current=curr->GetID();
+	}
+	while(first!=current);
+		
+
+				
+			
 }
 
 
@@ -414,8 +455,26 @@ void Restaurant::LoadFile() {
 	//IF.open("input.txt",ios::in);
 	if(IF.is_open()){
 	IF >> N; //initialize No. of Normal cooks
+	for (int i=1;i<=N;i++){
+		Cook* c=new Cook;
+		c->setType(TYPE_NRM);
+		NORMALcook.InsertBeg(c);
+		NORMALcook.getHead()->getItem()->setID(i);
+	}
 	IF >> G; // Same for vegan
+		for (int i=1;i<=G;i++){
+		Cook* c=new Cook;
+		c->setType(TYPE_VGAN);
+		VEGANcook.InsertBeg(c);
+		VEGANcook.getHead()->getItem()->setID(i);
+	}
 	IF >> V; // and for VIP
+		for (int i=1;i<=V;i++){
+		Cook* c=new Cook;
+		c->setType(TYPE_VIP);
+		VIPcook.InsertBeg(c);
+		VIPcook.getHead()->getItem()->setID(i);
+	}
 
 	IF >> SN; //Initialize speed of Normal Cooks
 	IF >> SG; // for Vegan Cooks
