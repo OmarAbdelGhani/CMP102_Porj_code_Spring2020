@@ -1,84 +1,82 @@
-﻿Build started 4/11/2020 6:23:51 PM.
-     1>Project "C:\Users\ASUS1\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Restaurant.vcxproj" on node 2 (Build target(s)).
-       Project file contains ToolsVersion="14.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
-     1>InitializeBuildStatus:
-         Touching "Debug\Restaurant.unsuccessfulbuild".
-       ClCompile:
-         All outputs are up-to-date.
-         All outputs are up-to-date.
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\ASUS1\Documents\GitHub\CMP102_Porj_code_Spring2020\Debug\Restaurant.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\ASUS1\Documents\GitHub\CMP102_Porj_code_Spring2020\Debug\Restaurant.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\ASUS1\Documents\GitHub\CMP102_Porj_code_Spring2020\Debug\Restaurant.lib" /MACHINE:X86 Debug\Cancellation_event.obj
-         Debug\CMUgraphics.obj
-         Debug\colors.obj
-         Debug\image.obj
-         Debug\jpegload.obj
-         Debug\jcomapi.obj
-         Debug\jcparam.obj
-         Debug\jdapimin.obj
-         Debug\jdapistd.obj
-         Debug\jdatasrc.obj
-         Debug\jdcoefct.obj
-         Debug\jdcolor.obj
-         Debug\jddctmgr.obj
-         Debug\jdhuff.obj
-         Debug\jdinput.obj
-         Debug\jdmainct.obj
-         Debug\jdmarker.obj
-         Debug\jdmaster.obj
-         Debug\jdmerge.obj
-         Debug\jdphuff.obj
-         Debug\jdpostct.obj
-         Debug\jdsample.obj
-         Debug\jdtrans.obj
-         Debug\jerror.obj
-         Debug\jidctflt.obj
-         Debug\jidctfst.obj
-         Debug\jidctint.obj
-         Debug\jidctred.obj
-         Debug\jmemmgr.obj
-         Debug\jmemnobs.obj
-         Debug\jquant1.obj
-         Debug\jquant2.obj
-         Debug\jutils.obj
-         Debug\keyqueue.obj
-         Debug\mousequeue.obj
-         Debug\windowinput.obj
-         Debug\Demo_Main.obj
-         Debug\Event.obj
-         Debug\ArrivalEvent.obj
-         Debug\GUI.obj
-         Debug\PromotionEvent.obj
-         Debug\Cook.obj
-         Debug\Order.obj
-         Debug\Restaurant.obj
-     1>Restaurant.obj : error LNK2038: mismatch detected for '_MSC_VER': value '1700' doesn't match value '1900' in Cancellation_event.obj
-     1>msvcprtd.lib(newaop_s.obj) : error LNK2038: mismatch detected for '_MSC_VER': value '1700' doesn't match value '1900' in Cancellation_event.obj
-     1>msvcprtd.lib(MSVCP110D.dll) : error LNK2005: "public: __thiscall std::_Container_base12::_Container_base12(void)" (??0_Container_base12@std@@QAE@XZ) already defined in GUI.obj
-     1>msvcprtd.lib(MSVCP110D.dll) : error LNK2005: "public: void __thiscall std::_Container_base12::_Orphan_all(void)" (?_Orphan_all@_Container_base12@std@@QAEXXZ) already defined in CMUgraphics.obj
-     1>msvcprtd.lib(locale0_implib.obj) : error LNK2038: mismatch detected for '_MSC_VER': value '1700' doesn't match value '1900' in Cancellation_event.obj
-     1>Order.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>ArrivalEvent.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>GUI.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>PromotionEvent.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>Cook.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>mousequeue.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>windowinput.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>Demo_Main.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>Event.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>Cancellation_event.obj : error LNK2019: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z) referenced in function "public: virtual void * __thiscall Cancellation_event::`scalar deleting destructor'(unsigned int)" (??_GCancellation_event@@UAEPAXI@Z)
-     1>CMUgraphics.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>image.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>keyqueue.obj : error LNK2001: unresolved external symbol "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
-     1>CMUgraphics.obj : error LNK2019: unresolved external symbol __imp____stdio_common_vsprintf referenced in function __vsnprintf_l
-     1>jerror.obj : error LNK2001: unresolved external symbol __imp____stdio_common_vsprintf
-     1>jerror.obj : error LNK2019: unresolved external symbol __imp____acrt_iob_func referenced in function _output_message
-     1>jerror.obj : error LNK2019: unresolved external symbol __imp____stdio_common_vfprintf referenced in function __vfprintf_l
-     1>jmemmgr.obj : error LNK2019: unresolved external symbol __imp____stdio_common_vsscanf referenced in function __vsscanf_l
-     1>GUI.obj : error LNK2019: unresolved external symbol ___std_exception_copy referenced in function "public: __thiscall std::exception::exception(class std::exception const &)" (??0exception@std@@QAE@ABV01@@Z)
-     1>GUI.obj : error LNK2019: unresolved external symbol ___std_exception_destroy referenced in function "public: virtual __thiscall std::exception::~exception(void)" (??1exception@std@@UAE@XZ)
-     1>C:\Users\ASUS1\Documents\GitHub\CMP102_Porj_code_Spring2020\Debug\Restaurant.exe : fatal error LNK1120: 7 unresolved externals
-     1>Done Building Project "C:\Users\ASUS1\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Restaurant.vcxproj" (Build target(s)) -- FAILED.
-
-Build FAILED.
-
-Time Elapsed 00:00:00.67
+﻿  Cancellation_event.cpp
+  CMUgraphics.cpp
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(751,1): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(133): message : see declaration of 'strcpy'
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(1164,1): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1774): message : see declaration of 'sprintf'
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(1171,1): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1774): message : see declaration of 'sprintf'
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(1202,1): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1774): message : see declaration of 'sprintf'
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(1210,1): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1774): message : see declaration of 'sprintf'
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(1357,23): warning C4018: '>': signed/unsigned mismatch
+  colors.cpp
+  image.cpp
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\image.cpp(115,29): warning C4018: '<': signed/unsigned mismatch
+  keyqueue.cpp
+  mousequeue.cpp
+  windowinput.cpp
+  Demo_Main.cpp
+  Event.cpp
+  ArrivalEvent.cpp
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Events\ArrivalEvent.cpp(32,18): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  GUI.cpp
+  PromotionEvent.cpp
+  Cook.cpp
+  Order.cpp
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Rest\Order.cpp(64,9): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Rest\Order.cpp(100,33): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Rest\Order.cpp(131,25): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+  Restaurant.cpp
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(314,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(345,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(399,1): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdlib.h(1323): message : see declaration of 'itoa'
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(588,36): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(326): warning C4715: 'Restaurant::Getordertype': not all control paths return a value
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Generic_DS\Queue.h(203): warning C4715: 'Queue<Order *>::dequeueWithOrderID': not all control paths return a value
+  jpegload.c
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\jpegload.c(23,1): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message : see declaration of 'fopen'
+  jcomapi.c
+  jcparam.c
+  jdapimin.c
+  jdapistd.c
+  jdatasrc.c
+  jdcoefct.c
+  jdcolor.c
+  jddctmgr.c
+  jdhuff.c
+  jdinput.c
+  jdmainct.c
+  jdmarker.c
+  jdmaster.c
+  jdmerge.c
+  jdphuff.c
+  jdpostct.c
+  jdsample.c
+  jdtrans.c
+  jerror.c
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\jpeg\jerror.c(169,1): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1774): message : see declaration of 'sprintf'
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\jpeg\jerror.c(171,1): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1774): message : see declaration of 'sprintf'
+  Generating Code...
+  Compiling...
+  jidctflt.c
+  jidctfst.c
+  jidctint.c
+  jidctred.c
+  jmemmgr.c
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\jpeg\jmemmgr.c(1103,1): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdlib.h(1191): message : see declaration of 'getenv'
+C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\jpeg\jmemmgr.c(1106,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
+  jmemnobs.c
+  jquant1.c
+  jquant2.c
+  jutils.c
+  Generating Code...
+  Restaurant.vcxproj -> C:\Users\mega\Documents\GitHub\CMP102_Porj_code_Spring2020\Debug\Restaurant.exe
