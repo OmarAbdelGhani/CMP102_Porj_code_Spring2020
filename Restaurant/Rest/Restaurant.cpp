@@ -103,24 +103,18 @@ void Restaurant::RunSimulation()
 			if(Inservicelist.getHead()){
 
 				Order* e = Inservicelist.getHead()->getItem(); //the first order putted in inservice list which is a vip order
-				if (e->GetType()==TYPE_VIP){
 				Finishedlist.InsertEnd(e);
 				Inservicelist.DeleteFirst(); //pick this order from in service list
-				}
 				 //put it in finished list
 			}if(Inservicelist.getHead()){
 				Order* a = Inservicelist.getHead()->getItem();
-				if (a->GetType()==TYPE_NRM){
 				Finishedlist.InsertEnd(a);
 				Inservicelist.DeleteFirst();
-				}
 			}if(Inservicelist.getHead()){
 
 				Order* b = Inservicelist.getHead()->getItem();
-				if (b->GetType()==TYPE_VGAN){
 				Finishedlist.InsertEnd(b);
 				Inservicelist.DeleteFirst();
-				}
 			}
 				x++;
 			
