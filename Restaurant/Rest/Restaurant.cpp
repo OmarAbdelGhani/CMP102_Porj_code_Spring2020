@@ -58,28 +58,13 @@ void Restaurant::RunSimulation()
 					break;
 			}
 			}
-			n=to_string(this->WaitNormal());
-			ve=to_string(this->WaitVegan());
-			v=to_string(this->WaitVIP());
-			ts=to_string((i));
-			Nn=to_string(N);
-			Nv=to_string(V);
-			Ng=to_string(G);
-			pGUI->PrintMessage("Ts: "+ts); //here you should also print i (timestep)
-			pGUI->PrintMessage("No. of Available Normal Cooks: "+Nn,670);
-			pGUI->PrintMessage("No. of Available Vegan Cooks: "+Ng,690);
-			pGUI->PrintMessage("No. of Available VIP Cooks: "+Nv,710);
-			pGUI->PrintMessage("No of Waiting Normal Orders: "+n,730);
-			pGUI->PrintMessage("No of Waiting Vegan Orders: "+ve,750);
-			pGUI->PrintMessage("No of Waiting VIP Orders: "+v,770);
+			
+			
 //		string p=itos(i);
 			//pGUI->PrintMessage("click to display the output of next time step");
 			
 			
 			
-			this->FillDrawingList();
-			pGUI->UpdateInterface();
-			pGUI->ResetDrawingList();
 					if (!VIPorder.isEmpty()){
 			Order* Q = VIPorder.getPtrToFront()->getItem();
 			Inservicelist.InsertEnd(Q);
@@ -101,30 +86,82 @@ void Restaurant::RunSimulation()
 			
 						if ((i==(5 * x))) { //each 5 time steps pick one order from each type from inservice list to finished list
 			if(Inservicelist.getHead()){
-				Order* e = Inservicelist.getHead()->getItem(); //the first order putted in inservice list which is a vip order
+				Node<Order*> *ptr=Inservicelist.getHead();
+				while(ptr){
+					Order* e = ptr->getItem(); //the first order putted in inservice list which is a vip order
 				if (e->GetType()==TYPE_VIP){
 				Finishedlist.InsertEnd(e);
-				Inservicelist.DeleteFirst(); //pick this order from in service list
-				}
+				Inservicelist.DeleteNode(ptr->getItem()); //pick this order from in service list
+				break;
 				 //put it in finished list
+				}
+				else{
+					if(ptr->getNext())
+					ptr=ptr->getNext();
+					else
+						ptr=nullptr;
+				}
+
+				}
 			}if(Inservicelist.getHead()){
-				Order* a = Inservicelist.getHead()->getItem();
+				Node<Order*> *ptr=Inservicelist.getHead();
+				while(ptr){
+					Order* a = ptr->getItem();
 				if (a->GetType()==TYPE_NRM){
 				Finishedlist.InsertEnd(a);
-				Inservicelist.DeleteFirst();
+				Inservicelist.DeleteNode(ptr->getItem());
+				break;
+				}
+				else{
+					if(ptr->getNext())
+					ptr=ptr->getNext();
+					else
+						ptr=nullptr;
+				}
 				}
 			}if(Inservicelist.getHead()){
-
-				Order* b = Inservicelist.getHead()->getItem();
+				Node<Order*> *ptr=Inservicelist.getHead();
+					while(ptr){
+						Order* b =ptr->getItem();
 				if (b->GetType()==TYPE_VGAN){
 				Finishedlist.InsertEnd(b);
-				Inservicelist.DeleteFirst();
+				Inservicelist.DeleteNode(ptr->getItem());
+				break;
+					}
+				else{
+					if(ptr->getNext())
+					ptr=ptr->getNext();
+					else
+						ptr=nullptr;
 				}
 			}
+			}
+			this->FillDrawingList();
+			pGUI->UpdateInterface();
+			pGUI->ResetDrawingList();
 				x++;
 			
 				//so that we enter the if second time after 5 time steps when i = 5*x=5*2=10 and so on
 			}
+			this->FillDrawingList();
+			pGUI->UpdateInterface();
+			pGUI->ResetDrawingList();
+			n=to_string(this->WaitNormal());
+			ve=to_string(this->WaitVegan());
+			v=to_string(this->WaitVIP());
+			ts=to_string((i));
+			Nn=to_string(N);
+			Nv=to_string(V);
+			Ng=to_string(G);
+			pGUI->PrintMessage("Ts: "+ts); //here you should also print i (timestep)
+			pGUI->PrintMessage("No. of Available Normal Cooks: "+Nn,670);
+			pGUI->PrintMessage("No. of Available Vegan Cooks: "+Ng,690);
+			pGUI->PrintMessage("No. of Available VIP Cooks: "+Nv,710);
+			pGUI->PrintMessage("No of Waiting Normal Orders: "+n,730);
+			pGUI->PrintMessage("No of Waiting Vegan Orders: "+ve,750);
+			pGUI->PrintMessage("No of Waiting VIP Orders: "+v,770);
+			
+			
 				pGUI->waitForClick();
 				i++;		
 				//first=false;		

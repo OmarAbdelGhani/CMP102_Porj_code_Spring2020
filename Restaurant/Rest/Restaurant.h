@@ -43,7 +43,7 @@ private:
 	LinkedList<Cook*>VEGANcook;
 	LinkedList<Order*>Inservicelist;
 	LinkedList<Order*>Finishedlist;
-	LinkedList<Cook*>CooksInService; //List of cooks that are unavailable
+	LinkedList<Cook*>CooksInService;
 	int TS;  //timestep
 	int SV;     //speed of vip cook
 	int SN;    //speed of normal cook
