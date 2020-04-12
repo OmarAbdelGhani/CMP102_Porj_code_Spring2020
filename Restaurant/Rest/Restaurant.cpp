@@ -84,65 +84,34 @@ void Restaurant::RunSimulation()
 			
 			}
 			
-						if ((i==(5 * x))) { //each 5 time steps pick one order from each type from inservice list to finished list
+								if ((i==(5 * x))) { //each 5 time steps pick one order from each type from inservice list to finished list
 			if(Inservicelist.getHead()){
-				Node<Order*> *ptr=Inservicelist.getHead();
-				while(ptr){
-					Order* e = ptr->getItem(); //the first order putted in inservice list which is a vip order
-				if (e->GetType()==TYPE_VIP){
-				Finishedlist.InsertEnd(e);
-				Inservicelist.DeleteNode(ptr->getItem()); //pick this order from in service list
-				break;
-				 //put it in finished list
-				}
-				else{
-					if(ptr->getNext())
-					ptr=ptr->getNext();
-					else
-						ptr=nullptr;
-				}
 
-				}
+				Order* e = Inservicelist.getHead()->getItem(); //the first order putted in inservice list which is a vip order
+				Finishedlist.InsertEnd(e);
+				Inservicelist.DeleteFirst(); //pick this order from in service list
+				 //put it in finished list
 			}if(Inservicelist.getHead()){
-				Node<Order*> *ptr=Inservicelist.getHead();
-				while(ptr){
-					Order* a = ptr->getItem();
-				if (a->GetType()==TYPE_NRM){
+				Order* a = Inservicelist.getHead()->getItem();
 				Finishedlist.InsertEnd(a);
-				Inservicelist.DeleteNode(ptr->getItem());
-				break;
-				}
-				else{
-					if(ptr->getNext())
-					ptr=ptr->getNext();
-					else
-						ptr=nullptr;
-				}
-				}
+				Inservicelist.DeleteFirst();
 			}if(Inservicelist.getHead()){
-				Node<Order*> *ptr=Inservicelist.getHead();
-					while(ptr){
-						Order* b =ptr->getItem();
-				if (b->GetType()==TYPE_VGAN){
+
+				Order* b = Inservicelist.getHead()->getItem();
 				Finishedlist.InsertEnd(b);
-				Inservicelist.DeleteNode(ptr->getItem());
-				break;
-					}
-				else{
-					if(ptr->getNext())
-					ptr=ptr->getNext();
-					else
-						ptr=nullptr;
-				}
+				Inservicelist.DeleteFirst();
 			}
-			}
+				
+			
+				//so that we enter the if second time after 5 time steps when i = 5*x=5*2=10 and so on
+			
 			this->FillDrawingList();
 			pGUI->UpdateInterface();
 			pGUI->ResetDrawingList();
 				x++;
 			
 				//so that we enter the if second time after 5 time steps when i = 5*x=5*2=10 and so on
-			}
+								}
 			this->FillDrawingList();
 			pGUI->UpdateInterface();
 			pGUI->ResetDrawingList();

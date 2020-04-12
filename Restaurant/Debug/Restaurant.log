@@ -1,14 +1,82 @@
-﻿  Cancellation_event.cpp
-  Demo_Main.cpp
-  ArrivalEvent.cpp
-C:\Users\k\Desktop\inshallah very finall data projecttttt\CMP102_Porj_code_Spring2020\Restaurant\Events\ArrivalEvent.cpp(32,18): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-  PromotionEvent.cpp
-  Restaurant.cpp
-C:\Users\k\Desktop\inshallah very finall data projecttttt\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(356,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\k\Desktop\inshallah very finall data projecttttt\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(387,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\k\Desktop\inshallah very finall data projecttttt\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(441,3): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
-C:\Users\k\Desktop\inshallah very finall data projecttttt\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(630,36): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
-C:\Users\k\Desktop\inshallah very finall data projecttttt\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(368): warning C4715: 'Restaurant::Getordertype': not all control paths return a value
-C:\Users\k\Desktop\inshallah very finall data projecttttt\CMP102_Porj_code_Spring2020\Restaurant\Generic_DS\Queue.h(203): warning C4715: 'Queue<Order *>::dequeueWithOrderID': not all control paths return a value
-  Restaurant.vcxproj -> C:\Users\k\Desktop\inshallah very finall data projecttttt\CMP102_Porj_code_Spring2020\Debug\Restaurant.exe
+﻿Build started 4/12/2020 8:16:45 PM.
+     1>Project "C:\Users\HPP\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Restaurant.vcxproj" on node 2 (build target(s)).
+       Project file contains ToolsVersion="14.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
+     1>InitializeBuildStatus:
+         Creating "Debug\Restaurant.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Cancellation_event.cpp CMUgraphicsLib\CMUgraphics.cpp CMUgraphicsLib\colors.cpp CMUgraphicsLib\image.cpp CMUgraphicsLib\keyqueue.cpp CMUgraphicsLib\mousequeue.cpp CMUgraphicsLib\windowinput.cpp Demo_Main.cpp Events\Event.cpp Events\ArrivalEvent.cpp GUI\GUI.cpp PromotionEvent.cpp Rest\Cook.cpp Rest\Order.cpp Rest\Restaurant.cpp
+         Restaurant.cpp
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(149): error C2668: 'std::to_string' : ambiguous call to overloaded function
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(688): could be 'std::string std::to_string(long double)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(680): or       'std::string std::to_string(_ULonglong)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(672): or       'std::string std::to_string(_Longlong)'
+                 while trying to match the argument list '(int)'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(150): error C2668: 'std::to_string' : ambiguous call to overloaded function
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(688): could be 'std::string std::to_string(long double)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(680): or       'std::string std::to_string(_ULonglong)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(672): or       'std::string std::to_string(_Longlong)'
+                 while trying to match the argument list '(int)'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(151): error C2668: 'std::to_string' : ambiguous call to overloaded function
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(688): could be 'std::string std::to_string(long double)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(680): or       'std::string std::to_string(_ULonglong)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(672): or       'std::string std::to_string(_Longlong)'
+                 while trying to match the argument list '(int)'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(152): error C2668: 'std::to_string' : ambiguous call to overloaded function
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(688): could be 'std::string std::to_string(long double)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(680): or       'std::string std::to_string(_ULonglong)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(672): or       'std::string std::to_string(_Longlong)'
+                 while trying to match the argument list '(int)'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(153): error C2668: 'std::to_string' : ambiguous call to overloaded function
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(688): could be 'std::string std::to_string(long double)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(680): or       'std::string std::to_string(_ULonglong)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(672): or       'std::string std::to_string(_Longlong)'
+                 while trying to match the argument list '(int)'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(154): error C2668: 'std::to_string' : ambiguous call to overloaded function
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(688): could be 'std::string std::to_string(long double)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(680): or       'std::string std::to_string(_ULonglong)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(672): or       'std::string std::to_string(_Longlong)'
+                 while trying to match the argument list '(int)'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(155): error C2668: 'std::to_string' : ambiguous call to overloaded function
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(688): could be 'std::string std::to_string(long double)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(680): or       'std::string std::to_string(_ULonglong)'
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string(672): or       'std::string std::to_string(_Longlong)'
+                 while trying to match the argument list '(int)'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(356): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(387): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(630): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         Order.cpp
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\order.cpp(64): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\order.cpp(100): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\order.cpp(131): warning C4244: '+=' : conversion from 'double' to 'int', possible loss of data
+         Cook.cpp
+         PromotionEvent.cpp
+         GUI.cpp
+         ArrivalEvent.cpp
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\events\arrivalevent.cpp(32): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+         Event.cpp
+         Demo_Main.cpp
+         windowinput.cpp
+         mousequeue.cpp
+         keyqueue.cpp
+         image.cpp
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\cmugraphicslib\image.cpp(115): warning C4018: '<' : signed/unsigned mismatch
+         colors.cpp
+         CMUgraphics.cpp
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\cmugraphicslib\cmugraphics.cpp(751): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\cmugraphicslib\cmugraphics.cpp(1164): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\cmugraphicslib\cmugraphics.cpp(1171): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\cmugraphicslib\cmugraphics.cpp(1202): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\cmugraphicslib\cmugraphics.cpp(1210): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\cmugraphicslib\cmugraphics.cpp(1357): warning C4018: '>' : signed/unsigned mismatch
+         Cancellation_event.cpp
+         Generating Code...
+     1>Done Building Project "C:\Users\HPP\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Restaurant.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:23.19
