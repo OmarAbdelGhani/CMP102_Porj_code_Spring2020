@@ -17,8 +17,13 @@ void Restaurant::RunSimulation()
 {
 	pGUI = new GUI;
 	PROG_MODE	mode = pGUI->getGUIMode();
-
 	LoadFile();
+	Ofile.open("output.txt",ios::out); //initialization of outputfile
+	//Initialize all count variables by zero, ex NoNormal,NoVegan and so on   By Omar AbdelGhani
+	NoNormal=0; NoVegan=0;   NoVIP=0;
+	WaitingTime=0;  ServiceTime=0;
+	NoUrgent=0;  NoAutoPromoted=0;
+	
 	LinkedList<Order*>Inservicelist1;
 	int i = 1;
 	string ts;
@@ -115,13 +120,13 @@ void Restaurant::RunSimulation()
 			this->FillDrawingList();
 			pGUI->UpdateInterface();
 			pGUI->ResetDrawingList();
-			n=to_string(this->WaitNormal());
-			ve=to_string(this->WaitVegan());
-			v=to_string(this->WaitVIP());
-			ts=to_string((i));
-			Nn=to_string(N);
-			Nv=to_string(V);
-			Ng=to_string(G);
+			n=to_string(long double(this->WaitNormal()));
+			ve=to_string(long double(this->WaitVegan()));
+			v=to_string(long double(this->WaitVIP()));
+			ts=to_string((long double(i)));
+			Nn=to_string(long double(N));
+			Nv=to_string(long double(V));
+			Ng=to_string(long double((G)));
 			pGUI->PrintMessage("Ts: "+ts); //here you should also print i (timestep)
 			pGUI->PrintMessage("No. of Available Normal Cooks: "+Nn,670);
 			pGUI->PrintMessage("No. of Available Vegan Cooks: "+Ng,690);
@@ -151,6 +156,11 @@ void Restaurant::RunSimulation()
 	pGUI->ResetDrawingList();
 	pGUI->PrintMessage("Finished,click to continue");
 	pGUI->waitForClick();
+
+	Ofile<<"Orders: "<<NoNormal+NoVegan+NoVIP<<"[Norm:"<<NoNormal<<", Veg:"<<NoVegan<<", VIP:"<<NoVIP<<"]"<<endl;
+	Ofile<<"cooks:"<< V+N+G<<"[Norm:"<<N<<", Veg:"<<G<<", VIP:"<<V<<",  injured:"<<NoInj<<"]"<<endl;
+	Ofile<<"Avg Wait = "<<WaitingTime/(NoNormal+NoVegan+NoVIP)<<",  Avg Serv = "<<ServiceTime/(NoNormal+NoVegan+NoVIP)<<endl;
+	Ofile<<"Urgent orders: "<<NoUrgent<<",   Auto-promoted: "<<NoAutoPromoted/(NoNormal+NoVegan+NoVIP)*100<<"%"<<endl;
 }
 
 
@@ -458,6 +468,8 @@ void Restaurant::AddtoDemoQueue(Order* pOrd)
 /// ==> end of DEMO-related function
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
 //By OmarAbdelGhani
 
 void Restaurant::LoadFile() {
@@ -487,15 +499,16 @@ void Restaurant::LoadFile() {
 		VIPcook.getHead()->getItem()->setID(i);
 	}
 
-	IF >> SN; //Initialize speed of Normal Cooks
-	IF >> SG; // for Vegan Cooks
-	IF >> SV; //for VIP
+	IF >> SN_min>>SN_max;
+	IF >> SG_min>>SG_max; 
+	IF >> SV_min>>SV_max; 
+	//Initialization of min and max speed of each type
 
 	IF >> BO; //Initialize No. of orders before break
-	IF >> BN; //Break duration for Normal cooks
-	IF >> BG; // for vegan
-	IF >> BV; // for VIP
-
+	IF >> BN_min>>BN_max; 
+	IF >> BG_min>>BG_max; 
+	IF >> BV_min>>BV_max; 
+	//Initialization of min and max BreaktTime of each type
 
 	IF >> AutoP; //Initialize NO. of time steps befor auto promotion
 
@@ -603,3 +616,69 @@ int Restaurant::WaitVIP(){
 	while(first!=curr);
 	return count;
 }
+
+
+void  Restaurant::InitializeNormal(){
+	if(!NORMALcook.getHead())
+		return ;
+
+	int first=1;
+	int curr;
+	Cook* CurrCook=NORMALcook.getHead()->getItem();
+	Cook* temp;
+	do{
+		CurrCook->SetBreak(BN_min,BN_max);
+		CurrCook->SetSpeed(SN_min,SN_max);
+		NORMALcook.InsertEnd(CurrCook);
+		NORMALcook.DeleteFirst();
+		CurrCook=NORMALcook.getHead()->getItem();
+		curr=(NORMALcook.getHead()->getItem()->GetID());
+		//To iterate on all the list, we take first item and initialize it, then add to to the end of the list
+		// then delete it from the beggining and so on untill the list returns to original
+		// we add to the end first to create a new node in the memory as if we delete it first, then the data wouldnot exist after deletion
+		// initialize first with the ID of first cook, which is 1, then we compare it with the id of the next cook. When the last cook is reached
+		// the id of the next cook will be 1, so we know we finished iteration
+	}
+	while(first!=curr);
+}
+void Restaurant::InitializeVIP(){
+	if(!VIPcook.getHead())
+		return ;
+
+	int first=1;
+	int curr;
+	Cook* CurrCook=VIPcook.getHead()->getItem();
+	do{
+		CurrCook->SetBreak(BV_min,BV_max);
+		CurrCook->SetSpeed(SV_min,SV_max);
+		VIPcook.InsertEnd(CurrCook);
+		VIPcook.DeleteFirst();
+		CurrCook=VIPcook.getHead()->getItem();
+		curr=(VIPcook.getHead()->getItem()->GetID());
+	}
+	while(first!=curr);
+
+}
+	void Restaurant::InitializeVegan(){
+		if(!VEGANcook.getHead())
+		return ;
+
+	int first=1;
+	int curr;
+	Cook* CurrCook=VEGANcook.getHead()->getItem();
+	do{
+		CurrCook->SetBreak(BG_min,BG_max);
+		CurrCook->SetSpeed(SG_min,SG_max);
+		VEGANcook.InsertEnd(CurrCook);
+		VEGANcook.DeleteFirst();
+		CurrCook=VEGANcook.getHead()->getItem();
+		curr=(VEGANcook.getHead()->getItem()->GetID());
+	}
+	while(first!=curr);
+
+	}
+
+	void Restaurant::OutputOrder(Order* O){
+		Ofile<<O->Get_finishtime()<<"\t"<<O->GetID()<<"\t"<<O->Get_Arrtime()<<"\t"<<O->Get_servetime()-O->Get_servetime()<<"\t"<<O->Get_servetime()<<endl;
+
+	}

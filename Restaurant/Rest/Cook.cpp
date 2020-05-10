@@ -33,3 +33,14 @@ void Cook::setType(ORD_TYPE t)
 }
 
 
+void Cook::SetSpeed(int x,int y){
+	
+	speed=rand() % y+x;
+
+}
+	void Cook::SetBreak(int x,int y){
+
+		Break=rand() %y+x;
+
+	}
+

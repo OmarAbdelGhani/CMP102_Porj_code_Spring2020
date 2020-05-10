@@ -45,18 +45,57 @@ private:
 	LinkedList<Order*>Finishedlist;
 	LinkedList<Cook*>CooksInService;
 	int TS;  //timestep
-	int SV;     //speed of vip cook
-	int SN;    //speed of normal cook
-	int SG;   //speed of vegan cook
+	
+	//int SV;     //speed of vip cook
+	//int SN;    //speed of normal cook 
+	//int SG;   //speed of vegan cook
+	// the above lines are of no use in phase 2
+
+	int SN_max;   //Max speed of normal
+	int SN_min;    //Min speed of normal
+	int SG_max;    //MAx speed of vegan
+	int SG_min;     //Min speed of vegan
+	int SV_max;      // Max speed of VIP
+	int SV_min;      //Min speed of VIP
+		
+
 	int V;   // no. of vip cooks
 	int N;  // no. of normal cooks
 	int G;  // no. of vegan cooks
 	int BO;  // the number of orders a cook must prepare before taking a break
-	int BN;  //BREAK DURATION FOR NORMAL
-	int BG;   //BREAK DURATION FOR VEGAN
-	int BV;   //BREAK DURATION FOR VIP
+
+	//int BN;  //BREAK DURATION FOR NORMAL
+	//int BG;   //BREAK DURATION FOR VEGAN
+	//int BV;   //BREAK DURATION FOR VIP
+	// the above lines are of no use in phase 2
+
+	int BN_min;     //Min break time of normal
+	int BN_max;       //Max break of normal
+	int BG_min;        //Min break of vegan
+	int BG_max;         //Max break of vegan
+	int BV_min;          //Min break of vip
+	int BV_max;			//Max break of vip
+
+	int InjProb;        //Injury probability of cook
+	int RstPrd;          //Rest period of the injured cook
+
 	int AutoP;    //TIME TO PROMOT NORMAL ORDER TP VIP
-	int M;
+	int VIP_WT;   //time to turn VIP to urgent
+	int M;        // NO of Events in file
+
+	int NoNormal;    //No of Nomral Orders
+	int NoVegan;	//No of Vegan Orders
+	int NoVIP;		//No of VIP	  Orders
+	int NoInj;      //No of injured cooks
+
+	int WaitingTime;  //Total Waiting time
+	int ServiceTime;  //Total serving time
+
+	int NoUrgent;  //Total urgent orders
+	int NoAutoPromoted; //Total number of auto promoted orders
+
+	ofstream Ofile;
+	
 
 public:
 	
@@ -89,12 +128,17 @@ public:
 /// ================================================================================================== 
 	
 	//By Omar AbdelGhani
-	void LoadFile();
-	Order CancelById(int);
-	int WaitNormal();
-	int WaitVegan();
-	int WaitVIP();
+	void LoadFile();         //Loads Input data from a File
+	void InitializeNormal();
+	void InitializeVIP();
+	void InitializeVegan();
+	//to initialize cooks of each type with data entered in the file
 
+	Order CancelById(int);      //For order Cancellation
+	int WaitNormal();         //Counts number of waiting Orders
+	int WaitVegan();			//Counts number of waiting vegan orders
+	int WaitVIP();				//Counts number of waiting vip orders
+	void OutputOrder(Order*);   //Prints order data to the outputfile
 };
 
 #endif
