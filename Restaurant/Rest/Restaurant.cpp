@@ -38,7 +38,7 @@ void Restaurant::RunSimulation()
 
 	case MODE_INTR:
 		// try changing to one
-
+		std::cout << "got this far";
 		while (!EventsQueue.isEmpty() || Inservicelist.getHead() || !normalorder.isEmpty() || !VEGANOrder.isEmpty() || !VIPorder.isEmpty()) {
 
 			if (!EventsQueue.isEmpty()) {
@@ -93,7 +93,7 @@ void Restaurant::RunSimulation()
 
 			//}
 			//cout << " GOT THIS FAR BEFORE CRASHING"; // FOR DEBUGGING PURPOSES ONLY REMOVE BEFORE SUBMISSION -Amer
-		
+
 
 			//if ((i == (5 * x))) { //each 5 time steps pick one order from each type from inservice list to finished list
 			//	if (Inservicelist.getHead()) {
@@ -125,15 +125,32 @@ void Restaurant::RunSimulation()
 			//}
 
 			//********** BEGIN NEW ORDER HANDLING CODE FOR PHASE 2 **********
-			cout << " GOT THIS FAR BEFORE CRASHING"; // FOR DEBUGGING PURPOSES ONLY REMOVE BEFORE SUBMISSION -Amer
+			std::cout << " GOT THIS FAR BEFORE CRASHING"; // FOR DEBUGGING PURPOSES ONLY REMOVE BEFORE SUBMISSION -Amer
 
-			//Start Processing VIP orders first
-			if (VIPorder.getPtrToFront()) { // if we have a vip order that is up for serving
+			if (!VIPorder.isEmpty()) {
+				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
+				if (getFirstAvailableCook(TYPE_VIP)) {  //order service criteria, vip orders must be served
+														//with any available cook, we choose the cook in this
+														// code snippet.
+					assigned = getFirstAvailableCook(TYPE_VIP);
+				}
+				else if (getFirstAvailableCook(TYPE_NRM)) {
+					assigned = getFirstAvailableCook(TYPE_NRM);
+				}
+				else if (getFirstAvailableCook(TYPE_VGAN)) {
+					assigned = getFirstAvailableCook(TYPE_VGAN);
+				}
+
 				Order* currentOrder = VIPorder.getPtrToFront()->getItem();
-							//UNFINISHED AMER
-
-
+				     
+				if (assigned) { //cook the order if a cook is available
+					assigned->serveOrder(currentOrder, i);
+					Inservicelist.InsertEnd(currentOrder);
+					VIPorder.dequeue(currentOrder);
+				}
 			}
+
+
 			this->FillDrawingList();
 			pGUI->UpdateInterface();
 			pGUI->ResetDrawingList();
@@ -173,11 +190,11 @@ void Restaurant::RunSimulation()
 	pGUI->ResetDrawingList();
 	pGUI->PrintMessage("Finished,click to continue");
 	pGUI->waitForClick();
-
-	Ofile << "Orders: " << NoNormal + NoVegan + NoVIP << "[Norm:" << NoNormal << ", Veg:" << NoVegan << ", VIP:" << NoVIP << "]" << endl;
-	Ofile << "cooks:" << V + N + G << "[Norm:" << N << ", Veg:" << G << ", VIP:" << V << ",  injured:" << NoInj << "]" << endl;
-	Ofile << "Avg Wait = " << WaitingTime / (NoNormal + NoVegan + NoVIP) << ",  Avg Serv = " << ServiceTime / (NoNormal + NoVegan + NoVIP) << endl;
-	Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: " << NoAutoPromoted / (NoNormal + NoVegan + NoVIP) * 100 << "%" << endl;
+	//AMER: Uncomment when ready
+	//Ofile << "Orders: " << NoNormal + NoVegan + NoVIP << "[Norm:" << NoNormal << ", Veg:" << NoVegan << ", VIP:" << NoVIP << "]" << endl;
+	//Ofile << "cooks:" << V + N + G << "[Norm:" << N << ", Veg:" << G << ", VIP:" << V << ",  injured:" << NoInj << "]" << endl;
+	//Ofile << "Avg Wait = " << WaitingTime / (NoNormal + NoVegan + NoVIP) << ",  Avg Serv = " << ServiceTime / (NoNormal + NoVegan + NoVIP) << endl;
+	//Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: " << NoAutoPromoted / (NoNormal + NoVegan + NoVIP) * 100 << "%" << endl;
 }
 
 
@@ -727,7 +744,7 @@ void Restaurant::InitializeVegan() {
 
 }
 void Restaurant::getAvailableCooksNo(int& VIP, int& vegan, int& normal) { // counts the number of available cooks of each type
-	int resultVIP = 0,resultVegan = 0, resultNormal = 0;
+	int resultVIP = 0, resultVegan = 0, resultNormal = 0;
 	Node<Cook*>* trav = VIPcook.getHead(); // start by counting the available vip cooks
 	while (trav) {
 		if (trav->getItem()->getStatus() == true) {

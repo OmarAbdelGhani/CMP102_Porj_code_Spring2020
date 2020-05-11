@@ -51,7 +51,7 @@ void Cook::setStatus(bool status) {
 	isAvailable = status;
 }
 bool Cook::getStatus() {
-	return isAvailable;
+	return isAvailable ;
 }
 int Cook::getCd() {
 	return cooldownEnd;
@@ -72,7 +72,7 @@ void Cook::serveOrder(Order* _order, int& timeStep) {
 	// we now calculate the time taken to serve the order:
 	float timeTaken = round((_order->get_size()) / speed); // the size of the order divided by the speed of the cook
 														   // then rounded to the nearest time step
-	cooldownEnd = timeTaken;
+	cooldownEnd = timeTaken + timeStep;
 	_order->Set_finishTime(_order->Get_servetime() + timeTaken);
 
 
