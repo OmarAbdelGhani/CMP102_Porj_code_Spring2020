@@ -149,8 +149,8 @@ void Restaurant::RunSimulation()
 					VIPorder.dequeue(currentOrder);
 				}
 			}
-
-
+			int Anormal,Avegan,Avip;      //An is Available normal
+			getAvailableCooksNo(Avip,Avegan,Anormal);
 			this->FillDrawingList();
 			pGUI->UpdateInterface();
 			pGUI->ResetDrawingList();
@@ -158,9 +158,9 @@ void Restaurant::RunSimulation()
 			ve = to_string(long double(this->WaitVegan()));
 			v = to_string(long double(this->WaitVIP()));
 			ts = to_string((long double(i)));
-			Nn = to_string(long double(N));
-			Nv = to_string(long double(V));
-			Ng = to_string(long double((G)));
+			Nn = to_string(long double(Anormal));
+			Nv = to_string(long double(Avip));
+			Ng = to_string(long double((Avegan)));
 			pGUI->PrintMessage("Ts: " + ts); //here you should also print i (timestep)
 			pGUI->PrintMessage("No. of Available Normal Cooks: " + Nn, 670);
 			pGUI->PrintMessage("No. of Available Vegan Cooks: " + Ng, 690);
@@ -306,7 +306,8 @@ void Restaurant::FillDrawingList()
 	first = NORMALcook.getHead()->getItem()->GetID();
 	do {
 		curr = NORMALcook.getHead()->getItem();
-		pGUI->AddToDrawingList(curr);
+		if (curr->getStatus())
+			pGUI->AddToDrawingList(curr);
 		NORMALcook.InsertEnd(curr);
 		NORMALcook.DeleteFirst();
 		curr = NORMALcook.getHead()->getItem();
@@ -316,7 +317,8 @@ void Restaurant::FillDrawingList()
 	first = VEGANcook.getHead()->getItem()->GetID();
 	do {
 		curr = VEGANcook.getHead()->getItem();
-		pGUI->AddToDrawingList(curr);
+		if (curr->getStatus())
+			pGUI->AddToDrawingList(curr);
 		VEGANcook.InsertEnd(curr);
 		VEGANcook.DeleteFirst();
 		curr = VEGANcook.getHead()->getItem();
@@ -326,7 +328,8 @@ void Restaurant::FillDrawingList()
 	first = VIPcook.getHead()->getItem()->GetID();
 	do {
 		curr = VIPcook.getHead()->getItem();
-		pGUI->AddToDrawingList(curr);
+		if (curr->getStatus())
+			pGUI->AddToDrawingList(curr);
 		VIPcook.InsertEnd(curr);
 		VIPcook.DeleteFirst();
 		curr = VIPcook.getHead()->getItem();
@@ -547,7 +550,7 @@ void Restaurant::LoadFile() {
 		//Initialization of min and max BreaktTime of each type
 
 		IF >> AutoP; //Initialize NO. of time steps befor auto promotion
-
+		IF>>RstPrd;
 		IF >> M; //Initialize No. of events
 
 		//Looping until i=m to initialize all events
