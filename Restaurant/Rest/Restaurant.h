@@ -36,7 +36,8 @@ private:
 	// TODO: Add More Data Members As Needed
 	//
 	Queue<Order*> VEGANOrder;  //  vegan queues
-	Queue<Order*>normalorder; //  vip linkedlist
+	Queue<Order*>normalorder; //  vip linkedlist 
+	//Amer: I believe this was unintentional , remove this comment and edit the one above
 	priorityQueue<Order*>VIPorder; // priority queue of vip
 	LinkedList<Cook*>VIPcook;
 	LinkedList<Cook*>NORMALcook;
@@ -139,6 +140,19 @@ public:
 	int WaitVegan();			//Counts number of waiting vegan orders
 	int WaitVIP();				//Counts number of waiting vip orders
 	void OutputOrder(Order*);   //Prints order data to the outputfile
+	// By Amer
+	// ***** Setters And Getters for Numbers of normal, vegan and vip orders *****
+	void setNoNormal(int);
+	int getNoNormal();
+
+	void setNoVegan(int);
+	int getNoVegan();
+
+	void setNoVIP(int);
+	int getNoVIP();
+
+	void getAvailableCooksNo(int& VIP,int& vegan,int& normal); // by Amer and Abdelghani
+	Cook* getFirstAvailableCook(ORD_TYPE);
 };
 
 #endif

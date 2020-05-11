@@ -1,0 +1,2 @@
+Orders: 0[Norm:0, Veg:0, VIP:0]
+cooks:6[Norm:3, Veg:2, VIP:1,  injured:-842150451]

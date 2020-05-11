@@ -1,78 +1,72 @@
-﻿Build started 4/13/2020 12:41:24 AM.
-     1>Project "C:\Users\HPP\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Restaurant.vcxproj" on node 2 (build target(s)).
-       Project file contains ToolsVersion="14.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
-     1>InitializeBuildStatus:
-         Creating "Debug\Restaurant.unsuccessfulbuild" because "AlwaysCreate" was specified.
-       ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Rest\Restaurant.cpp
-         Restaurant.cpp
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(325): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(356): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(410): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdlib.h(867) : see declaration of 'itoa'
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(599): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(337): warning C4715: 'Restaurant::Getordertype' : not all control paths return a value
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\generic_ds\queue.h(203): warning C4715: 'Queue<Order *>::dequeueWithOrderID' : not all control paths return a value
-         All outputs are up-to-date.
-       ManifestResourceCompile:
-         All outputs are up-to-date.
-       Link:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\HPP\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Debug\Restaurant.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Restaurant.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\HPP\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Debug\Restaurant.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\HPP\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Debug\Restaurant.lib" /MACHINE:X86 Debug\Restaurant.exe.embed.manifest.res
-         Debug\Cancellation_event.obj
-         Debug\CMUgraphics.obj
-         Debug\colors.obj
-         Debug\image.obj
-         Debug\jpegload.obj
-         Debug\jcomapi.obj
-         Debug\jcparam.obj
-         Debug\jdapimin.obj
-         Debug\jdapistd.obj
-         Debug\jdatasrc.obj
-         Debug\jdcoefct.obj
-         Debug\jdcolor.obj
-         Debug\jddctmgr.obj
-         Debug\jdhuff.obj
-         Debug\jdinput.obj
-         Debug\jdmainct.obj
-         Debug\jdmarker.obj
-         Debug\jdmaster.obj
-         Debug\jdmerge.obj
-         Debug\jdphuff.obj
-         Debug\jdpostct.obj
-         Debug\jdsample.obj
-         Debug\jdtrans.obj
-         Debug\jerror.obj
-         Debug\jidctflt.obj
-         Debug\jidctfst.obj
-         Debug\jidctint.obj
-         Debug\jidctred.obj
-         Debug\jmemmgr.obj
-         Debug\jmemnobs.obj
-         Debug\jquant1.obj
-         Debug\jquant2.obj
-         Debug\jutils.obj
-         Debug\keyqueue.obj
-         Debug\mousequeue.obj
-         Debug\windowinput.obj
-         Debug\Demo_Main.obj
-         Debug\Event.obj
-         Debug\ArrivalEvent.obj
-         Debug\GUI.obj
-         Debug\PromotionEvent.obj
-         Debug\Cook.obj
-         Debug\Order.obj
-         Debug\Restaurant.obj
-       Manifest:
-         c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\Restaurant.exe.embed.manifest" /manifest Debug\Restaurant.exe.intermediate.manifest
-         All outputs are up-to-date.
-       LinkEmbedManifest:
-         All outputs are up-to-date.
-         Restaurant.vcxproj -> C:\Users\HPP\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Debug\Restaurant.exe
-       FinalizeBuildStatus:
-         Deleting file "Debug\Restaurant.unsuccessfulbuild".
-         Touching "Debug\Restaurant.lastbuildstate".
-     1>Done Building Project "C:\Users\HPP\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Restaurant.vcxproj" (build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:04.68
+﻿  Cancellation_event.cpp
+  CMUgraphics.cpp
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(751,3): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(1164,2): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(1171,2): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(1202,2): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(1210,2): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\CMUgraphics.cpp(1357,23): warning C4018: '>': signed/unsigned mismatch
+  colors.cpp
+  image.cpp
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\image.cpp(115,29): warning C4018: '<': signed/unsigned mismatch
+  keyqueue.cpp
+  mousequeue.cpp
+  windowinput.cpp
+  Demo_Main.cpp
+  Event.cpp
+  ArrivalEvent.cpp
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\Events\ArrivalEvent.cpp(32,18): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  GUI.cpp
+  PromotionEvent.cpp
+  Cook.cpp
+  Order.cpp
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\Rest\Order.cpp(64,9): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\Rest\Order.cpp(100,33): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\Rest\Order.cpp(131,25): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+  Restaurant.cpp
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(358,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(391,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(445,3): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(671,37): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(686,8): warning C4101: 'temp': unreferenced local variable
+  Generating Code...
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\Rest\Restaurant.cpp(372): warning C4715: 'Restaurant::Getordertype': not all control paths return a value
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\Generic_DS\Queue.h(203): warning C4715: 'Queue<Order *>::dequeueWithOrderID': not all control paths return a value
+  jpegload.c
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\jpegload.c(23,12): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  jcomapi.c
+  jcparam.c
+  jdapimin.c
+  jdapistd.c
+  jdatasrc.c
+  jdcoefct.c
+  jdcolor.c
+  jddctmgr.c
+  jdhuff.c
+  jdinput.c
+  jdmainct.c
+  jdmarker.c
+  jdmaster.c
+  jdmerge.c
+  jdphuff.c
+  jdpostct.c
+  jdsample.c
+  jdtrans.c
+  jerror.c
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\jpeg\jerror.c(169,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\jpeg\jerror.c(171,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  Generating Code...
+  Compiling...
+  jidctflt.c
+  jidctfst.c
+  jidctint.c
+  jidctred.c
+  jmemmgr.c
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\jpeg\jmemmgr.c(1103,19): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Restaurant\CMUgraphicsLib\jpeg\jmemmgr.c(1106,11): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  jmemnobs.c
+  jquant1.c
+  jquant2.c
+  jutils.c
+  Generating Code...
+  Restaurant.vcxproj -> C:\Users\k\Documents\GitHub\phase 2\CMP102_Porj_code_Spring2020\Debug\Restaurant.exe

@@ -18,129 +18,146 @@ void Restaurant::RunSimulation()
 	pGUI = new GUI;
 	PROG_MODE	mode = pGUI->getGUIMode();
 	LoadFile();
-	Ofile.open("output.txt",ios::out); //initialization of outputfile
+	Ofile.open("output.txt", ios::out); //initialization of outputfile
 	//Initialize all count variables by zero, ex NoNormal,NoVegan and so on   By Omar AbdelGhani
-	NoNormal=0; NoVegan=0;   NoVIP=0;
-	WaitingTime=0;  ServiceTime=0;
-	NoUrgent=0;  NoAutoPromoted=0;
-	
+	NoNormal = 0; NoVegan = 0;   NoVIP = 0;
+	WaitingTime = 0;  ServiceTime = 0;
+	NoUrgent = 0;  NoAutoPromoted = 0;
+
 	LinkedList<Order*>Inservicelist1;
 	int i = 1;
 	string ts;
-	string Nn,Nv,Ng;
+	string Nn, Nv, Ng;
 	int x = 1; // a variable to know after 5 time steps
 	string v;// to count the number of waiting  vip orders
 	string ve;// to count the number of waiting  vegan orders
-	string n ;// to count the number of waiting  normal orders
+	string n;// to count the number of waiting  normal orders
 	//bool first=true;
 	switch (mode)	//Add a function for each mode in next phases
 	{
-		
+
 	case MODE_INTR:
-		 // try changing to one
-		
-		while (!EventsQueue.isEmpty()|| Inservicelist.getHead() ||!normalorder.isEmpty() || !VEGANOrder.isEmpty() || !VIPorder.isEmpty()) {
-			 //for(int i=0;i<20;i++) kanet kda abl ma a3adel
-			if (!EventsQueue.isEmpty()){
-			while (EventsQueue.getPtrToFront()->getItem()->getEventTime() == i) {//while the event time=the current time step
-				
-				ArrivalEvent* p = dynamic_cast<ArrivalEvent*>(EventsQueue.getPtrToFront()->getItem());
-				Cancellation_event*q=dynamic_cast<Cancellation_event*>(EventsQueue.getPtrToFront()->getItem());
-				if (p) {    //if it is an arrival event
-					p->Execute(this); //generate an order and add it to the appropriate waiting list
-					
-				}
-				else if (q) {    //if it is a cancellation event
-					if (!(normalorder.isEmpty())&&normalorder.Exists(q->getOrderID())) {
-						// delete the corresponding normal order if found
-						q->Execute(this);
+		// try changing to one
+
+		while (!EventsQueue.isEmpty() || Inservicelist.getHead() || !normalorder.isEmpty() || !VEGANOrder.isEmpty() || !VIPorder.isEmpty()) {
+
+			if (!EventsQueue.isEmpty()) {
+				while (EventsQueue.getPtrToFront()->getItem()->getEventTime() == i) {//while the event time=the current time step
+
+					ArrivalEvent* p = dynamic_cast<ArrivalEvent*>(EventsQueue.getPtrToFront()->getItem());
+					Cancellation_event* q = dynamic_cast<Cancellation_event*>(EventsQueue.getPtrToFront()->getItem());
+					if (p) {    //if it is an arrival event
+						p->Execute(this); //generate an order and add it to the appropriate waiting list
+
 					}
+					else if (q) {    //if it is a cancellation event
+						if (!(normalorder.isEmpty()) && normalorder.Exists(q->getOrderID())) {
+							// delete the corresponding normal order if found
+							q->Execute(this);
+						}
+					}
+					Event* u = EventsQueue.getPtrToFront()->getItem();
+
+					EventsQueue.dequeue(u);// get the next event
+					if (!EventsQueue.getPtrToFront())
+						break;
+
 				}
-				Event* u = EventsQueue.getPtrToFront()->getItem();
-				
-				EventsQueue.dequeue(u);// get the next event
-				if(!EventsQueue.getPtrToFront())
-					break;
 			}
-			}
-			
-			
-//		string p=itos(i);
-			//pGUI->PrintMessage("click to display the output of next time step");
-			
-			
-			
-					if (!VIPorder.isEmpty()){
-			Order* Q = VIPorder.getPtrToFront()->getItem();
-			Inservicelist.InsertEnd(Q);
-			VIPorder.dequeue(Q);                            //each time step pick one order from each type and add it to inservice list
-			                            // i used inserend so that in finished list the first order is the first order putted in inservice list
-			}
-			if (!VEGANOrder.isEmpty()){
-			Order* t = VEGANOrder.getPtrToFront()->getItem();
-			Inservicelist.InsertEnd(t);
-			VEGANOrder.dequeue(t);
-			
-			}
-			if (!normalorder.isEmpty()){
-			Order* w = normalorder.getPtrToFront()->getItem();
-			Inservicelist.InsertEnd(w);
-			normalorder.dequeue(w);
-			
-			}
-			
-								if ((i==(5 * x))) { //each 5 time steps pick one order from each type from inservice list to finished list
-			if(Inservicelist.getHead()){
 
-				Order* e = Inservicelist.getHead()->getItem(); //the first order putted in inservice list which is a vip order
-				Finishedlist.InsertEnd(e);
-				Inservicelist.DeleteFirst(); //pick this order from in service list
-				 //put it in finished list
-			}if(Inservicelist.getHead()){
-				Order* a = Inservicelist.getHead()->getItem();
-				Finishedlist.InsertEnd(a);
-				Inservicelist.DeleteFirst();
-			}if(Inservicelist.getHead()){
 
-				Order* b = Inservicelist.getHead()->getItem();
-				Finishedlist.InsertEnd(b);
-				Inservicelist.DeleteFirst();
-			}
-				
-			
-				//so that we enter the if second time after 5 time steps when i = 5*x=5*2=10 and so on
-			
-			this->FillDrawingList();
-			pGUI->UpdateInterface();
-			pGUI->ResetDrawingList();
-				x++;
-			
-				//so that we enter the if second time after 5 time steps when i = 5*x=5*2=10 and so on
-								}
-			this->FillDrawingList();
-			pGUI->UpdateInterface();
-			pGUI->ResetDrawingList();
-			n=to_string(long double(this->WaitNormal()));
-			ve=to_string(long double(this->WaitVegan()));
-			v=to_string(long double(this->WaitVIP()));
-			ts=to_string((long double(i)));
-			Nn=to_string(long double(N));
-			Nv=to_string(long double(V));
-			Ng=to_string(long double((G)));
-			pGUI->PrintMessage("Ts: "+ts); //here you should also print i (timestep)
-			pGUI->PrintMessage("No. of Available Normal Cooks: "+Nn,670);
-			pGUI->PrintMessage("No. of Available Vegan Cooks: "+Ng,690);
-			pGUI->PrintMessage("No. of Available VIP Cooks: "+Nv,710);
-			pGUI->PrintMessage("No of Waiting Normal Orders: "+n,730);
-			pGUI->PrintMessage("No of Waiting Vegan Orders: "+ve,750);
-			pGUI->PrintMessage("No of Waiting VIP Orders: "+v,770);
-			
-			
-				pGUI->waitForClick();
-				i++;		
-				//first=false;		
-		}
+			//		string p=itos(i);
+						//pGUI->PrintMessage("click to display the output of next time step");
+
+
+				//*************** OLD PHASE ONE ORDER HANDLING DELETE WHEN READY ***************  -Amer
+
+
+			//if (!VIPorder.isEmpty()) {
+			//	Order* Q = VIPorder.getPtrToFront()->getItem();
+			//	Inservicelist.InsertEnd(Q);
+			//	VIPorder.dequeue(Q);                            //each time step pick one order from each type and add it to inservice list
+			//								// i used insert end so that in finished list the first order is the first order putted in inservice list
+
+			//}
+			//if (!VEGANOrder.isEmpty()) {
+			//	Order* t = VEGANOrder.getPtrToFront()->getItem();
+			//	Inservicelist.InsertEnd(t);
+			//	VEGANOrder.dequeue(t);
+
+			//}
+			//if (!normalorder.isEmpty()) {
+			//	Order* w = normalorder.getPtrToFront()->getItem();
+			//	Inservicelist.InsertEnd(w);
+			//	normalorder.dequeue(w);
+
+			//}
+			//cout << " GOT THIS FAR BEFORE CRASHING"; // FOR DEBUGGING PURPOSES ONLY REMOVE BEFORE SUBMISSION -Amer
 		
+
+			//if ((i == (5 * x))) { //each 5 time steps pick one order from each type from inservice list to finished list
+			//	if (Inservicelist.getHead()) {
+
+			//		Order* e = Inservicelist.getHead()->getItem(); //the first order putted in inservice list which is a vip order
+			//		Finishedlist.InsertEnd(e);
+			//		Inservicelist.DeleteFirst(); //pick this order from in service list
+			//		 //put it in finished list
+			//	}if (Inservicelist.getHead()) {
+			//		Order* a = Inservicelist.getHead()->getItem();
+			//		Finishedlist.InsertEnd(a);
+			//		Inservicelist.DeleteFirst();
+			//	}if (Inservicelist.getHead()) {
+
+			//		Order* b = Inservicelist.getHead()->getItem();
+			//		Finishedlist.InsertEnd(b);
+			//		Inservicelist.DeleteFirst();
+			//	}
+
+
+			//	//so that we enter the if second time after 5 time steps when i = 5*x=5*2=10 and so on
+
+			//	this->FillDrawingList();
+			//	pGUI->UpdateInterface();
+			//	pGUI->ResetDrawingList();
+			//	x++;
+
+			//	//so that we enter the if second time after 5 time steps when i = 5*x=5*2=10 and so on
+			//}
+
+			//********** BEGIN NEW ORDER HANDLING CODE FOR PHASE 2 **********
+			cout << " GOT THIS FAR BEFORE CRASHING"; // FOR DEBUGGING PURPOSES ONLY REMOVE BEFORE SUBMISSION -Amer
+
+			//Start Processing VIP orders first
+			if (VIPorder.getPtrToFront()) { // if we have a vip order that is up for serving
+				Order* currentOrder = VIPorder.getPtrToFront()->getItem();
+							//UNFINISHED AMER
+
+
+			}
+			this->FillDrawingList();
+			pGUI->UpdateInterface();
+			pGUI->ResetDrawingList();
+			n = to_string(long double(this->WaitNormal()));
+			ve = to_string(long double(this->WaitVegan()));
+			v = to_string(long double(this->WaitVIP()));
+			ts = to_string((long double(i)));
+			Nn = to_string(long double(N));
+			Nv = to_string(long double(V));
+			Ng = to_string(long double((G)));
+			pGUI->PrintMessage("Ts: " + ts); //here you should also print i (timestep)
+			pGUI->PrintMessage("No. of Available Normal Cooks: " + Nn, 670);
+			pGUI->PrintMessage("No. of Available Vegan Cooks: " + Ng, 690);
+			pGUI->PrintMessage("No. of Available VIP Cooks: " + Nv, 710);
+			pGUI->PrintMessage("No of Waiting Normal Orders: " + n, 730);
+			pGUI->PrintMessage("No of Waiting Vegan Orders: " + ve, 750);
+			pGUI->PrintMessage("No of Waiting VIP Orders: " + v, 770);
+
+
+			pGUI->waitForClick();
+			i++; // increment time
+			//first=false;		
+		}
+
 
 		break;
 	case MODE_STEP:
@@ -157,10 +174,10 @@ void Restaurant::RunSimulation()
 	pGUI->PrintMessage("Finished,click to continue");
 	pGUI->waitForClick();
 
-	Ofile<<"Orders: "<<NoNormal+NoVegan+NoVIP<<"[Norm:"<<NoNormal<<", Veg:"<<NoVegan<<", VIP:"<<NoVIP<<"]"<<endl;
-	Ofile<<"cooks:"<< V+N+G<<"[Norm:"<<N<<", Veg:"<<G<<", VIP:"<<V<<",  injured:"<<NoInj<<"]"<<endl;
-	Ofile<<"Avg Wait = "<<WaitingTime/(NoNormal+NoVegan+NoVIP)<<",  Avg Serv = "<<ServiceTime/(NoNormal+NoVegan+NoVIP)<<endl;
-	Ofile<<"Urgent orders: "<<NoUrgent<<",   Auto-promoted: "<<NoAutoPromoted/(NoNormal+NoVegan+NoVIP)*100<<"%"<<endl;
+	Ofile << "Orders: " << NoNormal + NoVegan + NoVIP << "[Norm:" << NoNormal << ", Veg:" << NoVegan << ", VIP:" << NoVIP << "]" << endl;
+	Ofile << "cooks:" << V + N + G << "[Norm:" << N << ", Veg:" << G << ", VIP:" << V << ",  injured:" << NoInj << "]" << endl;
+	Ofile << "Avg Wait = " << WaitingTime / (NoNormal + NoVegan + NoVIP) << ",  Avg Serv = " << ServiceTime / (NoNormal + NoVegan + NoVIP) << endl;
+	Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: " << NoAutoPromoted / (NoNormal + NoVegan + NoVIP) * 100 << "%" << endl;
 }
 
 
@@ -200,58 +217,61 @@ void Restaurant::FillDrawingList()
 	int y;
 	int h;
 	int w;
-	
-	if(!VIPorder.isEmpty()){
-	 x=VIPorder.getPtrToFront()->getItem()->GetID();
-	 do{// this 4 while loops to add all orders to the drawing list
 
-		pGUI->AddToDrawingList(VIPorder.getPtrToFront()->getItem());
-		Order* r = VIPorder.getPtrToFront()->getItem();
-		VIPorder.enqueue(r,VIPorder.getPtrToFront()->getPriority());
-		VIPorder.dequeue(r);
-		v++; //here you should print v
-	 }while (!(VIPorder.isEmpty())&&!(x==VIPorder.getPtrToFront()->getItem()->GetID()));}
-	if(!VEGANOrder.isEmpty()){
-	 y=VEGANOrder.getPtrToFront()->getItem()->GetID();
-	do {
-		pGUI->AddToDrawingList(VEGANOrder.getPtrToFront()->getItem());
-		Order* r = VEGANOrder.getPtrToFront()->getItem();
-		VEGANOrder.enqueue(r);
-		VEGANOrder.dequeue(r);
-		ve++;//here you should print ve
-	}while (!(VEGANOrder.isEmpty())&&!(y==VEGANOrder.getPtrToFront()->getItem()->GetID()));}
-	if(!normalorder.isEmpty()){
-	 z=normalorder.getPtrToFront()->getItem()->GetID();
-	do {
-		pGUI->AddToDrawingList(normalorder.getPtrToFront()->getItem());
-		Order* r = normalorder.getPtrToFront()->getItem();
-		normalorder.enqueue(r);
-		normalorder.dequeue(r);
-		n++;//here you should print n
-	}while (!(normalorder.isEmpty())&&!(z==normalorder.getPtrToFront()->getItem()->GetID()));}
-		//if(Inservicelist.getHead())
-		if(Inservicelist.getHead()){
-			h=Inservicelist.getHead()->getItem()->GetID();
-	do {
-		Inservicelist.getHead()->getItem()->setStatus(SRV);
-		pGUI->AddToDrawingList(Inservicelist.getHead()->getItem());
-		Order *r=Inservicelist.getHead()->getItem();
-		Inservicelist.InsertEnd(r);
-		Inservicelist.DeleteFirst();
-		
-	}while (!(h==Inservicelist.getHead()->getItem()->GetID()));}
-				if(Finishedlist.getHead()){
-			w=Finishedlist.getHead()->getItem()->GetID();
-	do {
-		Finishedlist.getHead()->getItem()->setStatus(DONE);
-		pGUI->AddToDrawingList(Finishedlist.getHead()->getItem());
-		Order *r=Finishedlist.getHead()->getItem();
-		Finishedlist.InsertEnd(r);
-		Finishedlist.DeleteFirst();
-		
+	if (!VIPorder.isEmpty()) {
+		x = VIPorder.getPtrToFront()->getItem()->GetID();
+		do {// this 4 while loops to add all orders to the drawing list
+
+			pGUI->AddToDrawingList(VIPorder.getPtrToFront()->getItem());
+			Order* r = VIPorder.getPtrToFront()->getItem();
+			VIPorder.enqueue(r, VIPorder.getPtrToFront()->getPriority());
+			VIPorder.dequeue(r);
+			v++; //here you should print v
+		} while (!(VIPorder.isEmpty()) && !(x == VIPorder.getPtrToFront()->getItem()->GetID()));
 	}
-	while (!(w==Finishedlist.getHead()->getItem()->GetID()));
-				}
+	if (!VEGANOrder.isEmpty()) {
+		y = VEGANOrder.getPtrToFront()->getItem()->GetID();
+		do {
+			pGUI->AddToDrawingList(VEGANOrder.getPtrToFront()->getItem());
+			Order* r = VEGANOrder.getPtrToFront()->getItem();
+			VEGANOrder.enqueue(r);
+			VEGANOrder.dequeue(r);
+			ve++;//here you should print ve
+		} while (!(VEGANOrder.isEmpty()) && !(y == VEGANOrder.getPtrToFront()->getItem()->GetID()));
+	}
+	if (!normalorder.isEmpty()) {
+		z = normalorder.getPtrToFront()->getItem()->GetID();
+		do {
+			pGUI->AddToDrawingList(normalorder.getPtrToFront()->getItem());
+			Order* r = normalorder.getPtrToFront()->getItem();
+			normalorder.enqueue(r);
+			normalorder.dequeue(r);
+			n++;//here you should print n
+		} while (!(normalorder.isEmpty()) && !(z == normalorder.getPtrToFront()->getItem()->GetID()));
+	}
+	//if(Inservicelist.getHead())
+	if (Inservicelist.getHead()) {
+		h = Inservicelist.getHead()->getItem()->GetID();
+		do {
+			Inservicelist.getHead()->getItem()->setStatus(SRV);
+			pGUI->AddToDrawingList(Inservicelist.getHead()->getItem());
+			Order* r = Inservicelist.getHead()->getItem();
+			Inservicelist.InsertEnd(r);
+			Inservicelist.DeleteFirst();
+
+		} while (!(h == Inservicelist.getHead()->getItem()->GetID()));
+	}
+	if (Finishedlist.getHead()) {
+		w = Finishedlist.getHead()->getItem()->GetID();
+		do {
+			Finishedlist.getHead()->getItem()->setStatus(DONE);
+			pGUI->AddToDrawingList(Finishedlist.getHead()->getItem());
+			Order* r = Finishedlist.getHead()->getItem();
+			Finishedlist.InsertEnd(r);
+			Finishedlist.DeleteFirst();
+
+		} while (!(w == Finishedlist.getHead()->getItem()->GetID()));
+	}
 	/*
 	while (Finishedlist.DeleteNode(Finishedlist.getHead()->getItem())) {
 		Finishedlist.getHead()->getItem()->setStatus(DONE);
@@ -266,42 +286,39 @@ void Restaurant::FillDrawingList()
 	int first;
 	int current;
 	Cook* curr;
-	first=NORMALcook.getHead()->getItem()->GetID();
-	do{
-		curr=NORMALcook.getHead()->getItem();
+	first = NORMALcook.getHead()->getItem()->GetID();
+	do {
+		curr = NORMALcook.getHead()->getItem();
 		pGUI->AddToDrawingList(curr);
 		NORMALcook.InsertEnd(curr);
 		NORMALcook.DeleteFirst();
-		curr=NORMALcook.getHead()->getItem();
-		current=curr->GetID();
-	}
-	while(first!=current);
+		curr = NORMALcook.getHead()->getItem();
+		current = curr->GetID();
+	} while (first != current);
 
-	first=VEGANcook.getHead()->getItem()->GetID();
-	do{
-		curr=VEGANcook.getHead()->getItem();
+	first = VEGANcook.getHead()->getItem()->GetID();
+	do {
+		curr = VEGANcook.getHead()->getItem();
 		pGUI->AddToDrawingList(curr);
 		VEGANcook.InsertEnd(curr);
 		VEGANcook.DeleteFirst();
-		curr=VEGANcook.getHead()->getItem();
-		current=curr->GetID();
-	}
-	while(first!=current);
+		curr = VEGANcook.getHead()->getItem();
+		current = curr->GetID();
+	} while (first != current);
 
-	first=VIPcook.getHead()->getItem()->GetID();
-	do{
-		curr=VIPcook.getHead()->getItem();
+	first = VIPcook.getHead()->getItem()->GetID();
+	do {
+		curr = VIPcook.getHead()->getItem();
 		pGUI->AddToDrawingList(curr);
 		VIPcook.InsertEnd(curr);
 		VIPcook.DeleteFirst();
-		curr=VIPcook.getHead()->getItem();
-		current=curr->GetID();
-	}
-	while(first!=current);
-		
+		curr = VIPcook.getHead()->getItem();
+		current = curr->GetID();
+	} while (first != current);
 
-				
-			
+
+
+
 }
 
 
@@ -333,6 +350,8 @@ void Restaurant::AddNormalToQueue(Order* po)
 void Restaurant::AddToVIPArray(Order* ord)
 {
 	VIPorder.enqueue(ord, ord->GetPriority());
+	setNoVIP(getNoVIP() + 1);
+
 }
 
 ORD_TYPE Restaurant::Getordertype(char ordtype)
@@ -473,86 +492,86 @@ void Restaurant::AddtoDemoQueue(Order* pOrd)
 //By OmarAbdelGhani
 
 void Restaurant::LoadFile() {
-	string name=pGUI->GetString();
+	string name = pGUI->GetString();
 	ifstream IF(name, ios::in);
 	//IF.open("input.txt",ios::in);
-	if(IF.is_open()){
-	IF >> N; //initialize No. of Normal cooks
-	for (int i=1;i<=N;i++){
-		Cook* c=new Cook;
-		c->setType(TYPE_NRM);
-		NORMALcook.InsertBeg(c);
-		NORMALcook.getHead()->getItem()->setID(i);
-	}
-	IF >> G; // Same for vegan
-		for (int i=1;i<=G;i++){
-		Cook* c=new Cook;
-		c->setType(TYPE_VGAN);
-		VEGANcook.InsertBeg(c);
-		VEGANcook.getHead()->getItem()->setID(i);
-	}
-	IF >> V; // and for VIP
-		for (int i=1;i<=V;i++){
-		Cook* c=new Cook;
-		c->setType(TYPE_VIP);
-		VIPcook.InsertBeg(c);
-		VIPcook.getHead()->getItem()->setID(i);
-	}
-
-	IF >> SN_min>>SN_max;
-	IF >> SG_min>>SG_max; 
-	IF >> SV_min>>SV_max; 
-	//Initialization of min and max speed of each type
-
-	IF >> BO; //Initialize No. of orders before break
-	IF >> BN_min>>BN_max; 
-	IF >> BG_min>>BG_max; 
-	IF >> BV_min>>BV_max; 
-	//Initialization of min and max BreaktTime of each type
-
-	IF >> AutoP; //Initialize NO. of time steps befor auto promotion
-
-	IF >> M; //Initialize No. of events
-
-	//Looping until i=m to initialize all events
-	char Etype; // for the type of event
-	int eTime; //time of arrival
-	int Id;   //Id of Order
-	char Otype; //type of order
-	ORD_TYPE T; //type of order in enum format
-	int Size; // Size of Order
-	double Money; // total money of order
-	for (int i = 0; i < M; i++) {
-		IF >> Etype;
-
-		if (Etype == 'R') {
-			IF >> Otype;
-			T = Getordertype(Otype);
-			IF >> eTime;
-			IF >> Id;
-			IF >> Size;
-			IF >> Money;
-			ArrivalEvent* R = new ArrivalEvent(eTime, Id, Size, Money, T);
-			this->AddEvents(R);
+	if (IF.is_open()) {
+		IF >> N; //initialize No. of Normal cooks
+		for (int i = 1; i <= N; i++) {
+			Cook* c = new Cook;
+			c->setType(TYPE_NRM);
+			NORMALcook.InsertBeg(c);
+			NORMALcook.getHead()->getItem()->setID(i);
 		}
-		else if (Etype == 'X') {
-			IF >> eTime;
-			IF >> Id;
-			Cancellation_event* X = new Cancellation_event(eTime, Id);
-			this->AddEvents(X);
+		IF >> G; // Same for vegan
+		for (int i = 1; i <= G; i++) {
+			Cook* c = new Cook;
+			c->setType(TYPE_VGAN);
+			VEGANcook.InsertBeg(c);
+			VEGANcook.getHead()->getItem()->setID(i);
 		}
-		else if (Etype == 'P') {
-			IF >> eTime;
-			IF >> Id;
-			IF >> Money;
-			PromotionEvent* P = new PromotionEvent(eTime, Id, Money);
-			this->AddEvents(P);
-
-
+		IF >> V; // and for VIP
+		for (int i = 1; i <= V; i++) {
+			Cook* c = new Cook;
+			c->setType(TYPE_VIP);
+			VIPcook.InsertBeg(c);
+			VIPcook.getHead()->getItem()->setID(i);
 		}
 
+		IF >> SN_min >> SN_max;
+		IF >> SG_min >> SG_max;
+		IF >> SV_min >> SV_max;
+		//Initialization of min and max speed of each type
 
-	}
+		IF >> BO; //Initialize No. of orders before break
+		IF >> BN_min >> BN_max;
+		IF >> BG_min >> BG_max;
+		IF >> BV_min >> BV_max;
+		//Initialization of min and max BreaktTime of each type
+
+		IF >> AutoP; //Initialize NO. of time steps befor auto promotion
+
+		IF >> M; //Initialize No. of events
+
+		//Looping until i=m to initialize all events
+		char Etype; // for the type of event
+		int eTime; //time of arrival
+		int Id;   //Id of Order
+		char Otype; //type of order
+		ORD_TYPE T; //type of order in enum format
+		int Size; // Size of Order
+		double Money; // total money of order
+		for (int i = 0; i < M; i++) {
+			IF >> Etype;
+
+			if (Etype == 'R') {
+				IF >> Otype;
+				T = Getordertype(Otype);
+				IF >> eTime;
+				IF >> Id;
+				IF >> Size;
+				IF >> Money;
+				ArrivalEvent* R = new ArrivalEvent(eTime, Id, Size, Money, T);
+				this->AddEvents(R);
+			}
+			else if (Etype == 'X') {
+				IF >> eTime;
+				IF >> Id;
+				Cancellation_event* X = new Cancellation_event(eTime, Id);
+				this->AddEvents(X);
+			}
+			else if (Etype == 'P') {
+				IF >> eTime;
+				IF >> Id;
+				IF >> Money;
+				PromotionEvent* P = new PromotionEvent(eTime, Id, Money);
+				this->AddEvents(P);
+
+
+			}
+
+
+		}
 
 	}
 
@@ -564,121 +583,212 @@ Order Restaurant::CancelById(int id) {
 	return (*O);
 
 }
+void Restaurant::setNoNormal(int number) {
+	if (number < 0) {
+		NoNormal = number * -1;
+	}
+	else {
+		NoNormal = number;
+	}
 
-int Restaurant::WaitNormal(){
-	if(normalorder.isEmpty())
+}
+void Restaurant::setNoVegan(int number) {
+	if (number < 0) {
+		NoVegan = number * -1;
+	}
+	else {
+		NoVegan = number;
+	}
+
+}
+void Restaurant::setNoVIP(int number) {
+	if (number < 0) {
+		NoVIP = number * -1;
+	}
+	else {
+		NoVIP = number;
+	}
+
+}
+int Restaurant::getNoNormal() {
+	return NoNormal;
+}
+int Restaurant::getNoVegan() {
+	return NoVegan;
+}
+int Restaurant::getNoVIP() {
+	return NoVIP;
+}
+
+int Restaurant::WaitNormal() {
+	if (normalorder.isEmpty())
 		return 0;
-	int count=0;
-	int first=(normalorder.getPtrToFront()->getItem()->GetID());
+	int count = 0;
+	int first = (normalorder.getPtrToFront()->getItem()->GetID());
 	int curr;
-	Order *d;
-	do{
+	Order* d;
+	do {
 		normalorder.dequeue(d);
 		normalorder.enqueue(d);
 		count++;
-		curr=(normalorder.getPtrToFront()->getItem()->GetID());
-	}
-	while(first!=curr);
+		curr = (normalorder.getPtrToFront()->getItem()->GetID());
+	} while (first != curr);
 	return count;
 }
 
-int Restaurant::WaitVegan(){
-	if(VEGANOrder.isEmpty())
+int Restaurant::WaitVegan() {
+	if (VEGANOrder.isEmpty())
 		return 0;
-	int count=0;
-	int first=(VEGANOrder.getPtrToFront()->getItem()->GetID());
+	int count = 0;
+	int first = (VEGANOrder.getPtrToFront()->getItem()->GetID());
 	int curr;
-	Order *d;
-	do{
+	Order* d;
+	do {
 		VEGANOrder.dequeue(d);
 		VEGANOrder.enqueue(d);
 		count++;
-		curr=(VEGANOrder.getPtrToFront()->getItem()->GetID());
-	}
-	while(first!=curr);
+		curr = (VEGANOrder.getPtrToFront()->getItem()->GetID());
+	} while (first != curr);
 	return count;
 }
 
 
-int Restaurant::WaitVIP(){
-	if(VIPorder.isEmpty())
+int Restaurant::WaitVIP() {
+	if (VIPorder.isEmpty())
 		return 0;
-	int count=0;
-	int first=(VIPorder.getPtrToFront()->getItem()->GetID());
+	int count = 0;
+	int first = (VIPorder.getPtrToFront()->getItem()->GetID());
 	int curr;
-	Order *d;
-	do{
+	Order* d;
+	do {
 		VIPorder.dequeue(d);
-		VIPorder.enqueue(d,d->GetPriority());
+		VIPorder.enqueue(d, d->GetPriority());
 		count++;
-		curr=(VIPorder.getPtrToFront()->getItem()->GetID());
-	}
-	while(first!=curr);
+		curr = (VIPorder.getPtrToFront()->getItem()->GetID());
+	} while (first != curr);
 	return count;
 }
 
 
-void  Restaurant::InitializeNormal(){
-	if(!NORMALcook.getHead())
-		return ;
+void  Restaurant::InitializeNormal() {
+	if (!NORMALcook.getHead())
+		return;
 
-	int first=1;
+	int first = 1;
 	int curr;
-	Cook* CurrCook=NORMALcook.getHead()->getItem();
+	Cook* CurrCook = NORMALcook.getHead()->getItem();
 	Cook* temp;
-	do{
-		CurrCook->SetBreak(BN_min,BN_max);
-		CurrCook->SetSpeed(SN_min,SN_max);
+	do {
+		CurrCook->SetBreak(BN_min, BN_max);
+		CurrCook->SetSpeed(SN_min, SN_max);
 		NORMALcook.InsertEnd(CurrCook);
 		NORMALcook.DeleteFirst();
-		CurrCook=NORMALcook.getHead()->getItem();
-		curr=(NORMALcook.getHead()->getItem()->GetID());
+		CurrCook = NORMALcook.getHead()->getItem();
+		curr = (NORMALcook.getHead()->getItem()->GetID());
 		//To iterate on all the list, we take first item and initialize it, then add to to the end of the list
 		// then delete it from the beggining and so on untill the list returns to original
 		// we add to the end first to create a new node in the memory as if we delete it first, then the data wouldnot exist after deletion
 		// initialize first with the ID of first cook, which is 1, then we compare it with the id of the next cook. When the last cook is reached
 		// the id of the next cook will be 1, so we know we finished iteration
-	}
-	while(first!=curr);
+	} while (first != curr);
 }
-void Restaurant::InitializeVIP(){
-	if(!VIPcook.getHead())
-		return ;
+void Restaurant::InitializeVIP() {
+	if (!VIPcook.getHead())
+		return;
 
-	int first=1;
+	int first = 1;
 	int curr;
-	Cook* CurrCook=VIPcook.getHead()->getItem();
-	do{
-		CurrCook->SetBreak(BV_min,BV_max);
-		CurrCook->SetSpeed(SV_min,SV_max);
+	Cook* CurrCook = VIPcook.getHead()->getItem();
+	do {
+		CurrCook->SetBreak(BV_min, BV_max);
+		CurrCook->SetSpeed(SV_min, SV_max);
 		VIPcook.InsertEnd(CurrCook);
 		VIPcook.DeleteFirst();
-		CurrCook=VIPcook.getHead()->getItem();
-		curr=(VIPcook.getHead()->getItem()->GetID());
-	}
-	while(first!=curr);
+		CurrCook = VIPcook.getHead()->getItem();
+		curr = (VIPcook.getHead()->getItem()->GetID());
+	} while (first != curr);
 
 }
-	void Restaurant::InitializeVegan(){
-		if(!VEGANcook.getHead())
-		return ;
+void Restaurant::InitializeVegan() {
+	if (!VEGANcook.getHead())
+		return;
 
-	int first=1;
+	int first = 1;
 	int curr;
-	Cook* CurrCook=VEGANcook.getHead()->getItem();
-	do{
-		CurrCook->SetBreak(BG_min,BG_max);
-		CurrCook->SetSpeed(SG_min,SG_max);
+	Cook* CurrCook = VEGANcook.getHead()->getItem();
+	do {
+		CurrCook->SetBreak(BG_min, BG_max);
+		CurrCook->SetSpeed(SG_min, SG_max);
 		VEGANcook.InsertEnd(CurrCook);
 		VEGANcook.DeleteFirst();
-		CurrCook=VEGANcook.getHead()->getItem();
-		curr=(VEGANcook.getHead()->getItem()->GetID());
-	}
-	while(first!=curr);
+		CurrCook = VEGANcook.getHead()->getItem();
+		curr = (VEGANcook.getHead()->getItem()->GetID());
+	} while (first != curr);
 
+}
+void Restaurant::getAvailableCooksNo(int& VIP, int& vegan, int& normal) { // counts the number of available cooks of each type
+	int resultVIP = 0,resultVegan = 0, resultNormal = 0;
+	Node<Cook*>* trav = VIPcook.getHead(); // start by counting the available vip cooks
+	while (trav) {
+		if (trav->getItem()->getStatus() == true) {
+			resultVIP++;
+		}
+		trav = trav->getNext();
 	}
-
-	void Restaurant::OutputOrder(Order* O){
-		Ofile<<O->Get_finishtime()<<"\t"<<O->GetID()<<"\t"<<O->Get_Arrtime()<<"\t"<<O->Get_servetime()-O->Get_servetime()<<"\t"<<O->Get_servetime()<<endl;
-
+	trav = VEGANcook.getHead(); // then the function counts the available vegan cooks
+	while (trav) {
+		if (trav->getItem()->getStatus() == true) {
+			resultVegan++;
+		}
+		trav = trav->getNext();
 	}
+	trav = NORMALcook.getHead(); // then finally we count the available normal cooks
+	while (trav) {
+		if (trav->getItem()->getStatus() == true) {
+			resultNormal++;
+		}
+		trav = trav->getNext();
+	}
+	// and then we set the values
+	VIP = resultVIP;
+	vegan = resultVegan;
+	normal = resultNormal;
+
+}
+Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
+	if (orderType == TYPE_VIP) {
+		Node<Cook*>* readyCook = VIPcook.getHead();
+		while (readyCook && readyCook->getItem()->getStatus() == false) {
+			readyCook = readyCook->getNext();
+		}
+		if (!readyCook) {
+			return nullptr;
+		}
+		return readyCook->getItem();
+	}
+	else if (orderType == TYPE_VGAN) {
+		Node<Cook*>* readyCook = VEGANcook.getHead();
+		while (readyCook && readyCook->getItem()->getStatus() == false) {
+			readyCook = readyCook->getNext();
+		}
+		if (!readyCook) {
+			return nullptr;
+		}
+		return readyCook->getItem();
+	}
+	else {
+		Node<Cook*>* readyCook = NORMALcook.getHead();
+		while (readyCook && readyCook->getItem()->getStatus() == false) {
+			readyCook = readyCook->getNext();
+		}
+		if (!readyCook) {
+			return nullptr;
+		}
+		return readyCook->getItem();
+	}
+}
+
+void Restaurant::OutputOrder(Order* O) {
+	Ofile << O->Get_finishtime() << "\t" << O->GetID() << "\t" << O->Get_Arrtime() << "\t" << O->Get_servetime() - O->Get_servetime() << "\t" << O->Get_servetime() << endl;
+
+}
