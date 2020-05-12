@@ -153,6 +153,8 @@ public:
 
 	void getAvailableCooksNo(int& VIP,int& vegan,int& normal); // by Amer and Abdelghani
 	Cook* getFirstAvailableCook(ORD_TYPE);
+
+	void adjustCookCooldown();
 };
 
 #endif

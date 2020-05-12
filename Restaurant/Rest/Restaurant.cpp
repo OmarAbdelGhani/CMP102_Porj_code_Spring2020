@@ -25,7 +25,11 @@ void Restaurant::RunSimulation()
 	NoUrgent = 0;  NoAutoPromoted = 0;
 
 	LinkedList<Order*>Inservicelist1;
-	int i = 1;
+	 InitializeNormal();
+	 InitializeVIP();
+	 InitializeVegan();
+
+	TS = 1;
 	string ts;
 	string Nn, Nv, Ng;
 	int x = 1; // a variable to know after 5 time steps
@@ -38,11 +42,11 @@ void Restaurant::RunSimulation()
 
 	case MODE_INTR:
 		// try changing to one
-		
+		std::cout << "BEGIN MODE ONE : INTERACTIVE MODE"<<endl;
 		while (!EventsQueue.isEmpty() || Inservicelist.getHead() || !normalorder.isEmpty() || !VEGANOrder.isEmpty() || !VIPorder.isEmpty()) {
-
+			std::cout << "*****TIMESTEP " << TS << " BEGIN*****" << endl;
 			if (!EventsQueue.isEmpty()) {
-				while (EventsQueue.getPtrToFront()->getItem()->getEventTime() == i) {//while the event time=the current time step
+				while (EventsQueue.getPtrToFront()->getItem()->getEventTime() == TS) {//while the event time=the current time step
 
 					ArrivalEvent* p = dynamic_cast<ArrivalEvent*>(EventsQueue.getPtrToFront()->getItem());
 					Cancellation_event* q = dynamic_cast<Cancellation_event*>(EventsQueue.getPtrToFront()->getItem());
@@ -125,14 +129,25 @@ void Restaurant::RunSimulation()
 			//}
 
 			//********** BEGIN NEW ORDER HANDLING CODE FOR PHASE 2 **********
-			
+			// ezayoko ya shabab
+			// ana amer
+			//ele hy7sl kalaaty
+			//hn4oof el list of orders bta3ty fadya wla l2
+			//b3den a5tar el cook el monaseb
+			// b3den a3ml el cook ele e5tarto -> serveOrder()
+			//tabe3ey y3ny el cook hayotbo5
+			// w b3den n7ot el order fel in service list zy ma ben4of fel mata3em el 3adeya
+			// w b3den n4eel el order mn el queue of order
+			// ay so2al kalemony messenger aw whatsapp y3ny
+			// el mfrood lw 5adto copy w paste mn el functions de
+			// w 3adelto feha 7aba el mfrood tb2o 5alasto goz2 el order handling
 
-			if (!VIPorder.isEmpty()) {
+
+			while (!VIPorder.isEmpty()) {
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
-				if (getFirstAvailableCook(TYPE_VIP)) {  //order service criteria, vip orders must be served
-														//with any available cook, we choose the cook in this
-														// code snippet.
-					assigned = getFirstAvailableCook(TYPE_VIP);
+				if (getFirstAvailableCook(TYPE_VIP)) {         //order service criteria, vip orders must be served
+					assigned = getFirstAvailableCook(TYPE_VIP);//with any available cook, we choose the cook in this
+															   // code snippet.
 				}
 				else if (getFirstAvailableCook(TYPE_NRM)) {
 					assigned = getFirstAvailableCook(TYPE_NRM);
@@ -142,22 +157,24 @@ void Restaurant::RunSimulation()
 				}
 
 				Order* currentOrder = VIPorder.getPtrToFront()->getItem();
-				     
+
 				if (assigned) { //cook the order if a cook is available
-					assigned->serveOrder(currentOrder, i);
+					assigned->serveOrder(currentOrder, TS);
 					Inservicelist.InsertEnd(currentOrder);
 					VIPorder.dequeue(currentOrder);
 				}
 			}
-			int Anormal,Avegan,Avip;      //An is Available normal
-			getAvailableCooksNo(Avip,Avegan,Anormal);
+
+
+			int Anormal, Avegan, Avip;      //An is Available normal
+			getAvailableCooksNo(Avip, Avegan, Anormal);
 			this->FillDrawingList();
 			pGUI->UpdateInterface();
 			pGUI->ResetDrawingList();
 			n = to_string(long double(this->WaitNormal()));
 			ve = to_string(long double(this->WaitVegan()));
 			v = to_string(long double(this->WaitVIP()));
-			ts = to_string((long double(i)));
+			ts = to_string((long double(TS)));
 			Nn = to_string(long double(Anormal));
 			Nv = to_string(long double(Avip));
 			Ng = to_string(long double((Avegan)));
@@ -169,10 +186,24 @@ void Restaurant::RunSimulation()
 			pGUI->PrintMessage("No of Waiting Vegan Orders: " + ve, 750);
 			pGUI->PrintMessage("No of Waiting VIP Orders: " + v, 770);
 
+			adjustCookCooldown(); // at the end of each timestep this function makes sure that every cook
+								  // returns to work when his cooldown ends (remember to add breaks and injuries too)
+			std::cout << "Cook cooldown adjusted" << endl;
+			Order* finishedOrder = nullptr;
+			Node<Cook*>* travVIP = VIPcook.getHead();
+			while (travVIP) {
+				// make the vip cooks check if thier orders are finished or not
+				if (travVIP->getItem()->checkOrder(TS, finishedOrder)) {
+					Finishedlist.InsertBeg(finishedOrder);
+					Inservicelist.DeleteNode(finishedOrder);
+				}
+				travVIP = travVIP->getNext();
+			}
 
 			pGUI->waitForClick();
-			i++; // increment time
-			//first=false;		
+			std::cout << "*****TIMESTEP " << TS << " END******" << endl;
+			TS++; // increment time
+
 		}
 
 
@@ -549,11 +580,11 @@ void Restaurant::LoadFile() {
 		IF >> BV_min >> BV_max;
 		//Initialization of min and max BreaktTime of each type
 
-		IF>>InjProb;
-		IF>>RstPrd;
+		IF >> InjProb;
+		IF >> RstPrd;
 
 		IF >> AutoP; //Initialize NO. of time steps befor auto promotion
-		IF>>VIP_WT;
+		IF >> VIP_WT;
 
 
 		IF >> M; //Initialize No. of events
@@ -724,14 +755,16 @@ void Restaurant::InitializeVIP() {
 	int first = 1;
 	int curr;
 	Cook* CurrCook = VIPcook.getHead()->getItem();
+
 	do {
 		CurrCook->SetBreak(BV_min, BV_max);
 		CurrCook->SetSpeed(SV_min, SV_max);
 		VIPcook.InsertEnd(CurrCook);
 		VIPcook.DeleteFirst();
-		CurrCook = VIPcook.getHead()->getItem();
+		CurrCook = VIPcook.getHead()->getNext()->getItem();
 		curr = (VIPcook.getHead()->getItem()->GetID());
 	} while (first != curr);
+
 
 }
 void Restaurant::InitializeVegan() {
@@ -811,6 +844,27 @@ Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 		}
 		return readyCook->getItem();
 	}
+}
+
+void Restaurant::adjustCookCooldown() {
+	Node<Cook*>* travVIP = VIPcook.getHead();
+	while (travVIP) {
+		travVIP->getItem()->checkCd(TS);
+		travVIP = travVIP->getNext();
+	}
+
+	Node<Cook*>* travVGAN = VEGANcook.getHead();
+	while (travVGAN) {
+		travVGAN->getItem()->checkCd(TS);
+		travVGAN = travVGAN->getNext();
+	}
+
+	Node<Cook*>* travNRM = NORMALcook.getHead();
+	while (travNRM) {
+		travNRM->getItem()->checkCd(TS);
+		travNRM = travNRM->getNext();
+	}
+
 }
 
 void Restaurant::OutputOrder(Order* O) {

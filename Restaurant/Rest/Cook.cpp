@@ -1,10 +1,12 @@
 #include <cmath>
+#include<iostream>
 #include "Cook.h"
-
+using namespace std;
 Cook::Cook()
 {
 	isAvailable = true;
 	preparing = nullptr;
+	cooldownEnd = -1;
 }
 
 
@@ -38,12 +40,12 @@ void Cook::setType(ORD_TYPE t)
 
 void Cook::SetSpeed(int x, int y) {
 
-	speed = rand() % y + x;
+	speed = rand() % (x - y) + x;
 
 }
 void Cook::SetBreak(int x, int y) {
 
-	Break = rand() % y + x;
+	Break = rand() % (x - y) + x;
 
 }
 
@@ -51,17 +53,25 @@ void Cook::setStatus(bool status) {
 	isAvailable = status;
 }
 bool Cook::getStatus() {
-	return isAvailable ;
+	return isAvailable;
 }
 int Cook::getCd() {
 	return cooldownEnd;
 }
 void Cook::setCd(int cd) {
-	cooldownEnd = cd;
+	if (cd <= 0) { // fault tolerant
+		cooldownEnd = -1;
+	}
+	else {
+		cooldownEnd = cd;
+	}
+
+
 }
 void Cook::checkCd(int timestep) {
 	if (cooldownEnd = timestep) {
 		isAvailable = true;
+		cooldownEnd = -1; // as a flag
 	}
 }
 void Cook::serveOrder(Order* _order, int& timeStep) {
@@ -74,6 +84,16 @@ void Cook::serveOrder(Order* _order, int& timeStep) {
 														   // then rounded to the nearest time step
 	cooldownEnd = timeTaken + timeStep;
 	_order->Set_finishTime(_order->Get_servetime() + timeTaken);
-
-
+}
+bool Cook::checkOrder(int timestep, Order*& finishedOrder) {
+	if (preparing == nullptr) {
+		return false;
+	}
+	else if (preparing->Get_finishtime() == timestep) {
+		preparing->setStatus(DONE);
+		finishedOrder = preparing;
+		cout << "Order with ID " << preparing->GetID() << " finished" << endl;
+		preparing = nullptr;
+		return true;
+	}
 }

@@ -94,12 +94,12 @@ int Order::Get_finishtime()
 	return FinishTime;
 }
 
-int Order::calc_priority()
+void Order::calc_priority()
 {
 	int p;
 	p = (24 - ArrTime) + totalMoney+ Order_Size;
 	priority = p;
-	return priority;
+	
 }
 
 void Order::Set_size(int s)

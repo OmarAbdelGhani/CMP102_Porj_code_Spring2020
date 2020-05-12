@@ -21,16 +21,21 @@ public:
 	int GetID() const;
 	ORD_TYPE GetType() const;
 	void setID(int);
-	void setType(ORD_TYPE) ;
-	void SetSpeed(int,int );
-	void SetBreak(int,int);
+	void setType(ORD_TYPE);
+	void SetSpeed(int, int);
+	void SetBreak(int, int);
 	///////////////////////////////////////
+
 	//By Amer
 
-	void serveOrder(Order*,int& timestep); //Makes the Cook Prepare the order
-	bool getStatus();
+	void serveOrder(Order*, int& timestep); //Makes the Cook Prepare the order
+	bool getStatus(); // we check if the cook is available or not
 	void setStatus(bool);
-	void setCd(int);
+	
+	void setCd(int); // sets the cooldown of the cook, cd = cooldown
+					 // cool down means the down time of the cook, the time at which he cant take orders
 	int getCd();
-	void checkCd(int);
+
+	void checkCd(int); //checks if the cooldown of the cooks has ended or not, 
+	bool checkOrder(int, Order*&); // checks whether the order is finished or not.
 };

@@ -57,7 +57,7 @@ public:
 	
 	// how to make setter and getter for status
 	//waiting order
-	int calc_priority();
+	void calc_priority();
 
 
 	void Set_size(int s);

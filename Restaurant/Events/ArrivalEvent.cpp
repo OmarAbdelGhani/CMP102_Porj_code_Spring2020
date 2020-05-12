@@ -38,7 +38,7 @@ void ArrivalEvent::Execute(Restaurant* pRest)
 		pRest->AddToVeganQueue(pOrd);
 	else if (OrdType == TYPE_VIP) {
 		pRest->AddToVIPArray(pOrd);
-		cout << "item added to vip array"<<endl;
+		cout << "VIP order with ID "<<OrderID<<" added to VIParray"<<endl;
 	}
 	
 	
