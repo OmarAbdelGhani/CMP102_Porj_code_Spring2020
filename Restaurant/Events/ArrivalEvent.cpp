@@ -36,8 +36,10 @@ void ArrivalEvent::Execute(Restaurant* pRest)
 		pRest->AddNormalToQueue(pOrd);
 	else if (OrdType == TYPE_VGAN)
 		pRest->AddToVeganQueue(pOrd);
-	else if (OrdType == TYPE_VIP)
+	else if (OrdType == TYPE_VIP) {
 		pRest->AddToVIPArray(pOrd);
+		cout << "item added to vip array"<<endl;
+	}
 	
 	
 	///For the sake of demo, this function will just create an order and add it to DemoQueue
