@@ -194,8 +194,10 @@ void Restaurant::RunSimulation()
 			while (travVIP) {
 				// make the vip cooks check if thier orders are finished or not
 				if (travVIP->getItem()->checkOrder(TS, finishedOrder)) {
-					Finishedlist.InsertBeg(finishedOrder);
-					Inservicelist.DeleteNode(finishedOrder);
+					if (finishedOrder) {
+						Finishedlist.InsertBeg(finishedOrder);
+						Inservicelist.DeleteNode(finishedOrder);
+					}
 				}
 				travVIP = travVIP->getNext();
 			}
