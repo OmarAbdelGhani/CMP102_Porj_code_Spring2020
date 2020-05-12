@@ -545,8 +545,13 @@ void Restaurant::LoadFile() {
 		IF >> BV_min >> BV_max;
 		//Initialization of min and max BreaktTime of each type
 
-		IF >> AutoP; //Initialize NO. of time steps befor auto promotion
+		IF>>InjProb;
 		IF>>RstPrd;
+
+		IF >> AutoP; //Initialize NO. of time steps befor auto promotion
+		IF>>VIP_WT;
+
+
 		IF >> M; //Initialize No. of events
 
 		//Looping until i=m to initialize all events
