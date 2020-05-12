@@ -36,7 +36,7 @@ private:
 	// TODO: Add More Data Members As Needed
 	//
 	Queue<Order*> VEGANOrder;  //  vegan queues
-	Queue<Order*>normalorder; //  vip linkedlist 
+	Queue<Order*>normalorder; //  normal queues 
 	//Amer: I believe this was unintentional , remove this comment and edit the one above
 	priorityQueue<Order*>VIPorder; // priority queue of vip
 	LinkedList<Cook*>VIPcook;
@@ -115,12 +115,12 @@ public:
 	// TODO: Add More Member Functions As Needed
 	void AddEvents(Event* ev); // add event to queue
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void AddToVeganQueue(Order* po); // add frozen to queue
+	void AddToVeganQueue(Order* po); // add vegan to queue
 	void AddNormalToQueue(Order* po); // add normal order to list
 	void AddToVIPArray(Order* ord);  //add to vip array   //Omar AbdelGhani removed the priorty as it is by default in the order
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	ORD_TYPE Getordertype(char ordtype);   // convert the char to the order type
-	void CancelNormal(int id);  // lsa mat3amlsh
+	
 /// ===================    DEMO-related functions. Should be removed in phases 1&2   ================= 
 
 	void Just_A_Demo();	//just to show a demo and should be removed in phase1 1 & 2
