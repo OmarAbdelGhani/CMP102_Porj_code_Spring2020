@@ -416,6 +416,10 @@ ORD_TYPE Restaurant::Getordertype(char ordtype)
 
 }
 
+void Restaurant::CancelNormal(int id)
+{
+	// lsa cancel of order 
+}
 
 //This is just a demo function for project introductory phase
 //It should be removed starting phase 1
