@@ -38,7 +38,7 @@ void Restaurant::RunSimulation()
 
 	case MODE_INTR:
 		// try changing to one
-		std::cout << "got this far";
+		
 		while (!EventsQueue.isEmpty() || Inservicelist.getHead() || !normalorder.isEmpty() || !VEGANOrder.isEmpty() || !VIPorder.isEmpty()) {
 
 			if (!EventsQueue.isEmpty()) {
@@ -125,7 +125,7 @@ void Restaurant::RunSimulation()
 			//}
 
 			//********** BEGIN NEW ORDER HANDLING CODE FOR PHASE 2 **********
-			std::cout << " GOT THIS FAR BEFORE CRASHING"; // FOR DEBUGGING PURPOSES ONLY REMOVE BEFORE SUBMISSION -Amer
+			
 
 			if (!VIPorder.isEmpty()) {
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
