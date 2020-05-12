@@ -87,6 +87,7 @@ void Cook::serveOrder(Order* _order, int& timeStep) {
 }
 bool Cook::checkOrder(int timestep, Order*& finishedOrder) {
 	if (preparing == nullptr) {
+		finishedOrder = nullptr;
 		return false;
 	}
 	else if (preparing->Get_finishtime() == timestep) {
