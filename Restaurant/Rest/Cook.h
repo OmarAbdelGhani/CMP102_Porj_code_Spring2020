@@ -38,4 +38,5 @@ public:
 
 	void checkCd(int); //checks if the cooldown of the cooks has ended or not, 
 	bool checkOrder(int, Order*&); // checks whether the order is finished or not.
+	void decreasespeedtohalf();//hamzawyi i will use it in cook health
 };

@@ -155,6 +155,7 @@ public:
 	Cook* getFirstAvailableCook(ORD_TYPE);
 
 	void adjustCookCooldown();
+	void cooksHealthEmergencyProblems(); //hamzawy
 };
 
 #endif

@@ -80,7 +80,7 @@ void Cook::serveOrder(Order* _order, int& timeStep) {
 	_order->setStatus(SRV);
 	_order->Set_serveTime(timeStep);
 	// we now calculate the time taken to serve the order:
-	float timeTaken = ceil((_order->get_size()) / speed); // the size of the order divided by the speed of the cook
+	int timeTaken = _order->get_size() / speed; // the size of the order divided by the speed of the cook
 														   // then rounded to the nearest time step
 	cooldownEnd = timeTaken + timeStep;
 	_order->Set_finishTime(_order->Get_servetime() + timeTaken);
@@ -97,4 +97,7 @@ bool Cook::checkOrder(int timestep, Order*& finishedOrder) {
 		preparing = nullptr;
 		return true;
 	}
+}
+void Cook::decreasespeedtohalf(){
+	speed=speed/2;
 }
