@@ -25,9 +25,9 @@ void Restaurant::RunSimulation()
 	NoUrgent = 0;  NoAutoPromoted = 0;
 
 	LinkedList<Order*>Inservicelist1;
-	 InitializeNormal();
-	 InitializeVIP();
-	 InitializeVegan();
+	InitializeNormal();
+	InitializeVIP();
+	InitializeVegan();
 
 	TS = 1;
 	string ts;
@@ -42,7 +42,7 @@ void Restaurant::RunSimulation()
 
 	case MODE_INTR:
 		// try changing to one
-		std::cout << "BEGIN MODE ONE : INTERACTIVE MODE"<<endl;
+		std::cout << "BEGIN MODE ONE : INTERACTIVE MODE" << endl;
 		while (!EventsQueue.isEmpty() || Inservicelist.getHead() || !normalorder.isEmpty() || !VEGANOrder.isEmpty() || !VIPorder.isEmpty()) {
 			std::cout << "*****TIMESTEP " << TS << " BEGIN*****" << endl;
 			if (!EventsQueue.isEmpty()) {
@@ -145,20 +145,45 @@ void Restaurant::RunSimulation()
 
 			while (!VIPorder.isEmpty()) {
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
-				if (getFirstAvailableCook(TYPE_VIP)) {         //order service criteria, vip orders must be served
-					assigned = getFirstAvailableCook(TYPE_VIP);//with any available cook, we choose the cook in this
-															   // code snippet.
+				Order* currentOrder = VIPorder.getPtrToFront()->getItem();
+				if (currentOrder->getUrgency()) { // if the current order is urgent do the following
+					if (getFirstAvailableCook(TYPE_VIP)) {         //order service criteria, vip orders must be served
+						assigned = getFirstAvailableCook(TYPE_VIP);//with any available cook, we choose the cook in this
+																   // code snippet.
+					}
+					else if (getFirstAvailableCook(TYPE_NRM)) {
+						assigned = getFirstAvailableCook(TYPE_NRM);
+
+					}
+					else if (getFirstAvailableCook(TYPE_VGAN)) {
+						assigned = getFirstAvailableCook(TYPE_VGAN);
+
+					} // if we cant find an available cook to serve the urgent order we do the following
+					else if (getFirstCookBreak()) {
+						assigned = getFirstCookBreak(); // we try to find a cook who is on his break
+					}
+					else { // if we fail to find an available cook, and also fail to find a cook on his break
+						// we simply get an injured cook lmao
+						assigned = getFirstCookInj();
+					}
 				}
-				else if (getFirstAvailableCook(TYPE_NRM)) {
-					assigned = getFirstAvailableCook(TYPE_NRM);
-					
-				}
-				else if (getFirstAvailableCook(TYPE_VGAN)) {
-					assigned = getFirstAvailableCook(TYPE_VGAN);
-					
+				else { // if the order isnt urgent do the regular cook selection process
+
+					if (getFirstAvailableCook(TYPE_VIP)) {         //order service criteria, vip orders must be served
+						assigned = getFirstAvailableCook(TYPE_VIP);//with any available cook, we choose the cook in this
+																   // code snippet.
+					}
+					else if (getFirstAvailableCook(TYPE_NRM)) {
+						assigned = getFirstAvailableCook(TYPE_NRM);
+
+					}
+					else if (getFirstAvailableCook(TYPE_VGAN)) {
+						assigned = getFirstAvailableCook(TYPE_VGAN);
+
+					}
 				}
 
-				Order* currentOrder = VIPorder.getPtrToFront()->getItem();
+
 
 				if (assigned) { //cook the order if a cook is available
 					assigned->serveOrder(currentOrder, TS);
@@ -166,16 +191,19 @@ void Restaurant::RunSimulation()
 					CooksInService.InsertEnd(assigned);//added by hamzawy because i will use it in cooks health
 					Inservicelist.InsertEnd(currentOrder);
 					VIPorder.dequeue(currentOrder);
-					WaitingTime+=((currentOrder->Get_servetime())-(currentOrder->Get_Arrtime()));//added by hamzawy
+					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));//added by hamzawy
+				}
+				else {
+					break;
 				}
 			}
-				while (!VEGANOrder.isEmpty()) {//from here hamzawy
+			while (!VEGANOrder.isEmpty()) {//from here hamzawy
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
 				if (getFirstAvailableCook(TYPE_VIP)) {         //vegan order is serviced only by vegan cooks 
 					assigned = getFirstAvailableCook(TYPE_VIP);
-															   
+
 				}
-				
+
 
 				Order* currentOrder = VEGANOrder.getPtrToFront()->getItem();
 
@@ -184,12 +212,12 @@ void Restaurant::RunSimulation()
 					CooksInService.InsertEnd(assigned);
 					Inservicelist.InsertEnd(currentOrder);
 					VEGANOrder.dequeue(currentOrder);
-					WaitingTime+=((currentOrder->Get_servetime())-(currentOrder->Get_Arrtime()));
+					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
 					NoVegan++;
 				}
 			}//to here
 
-             cooksHealthEmergencyProblems();//hamzawy
+			cooksHealthEmergencyProblems();//hamzawy
 			int Anormal, Avegan, Avip;      //An is Available normal
 			getAvailableCooksNo(Avip, Avegan, Anormal);
 			this->FillDrawingList();
@@ -221,13 +249,13 @@ void Restaurant::RunSimulation()
 					if (finishedOrder) {
 						Finishedlist.InsertBeg(finishedOrder);
 						Inservicelist.DeleteNode(finishedOrder);
-						ServiceTime+=((finishedOrder->Get_finishtime())-(finishedOrder->Get_servetime()));//added by hamzawy
+						ServiceTime += ((finishedOrder->Get_finishtime()) - (finishedOrder->Get_servetime()));//added by hamzawy
 					}
 				}
 				travVIP = travVIP->getNext();
 			}
-			
-						Order* finishedOrdervegan = nullptr;//from here hamzawy
+
+			Order* finishedOrdervegan = nullptr;//from here hamzawy
 			Node<Cook*>* c = VEGANcook.getHead();
 			while (c) {
 				// make the vegan cooks check if thier orders are finished or not
@@ -235,12 +263,12 @@ void Restaurant::RunSimulation()
 					if (finishedOrdervegan) {
 						Finishedlist.InsertBeg(finishedOrdervegan);
 						Inservicelist.DeleteNode(finishedOrdervegan);
-						ServiceTime+=((finishedOrdervegan->Get_finishtime())-(finishedOrdervegan->Get_servetime()));
+						ServiceTime += ((finishedOrdervegan->Get_finishtime()) - (finishedOrdervegan->Get_servetime()));
 					}
 				}
 				c = c->getNext();
 			}//to here
-
+			adjustBreak();
 			pGUI->waitForClick();
 			std::cout << "*****TIMESTEP " << TS << " END******" << endl;
 			TS++; // increment time
@@ -886,6 +914,62 @@ Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 		return readyCook->getItem();
 	}
 }
+Cook* Restaurant::getFirstCookBreak() {
+	//this function returns the first cook that is on a break
+	Node<Cook*>* breakCook = VIPcook.getHead();
+	while (breakCook && breakCook->getItem()->isBreak() == false) {
+		breakCook = breakCook->getNext();
+	}
+	if (!breakCook) { // if there isn't a VIP cook on a break , look for a normal cook on a break
+		breakCook = NORMALcook.getHead();
+		while (breakCook && breakCook->getItem()->isBreak() == false) {
+			breakCook = breakCook->getNext();
+		}
+
+	}
+	if (!breakCook) { // if there isn't a VIP cook on a break , look for a normal cook on a break
+		breakCook = VEGANcook.getHead();
+		while (breakCook && breakCook->getItem()->isBreak() == false) {
+			breakCook = breakCook->getNext();
+		}
+
+	}
+	if (!breakCook) {
+		return nullptr;
+	}
+	else {
+		return breakCook->getItem();
+	}
+
+
+}
+Cook* Restaurant::getFirstCookInj() {
+	//this function returns the first cook that is on a break
+	Node<Cook*>* breakCook = VIPcook.getHead();
+	while (breakCook && breakCook->getItem()->isHurt() == false) {
+		breakCook = breakCook->getNext();
+	}
+	if (!breakCook) { // if there isn't a VIP cook on a break , look for a normal cook on a break
+		breakCook = NORMALcook.getHead();
+		while (breakCook && breakCook->getItem()->isHurt() == false) {
+			breakCook = breakCook->getNext();
+		}
+
+	}
+	if (!breakCook) { // if there isn't a VIP cook on a break , look for a normal cook on a break
+		breakCook = VEGANcook.getHead();
+		while (breakCook && breakCook->getItem()->isHurt() == false) {
+			breakCook = breakCook->getNext();
+		}
+
+	}
+	if (!breakCook) {
+		return nullptr;
+	}
+	else {
+		return breakCook->getItem();
+	}
+}
 
 void Restaurant::adjustCookCooldown() {
 	Node<Cook*>* travVIP = VIPcook.getHead();
@@ -907,25 +991,61 @@ void Restaurant::adjustCookCooldown() {
 	}
 
 }
+void Restaurant::checkVIPtoUrgent() {
+	Node<Order*>* trav = VIPorder.getPtrToFront();
+	if (!trav) {
+		return;
+	}
+	while (trav) {
+		if (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT) {
+			trav->getItem()->setUrgency(true);
+		}
+	}
+}
+void Restaurant::adjustBreak() {
+	Node<Cook*>* trav = VIPcook.getHead();
+	while (trav) {
+		if (trav->getItem()->getOrdersServed() % BO == 0) {
+			trav->getItem()->goOnAbreak(TS);
+		}
+	}
+	trav = NORMALcook.getHead();
+	while (trav) {
+		if (trav->getItem()->getOrdersServed() % BO == 0) {
+			trav->getItem()->goOnAbreak(TS);
+		}
+	}
+	trav = VEGANcook.getHead();
+	while (trav) {
+		if (trav->getItem()->getOrdersServed() % BO == 0) {
+			trav->getItem()->goOnAbreak(TS);
+		}
+	}
+}
 
 void Restaurant::OutputOrder(Order* O) {
 	Ofile << O->Get_finishtime() << "\t" << O->GetID() << "\t" << O->Get_Arrtime() << "\t" << O->Get_servetime() - O->Get_servetime() << "\t" << O->Get_servetime() << endl;
 
 }
-void Restaurant::cooksHealthEmergencyProblems(){
-	int x=0;
-	Node<Cook*>*c=CooksInService.getHead();//get first 
-	Cook*q=c->getItem();
-	while(x==0){
-	//busy cook and if R<or=ingprob then make this cook injured by decreasing its speed to half and make him rest for a rest period
-		
-		int R=rand()%10;
-		if(R<=InjProb){
+void Restaurant::cooksHealthEmergencyProblems() {
+	int x = 0;
+	Node<Cook*>* c = CooksInService.getHead();//get first
+	if (!c) {
+		return;
+	}
+	Cook* q = c->getItem();
+	while (x == 0) {
+		//busy cook and if R<or=ingprob then make this cook injured by decreasing its speed to half and make him rest for a rest period
+
+		int R = rand() % 10;
+		if (R <= InjProb) {
 			x++;
-		q->decreasespeedtohalf();
-		q->setCd(RstPrd);
-		}else{
-			c=c->getNext();
+			q->decreasespeedtohalf();
+			q->setCd(RstPrd + TS);
+			q->setHurt(true);
+		}
+		else {
+			c = c->getNext();
 		}
 	}
-	}
+}

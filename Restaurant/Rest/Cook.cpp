@@ -5,8 +5,10 @@ using namespace std;
 Cook::Cook()
 {
 	isAvailable = true;
+	isOnAbreak = false;
 	preparing = nullptr;
 	cooldownEnd = -1;
+	ordersServed = 0;
 }
 
 
@@ -69,14 +71,30 @@ void Cook::setCd(int cd) {
 
 }
 void Cook::checkCd(int timestep) {
-	if (cooldownEnd = timestep) {
+	if (cooldownEnd <= timestep) {
 		isAvailable = true;
+		isOnAbreak = false;
 		cooldownEnd = -1; // as a flag
 	}
 }
+
+bool Cook::isBreak() {
+	return isOnAbreak;
+}
+
+bool Cook::isHurt() {
+	return isInj;
+}
+
+void Cook::setHurt(bool damage) {
+	isInj = damage;
+}
+
 void Cook::serveOrder(Order* _order, int& timeStep) {
 	isAvailable = false; // becuase the cook cant receive an order if he is serving another
+
 	preparing = _order; // order is currently being served
+	ordersServed++;
 	_order->setStatus(SRV);
 	_order->Set_serveTime(timeStep);
 	// we now calculate the time taken to serve the order:
@@ -90,7 +108,7 @@ bool Cook::checkOrder(int timestep, Order*& finishedOrder) {
 		finishedOrder = nullptr;
 		return false;
 	}
-	else if (preparing->Get_finishtime() == timestep) {
+	else if (preparing->Get_finishtime() <= timestep) {
 		preparing->setStatus(DONE);
 		finishedOrder = preparing;
 		cout << "Order with ID " << preparing->GetID() << " finished" << endl;
@@ -98,6 +116,17 @@ bool Cook::checkOrder(int timestep, Order*& finishedOrder) {
 		return true;
 	}
 }
-void Cook::decreasespeedtohalf(){
-	speed=speed/2;
+
+int Cook::getOrdersServed() {
+	return ordersServed;
+}
+
+void Cook::goOnAbreak(int timeStep) {
+	cooldownEnd = timeStep + Break;
+	isAvailable = false;
+	isOnAbreak = true;
+}
+
+void Cook::decreasespeedtohalf() {
+	speed = speed / 2;
 }

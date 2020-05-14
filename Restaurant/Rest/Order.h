@@ -13,7 +13,7 @@ protected:
 	int Distance;	//The distance (in meters) between the order location and the resturant 
 	                
 	double totalMoney;	//Total order money
-
+	bool isUrgent;
 	int ArrTime, ServTime, FinishTime;	//arrival, service start, and finish times
 	
 	
@@ -69,6 +69,8 @@ public:
 	int GetPriority();
 
 	void promotion(double extramoney);
+	bool getUrgency();
+	void setUrgency(bool);
 };
 
 #endif

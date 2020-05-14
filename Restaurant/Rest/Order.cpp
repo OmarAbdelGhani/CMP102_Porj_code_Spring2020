@@ -4,6 +4,7 @@ Order::Order(int id, ORD_TYPE r_Type)
 {
 	ID = (id>0&&id<1000)?id:0;	//1<ID<999
 	type = r_Type;
+	isUrgent = false;
 	status = WAIT;
 }
 
@@ -131,7 +132,12 @@ void Order::promotion(double extramoney)
 		priority += extramoney;
 	}
 }
-
+bool Order::getUrgency() {
+	return isUrgent;
+}
+void Order::setUrgency(bool urgency) {
+	isUrgent = urgency;
+}
 
 int Order::GetPriority(){
 	return priority;

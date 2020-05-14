@@ -140,8 +140,9 @@ public:
 	int WaitVegan();			//Counts number of waiting vegan orders
 	int WaitVIP();				//Counts number of waiting vip orders
 	void OutputOrder(Order*);   //Prints order data to the outputfile
+
 	// By Amer
-	// ***** Setters And Getters for Numbers of normal, vegan and vip orders *****
+	
 	void setNoNormal(int);
 	int getNoNormal();
 
@@ -150,12 +151,16 @@ public:
 
 	void setNoVIP(int);
 	int getNoVIP();
-
+	
 	void getAvailableCooksNo(int& VIP,int& vegan,int& normal); // by Amer and Abdelghani
 	Cook* getFirstAvailableCook(ORD_TYPE);
-
+	Cook* getFirstCookBreak();
+	Cook* getFirstCookInj();
 	void adjustCookCooldown();
-	void cooksHealthEmergencyProblems(); //hamzawy
+	void checkVIPtoUrgent();
+	void adjustBreak();
+	//hamzawy
+	void cooksHealthEmergencyProblems(); 
 };
 
 #endif
