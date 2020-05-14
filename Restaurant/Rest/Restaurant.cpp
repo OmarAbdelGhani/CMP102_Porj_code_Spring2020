@@ -218,6 +218,19 @@ void Restaurant::RunSimulation()
 			}//to here
 
 			cooksHealthEmergencyProblems();//hamzawy
+			Node<Cook*>*c=CooksInService.getHead();
+			while(c->getNext()){
+				Cook*p=c->getItem();
+				if(p->isHurt()){
+					if(p->getCd()==TS){
+						p->setHurt(false);
+						p->returnspeedtonormal();
+					}
+					c=c->getNext();
+				}else{
+					c=c->getNext();
+				}
+			}
 			int Anormal, Avegan, Avip;      //An is Available normal
 			getAvailableCooksNo(Avip, Avegan, Anormal);
 			this->FillDrawingList();
