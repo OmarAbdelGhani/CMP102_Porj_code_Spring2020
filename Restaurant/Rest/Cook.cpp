@@ -75,6 +75,7 @@ void Cook::checkCd(int timestep) {
 		isAvailable = true;
 		isOnAbreak = false;
 		cooldownEnd = -1; // as a flag
+		
 	}
 }
 
@@ -125,6 +126,7 @@ void Cook::goOnAbreak(int timeStep) {
 	cooldownEnd = timeStep + Break;
 	isAvailable = false;
 	isOnAbreak = true;
+	cout << "Cook with id " << ID << "Went on a break, and will comeback at timestep " << cooldownEnd << endl;
 }
 
 void Cook::decreasespeedtohalf() {

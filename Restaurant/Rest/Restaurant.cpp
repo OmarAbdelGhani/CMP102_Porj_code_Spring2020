@@ -1004,22 +1004,25 @@ void Restaurant::checkVIPtoUrgent() {
 }
 void Restaurant::adjustBreak() {
 	Node<Cook*>* trav = VIPcook.getHead();
-	while (trav) {
-		if (trav->getItem()->getOrdersServed() % BO == 0) {
+	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt()) {
+		if (trav->getItem()->getOrdersServed() % BO == 0 && trav->getItem()->getOrdersServed() != 0) {
 			trav->getItem()->goOnAbreak(TS);
 		}
+		trav = trav->getNext();
 	}
 	trav = NORMALcook.getHead();
-	while (trav) {
-		if (trav->getItem()->getOrdersServed() % BO == 0) {
+	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt()) {
+		if (trav->getItem()->getOrdersServed() % BO == 0 && trav->getItem()->getOrdersServed() != 0) {
 			trav->getItem()->goOnAbreak(TS);
 		}
+		trav = trav->getNext();
 	}
 	trav = VEGANcook.getHead();
-	while (trav) {
-		if (trav->getItem()->getOrdersServed() % BO == 0) {
+	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt()) {
+		if (trav->getItem()->getOrdersServed() % BO == 0 && trav->getItem()->getOrdersServed() != 0) {
 			trav->getItem()->goOnAbreak(TS);
 		}
+		trav = trav->getNext();
 	}
 }
 
