@@ -48,5 +48,4 @@ public:
 	bool checkOrder(int, Order*&); // checks whether the order is finished or not.
 	// by Hamzawi
 	void decreasespeedtohalf();//hamzawyi i will use it in cook health
-	void returnspeedtonormal();//hamzawy i will use it to return speed to its normal value after the cook has his medications
 };

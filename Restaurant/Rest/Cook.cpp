@@ -132,6 +132,3 @@ void Cook::goOnAbreak(int timeStep) {
 void Cook::decreasespeedtohalf() {
 	speed = speed / 2;
 }
-void Cook::returnspeedtonormal(){
-	speed=speed*2;
-}
