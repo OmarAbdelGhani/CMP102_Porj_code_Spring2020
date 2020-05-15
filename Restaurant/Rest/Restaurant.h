@@ -141,6 +141,8 @@ public:
 	int WaitVIP();				//Counts number of waiting vip orders
 	void OutputOrder(Order*);   //Prints order data to the outputfile
 
+
+
 	// By Amer
 	
 	void setNoNormal(int);

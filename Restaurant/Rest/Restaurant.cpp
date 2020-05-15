@@ -833,40 +833,36 @@ void  Restaurant::InitializeNormal() {
 	if (!NORMALcook.getHead())
 		return;
 
-	int first = 1;
-	int curr;
+	//int first = 1;
+	Node<Cook*> *curr=NORMALcook.getHead();
 	Cook* CurrCook = NORMALcook.getHead()->getItem();
-	Cook* temp;
+	
 	do {
 		CurrCook->SetBreak(BN_min, BN_max);
 		CurrCook->SetSpeed(SN_min, SN_max);
-		NORMALcook.InsertEnd(CurrCook);
-		NORMALcook.DeleteFirst();
-		CurrCook = NORMALcook.getHead()->getItem();
-		curr = (NORMALcook.getHead()->getItem()->GetID());
-		//To iterate on all the list, we take first item and initialize it, then add to to the end of the list
-		// then delete it from the beggining and so on untill the list returns to original
-		// we add to the end first to create a new node in the memory as if we delete it first, then the data wouldnot exist after deletion
-		// initialize first with the ID of first cook, which is 1, then we compare it with the id of the next cook. When the last cook is reached
-		// the id of the next cook will be 1, so we know we finished iteration
-	} while (first != curr);
+		//NORMALcook.InsertEnd(CurrCook);
+		//NORMALcook.DeleteFirst();
+		curr=curr->getNext();
+		CurrCook=curr->getItem();
+		
+	} while (CurrCook);
 }
 void Restaurant::InitializeVIP() {
 	if (!VIPcook.getHead())
 		return;
 
-	int first = 1;
-	int curr;
+	Node<Cook*> *curr=VIPcook.getHead();
 	Cook* CurrCook = VIPcook.getHead()->getItem();
-
+	
 	do {
-		CurrCook->SetBreak(BV_min, BV_max);
-		CurrCook->SetSpeed(SV_min, SV_max);
-		VIPcook.InsertEnd(CurrCook);
-		VIPcook.DeleteFirst();
-		CurrCook = VIPcook.getHead()->getItem();
-		curr = (VIPcook.getHead()->getItem()->GetID());
-	} while (first != curr);
+		CurrCook->SetBreak(BN_min, BN_max);
+		CurrCook->SetSpeed(SN_min, SN_max);
+		//NORMALcook.InsertEnd(CurrCook);
+		//NORMALcook.DeleteFirst();
+		curr=curr->getNext();
+		CurrCook=curr->getItem();
+		
+	} while (CurrCook);
 
 
 }
@@ -874,17 +870,18 @@ void Restaurant::InitializeVegan() {
 	if (!VEGANcook.getHead())
 		return;
 
-	int first = 1;
-	int curr;
+	Node<Cook*> *curr=VEGANcook.getHead();
 	Cook* CurrCook = VEGANcook.getHead()->getItem();
+	
 	do {
-		CurrCook->SetBreak(BG_min, BG_max);
-		CurrCook->SetSpeed(SG_min, SG_max);
-		VEGANcook.InsertEnd(CurrCook);
-		VEGANcook.DeleteFirst();
-		CurrCook = VEGANcook.getHead()->getItem();
-		curr = (VEGANcook.getHead()->getItem()->GetID());
-	} while (first != curr);
+		CurrCook->SetBreak(BN_min, BN_max);
+		CurrCook->SetSpeed(SN_min, SN_max);
+		//NORMALcook.InsertEnd(CurrCook);
+		//NORMALcook.DeleteFirst();
+		curr=curr->getNext();
+		CurrCook=curr->getItem();
+		
+	} while (CurrCook);
 
 }
 void Restaurant::getAvailableCooksNo(int& VIP, int& vegan, int& normal) { // counts the number of available cooks of each type
