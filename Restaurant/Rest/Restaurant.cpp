@@ -197,10 +197,31 @@ void Restaurant::RunSimulation()
 					break;
 				}
 			}
+			// ahmed sami
+			if (!normalorder.isEmpty())
+			{
+				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
+				if (getFirstAvailableCook(TYPE_NRM)) {  //order service criteria, vip orders must be served
+														//with any available cook, we choose the cook in this
+														// code snippet.
+					assigned = getFirstAvailableCook(TYPE_NRM);
+				}
+
+				Order* currentOrder = normalorder.getPtrToFront()->getItem();
+				if (assigned) { //cook the order if a cook is available
+					assigned->serveOrder(currentOrder, TS);
+					Inservicelist.InsertEnd(currentOrder);
+					normalorder.dequeue(currentOrder);
+					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
+					NoNormal++;
+				}
+
+			}
+			checkNormaltoVIP();
 			while (!VEGANOrder.isEmpty()) {//from here hamzawy
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
-				if (getFirstAvailableCook(TYPE_VIP)) {         //vegan order is serviced only by vegan cooks 
-					assigned = getFirstAvailableCook(TYPE_VIP);
+				if (getFirstAvailableCook(TYPE_VGAN)) {         //vegan order is serviced only by vegan cooks 
+					assigned = getFirstAvailableCook(TYPE_VGAN);
 
 				}
 
@@ -1000,6 +1021,22 @@ void Restaurant::checkVIPtoUrgent() {
 		if (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT) {
 			trav->getItem()->setUrgency(true);
 		}
+		trav = trav->getNext();
+	}
+}
+void Restaurant::checkNormaltoVIP() {
+	Node<Order*>* trav = normalorder.getPtrToFront();
+	if (!trav) {
+		return;
+	}
+	while (trav) {
+		if (TS - (trav->getItem()->Get_Arrtime()) >= AutoP) {
+			Order* currentOrder = trav->getItem();
+			normalorder.dequeue(currentOrder);
+			currentOrder->calc_priority();
+			VIPorder.enqueue(currentOrder, currentOrder->GetPriority());
+		}
+		trav = trav->getNext();
 	}
 }
 void Restaurant::adjustBreak() {
