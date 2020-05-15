@@ -239,6 +239,19 @@ void Restaurant::RunSimulation()
 			}//to here
 
 			cooksHealthEmergencyProblems();//hamzawy
+			Node<Cook*>*c=CooksInService.getHead();
+			while(c->getNext()){
+				Cook*p=c->getItem();
+				if(p->isHurt()){
+					if(p->getCd()==TS){
+						p->setHurt(false);
+						p->returnspeedtonormal();
+					}
+					c=c->getNext();
+				}else{
+					c=c->getNext();
+				}
+			}
 			int Anormal, Avegan, Avip;      //An is Available normal
 			getAvailableCooksNo(Avip, Avegan, Anormal);
 			this->FillDrawingList();
@@ -1041,22 +1054,25 @@ void Restaurant::checkNormaltoVIP() {
 }
 void Restaurant::adjustBreak() {
 	Node<Cook*>* trav = VIPcook.getHead();
-	while (trav) {
-		if (trav->getItem()->getOrdersServed() % BO == 0) {
+	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt()) {
+		if (trav->getItem()->getOrdersServed() % BO == 0 && trav->getItem()->getOrdersServed() != 0) {
 			trav->getItem()->goOnAbreak(TS);
 		}
+		trav = trav->getNext();
 	}
 	trav = NORMALcook.getHead();
-	while (trav) {
-		if (trav->getItem()->getOrdersServed() % BO == 0) {
+	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt()) {
+		if (trav->getItem()->getOrdersServed() % BO == 0 && trav->getItem()->getOrdersServed() != 0) {
 			trav->getItem()->goOnAbreak(TS);
 		}
+		trav = trav->getNext();
 	}
 	trav = VEGANcook.getHead();
-	while (trav) {
-		if (trav->getItem()->getOrdersServed() % BO == 0) {
+	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt()) {
+		if (trav->getItem()->getOrdersServed() % BO == 0 && trav->getItem()->getOrdersServed() != 0) {
 			trav->getItem()->goOnAbreak(TS);
 		}
+		trav = trav->getNext();
 	}
 }
 

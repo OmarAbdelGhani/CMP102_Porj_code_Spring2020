@@ -2,9 +2,15 @@
 
 Order::Order(int id, ORD_TYPE r_Type)
 {
-	ID = (id>0&&id<1000)?id:0;	//1<ID<999
+	ID = (id > 0 && id < 1000) ? id : 0;	//1<ID<999
 	type = r_Type;
 	isUrgent = false;
+	if (r_Type == TYPE_VIP) {
+		calc_priority();
+	}
+	else {
+		priority = 0;
+	}
 	status = WAIT;
 }
 
@@ -36,7 +42,7 @@ ORD_TYPE Order::GetType() const
 
 void Order::SetDistance(int d)
 {
-	Distance = d>0?d:0;
+	Distance = d > 0 ? d : 0;
 }
 
 int Order::GetDistance() const
@@ -98,9 +104,9 @@ int Order::Get_finishtime()
 void Order::calc_priority()
 {
 	int p;
-	p = (24 - ArrTime) + totalMoney+ Order_Size;
+	p = (24 - ArrTime) + totalMoney + Order_Size;
 	priority = p;
-	
+
 }
 
 void Order::Set_size(int s)
@@ -139,6 +145,6 @@ void Order::setUrgency(bool urgency) {
 	isUrgent = urgency;
 }
 
-int Order::GetPriority(){
+int Order::GetPriority() {
 	return priority;
 }
