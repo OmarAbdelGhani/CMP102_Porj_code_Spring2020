@@ -210,6 +210,7 @@ void Restaurant::RunSimulation()
 				Order* currentOrder = normalorder.getPtrToFront()->getItem();
 				if (assigned) { //cook the order if a cook is available
 					assigned->serveOrder(currentOrder, TS);
+					CooksInService.InsertEnd(assigned);//added by hamzawy
 					Inservicelist.InsertEnd(currentOrder);
 					normalorder.dequeue(currentOrder);
 					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
@@ -235,6 +236,8 @@ void Restaurant::RunSimulation()
 					VEGANOrder.dequeue(currentOrder);
 					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
 					NoVegan++;
+				}else{
+					break;
 				}
 			}//to here
 
@@ -290,17 +293,17 @@ void Restaurant::RunSimulation()
 			}
 
 			Order* finishedOrdervegan = nullptr;//from here hamzawy
-			Node<Cook*>* c = VEGANcook.getHead();
-			while (c) {
+			Node<Cook*>* c1 = VEGANcook.getHead();
+			while (c1) {
 				// make the vegan cooks check if thier orders are finished or not
-				if (c->getItem()->checkOrder(TS, finishedOrdervegan)) {
+				if (c1->getItem()->checkOrder(TS, finishedOrdervegan)) {
 					if (finishedOrdervegan) {
 						Finishedlist.InsertBeg(finishedOrdervegan);
 						Inservicelist.DeleteNode(finishedOrdervegan);
 						ServiceTime += ((finishedOrdervegan->Get_finishtime()) - (finishedOrdervegan->Get_servetime()));
 					}
 				}
-				c = c->getNext();
+				c1 = c1->getNext();
 			}//to here
 			adjustBreak();
 			pGUI->waitForClick();
@@ -1078,24 +1081,37 @@ void Restaurant::OutputOrder(Order* O) {
 
 }
 void Restaurant::cooksHealthEmergencyProblems() {
-	int x = 0;
+	
 	Node<Cook*>* c = CooksInService.getHead();//get first
+	int x=0;
 	if (!c) {
 		return;
 	}
-	Cook* q = c->getItem();
-	while (x == 0) {
+	
+	
 		//busy cook and if R<or=ingprob then make this cook injured by decreasing its speed to half and make him rest for a rest period
-
+	
 		int R = rand() % 10;
-		if (R <= InjProb) {
-			x++;
-			q->decreasespeedtohalf();
-			q->setCd(RstPrd + TS);
+		while (x==0&&c->getNext()){
+			Cook* q = c->getItem();
+			
+			if ((R <= InjProb)&&(!q->isHurt())) {
+
 			q->setHurt(true);
+			q->decreasespeedtohalf();
+			x++;
+				if(q->getpreparing()->getStatus()==DONE){
+				q->setCd(RstPrd + TS);
+			}
+			
+			}else if(q->isHurt()){
+			if(q->getpreparing()->getStatus()==DONE){
+				q->setCd(RstPrd + TS);
+					c=c->getNext();
+			}
+		}else{
+			c=c->getNext();
 		}
-		else {
-			c = c->getNext();
-		}
+	
 	}
 }

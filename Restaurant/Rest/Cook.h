@@ -49,4 +49,6 @@ public:
 	// by Hamzawi
 	void decreasespeedtohalf();//hamzawyi i will use it in cook health
 	void returnspeedtonormal();//hamzawy i will use it to return speed to its normal value after the cook has his medications
+	Order* getpreparing();//added by hamzawi
+
 };

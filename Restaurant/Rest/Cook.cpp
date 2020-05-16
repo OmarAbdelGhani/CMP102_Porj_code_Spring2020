@@ -135,3 +135,7 @@ void Cook::decreasespeedtohalf() {
 void Cook::returnspeedtonormal(){
 	speed=speed*2;
 }
+Order* Cook::getpreparing(){
+	return preparing;
+
+}
