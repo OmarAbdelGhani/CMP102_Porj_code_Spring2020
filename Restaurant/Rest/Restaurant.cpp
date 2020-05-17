@@ -49,6 +49,7 @@ void Restaurant::RunSimulation()
 				while (EventsQueue.getPtrToFront()->getItem()->getEventTime() == TS) {//while the event time=the current time step
 
 					ArrivalEvent* p = dynamic_cast<ArrivalEvent*>(EventsQueue.getPtrToFront()->getItem());
+					PromotionEvent* r = dynamic_cast<PromotionEvent*>(EventsQueue.getPtrToFront()->getItem());
 					Cancellation_event* q = dynamic_cast<Cancellation_event*>(EventsQueue.getPtrToFront()->getItem());
 					if (p) {    //if it is an arrival event
 						p->Execute(this); //generate an order and add it to the appropriate waiting list
@@ -58,6 +59,11 @@ void Restaurant::RunSimulation()
 						if (!(normalorder.isEmpty()) && normalorder.Exists(q->getOrderID())) {
 							// delete the corresponding normal order if found
 							q->Execute(this);
+						}
+					}
+					else if (r) {
+						if (!normalorder.isEmpty()) {
+							r->Execute(this);
 						}
 					}
 					Event* u = EventsQueue.getPtrToFront()->getItem();
@@ -198,7 +204,7 @@ void Restaurant::RunSimulation()
 				}
 			}
 			// ahmed sami
-			if (!normalorder.isEmpty())
+			while (!normalorder.isEmpty())
 			{
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
 				if (getFirstAvailableCook(TYPE_NRM)) {  //order service criteria, vip orders must be served
@@ -206,7 +212,9 @@ void Restaurant::RunSimulation()
 														// code snippet.
 					assigned = getFirstAvailableCook(TYPE_NRM);
 				}
-
+				else {
+					break;
+				}
 				Order* currentOrder = normalorder.getPtrToFront()->getItem();
 				if (assigned) { //cook the order if a cook is available
 					assigned->serveOrder(currentOrder, TS);
@@ -243,7 +251,7 @@ void Restaurant::RunSimulation()
 
 			cooksHealthEmergencyProblems();//hamzawy
 			Node<Cook*>*c=CooksInService.getHead();
-			while(c->getNext()){
+			while(c){
 				Cook*p=c->getItem();
 				if(p->isHurt()){
 					if(p->getCd()==TS){
@@ -291,7 +299,19 @@ void Restaurant::RunSimulation()
 				}
 				travVIP = travVIP->getNext();
 			}
-
+			Order* finishedOrderNormal = nullptr;
+			Node<Cook*>* travNorm = NORMALcook.getHead();
+			while (travNorm) {
+				// make the vip cooks check if thier orders are finished or not
+				if (travNorm->getItem()->checkOrder(TS, finishedOrderNormal)) {
+					if (finishedOrderNormal) {
+						Finishedlist.InsertBeg(finishedOrderNormal);
+						Inservicelist.DeleteNode(finishedOrderNormal);
+						ServiceTime += ((finishedOrderNormal->Get_finishtime()) - (finishedOrderNormal->Get_servetime()));//added by samy
+					}
+				}
+				travNorm = travNorm->getNext();
+			}
 			Order* finishedOrdervegan = nullptr;//from here hamzawy
 			Node<Cook*>* c1 = VEGANcook.getHead();
 			while (c1) {
@@ -651,7 +671,7 @@ void Restaurant::AddtoDemoQueue(Order* pOrd)
 void Restaurant::LoadFile() {
 	string name = pGUI->GetString();
 	ifstream IF(name, ios::in);
-	//IF.open("input.txt",ios::in);
+	//IF.open("djSamy.txt",ios::in);
 	if (IF.is_open()) {
 		IF >> N; //initialize No. of Normal cooks
 		for (int i = 1; i <= N; i++) {
@@ -1090,7 +1110,7 @@ void Restaurant::cooksHealthEmergencyProblems() {
 		//busy cook and if R<or=ingprob then make this cook injured by decreasing its speed to half and make him rest for a rest period
 	
 		int R = rand() % 10;
-		while (x==0&&c->getNext()){
+		while (x==0&&c){
 			Cook* q = c->getItem();
 			
 			if ((R <= InjProb)&&(!q->isHurt())) {
@@ -1102,14 +1122,14 @@ void Restaurant::cooksHealthEmergencyProblems() {
 				q->setCd(RstPrd + TS);
 			}
 			
-			}else if(q->isHurt()){
-			if(q->getpreparing()->getStatus()==DONE){
-				q->setCd(RstPrd + TS);
-					c=c->getNext();
 			}
-		}else{
+			else if (q->isHurt()) {
+				if (q->getpreparing()->getStatus() == DONE) {
+					q->setCd(RstPrd + TS);
+					c = c->getNext();
+				}
+			}
 			c=c->getNext();
-		}
 	
 	}
 }
