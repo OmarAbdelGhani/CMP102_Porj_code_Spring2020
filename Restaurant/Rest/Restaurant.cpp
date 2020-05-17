@@ -833,58 +833,56 @@ int Restaurant::WaitVIP() {
 
 
 void  Restaurant::InitializeNormal() {
-	if (!NORMALcook.getHead())
-		return;
+	
 
 	//int first = 1;
 	Node<Cook*> *curr=NORMALcook.getHead();
-	Cook* CurrCook = NORMALcook.getHead()->getItem();
 	
-	do {
+	
+	while (curr){
+		Cook* CurrCook = NORMALcook.getHead()->getItem();
 		CurrCook->SetBreak(BN_min, BN_max);
 		CurrCook->SetSpeed(SN_min, SN_max);
 		//NORMALcook.InsertEnd(CurrCook);
 		//NORMALcook.DeleteFirst();
 		curr=curr->getNext();
-		CurrCook=curr->getItem();
 		
-	} while (CurrCook);
+		
+	}
 }
 void Restaurant::InitializeVIP() {
-	if (!VIPcook.getHead())
-		return;
-
-	Node<Cook*> *curr=VIPcook.getHead();
-	Cook* CurrCook = VIPcook.getHead()->getItem();
 	
-	do {
+	Node<Cook*> *curr=VIPcook.getHead();
+	//Cook* CurrCook = VIPcook.getHead()->getItem();
+	
+	while (curr){
+		Cook* CurrCook = NORMALcook.getHead()->getItem();
 		CurrCook->SetBreak(BN_min, BN_max);
 		CurrCook->SetSpeed(SN_min, SN_max);
 		//NORMALcook.InsertEnd(CurrCook);
 		//NORMALcook.DeleteFirst();
 		curr=curr->getNext();
-		CurrCook=curr->getItem();
-		
-	} while (CurrCook);
+		//CurrCook=curr->getItem();
+	}
+	 
 
 
 }
 void Restaurant::InitializeVegan() {
-	if (!VEGANcook.getHead())
-		return;
-
-	Node<Cook*> *curr=VEGANcook.getHead();
-	Cook* CurrCook = VEGANcook.getHead()->getItem();
 	
-	do {
+	Node<Cook*> *curr=VEGANcook.getHead();
+	//Cook* CurrCook = VEGANcook.getHead()->getItem();
+	
+	while(curr){
+		Cook* CurrCook = NORMALcook.getHead()->getItem();
 		CurrCook->SetBreak(BN_min, BN_max);
 		CurrCook->SetSpeed(SN_min, SN_max);
 		//NORMALcook.InsertEnd(CurrCook);
 		//NORMALcook.DeleteFirst();
 		curr=curr->getNext();
-		CurrCook=curr->getItem();
-		
-	} while (CurrCook);
+		//CurrCook=curr->getItem();
+	}
+	
 
 }
 void Restaurant::getAvailableCooksNo(int& VIP, int& vegan, int& normal) { // counts the number of available cooks of each type
