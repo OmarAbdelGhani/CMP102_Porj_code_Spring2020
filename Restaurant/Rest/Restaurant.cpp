@@ -243,7 +243,7 @@ void Restaurant::RunSimulation()
 
 			cooksHealthEmergencyProblems();//hamzawy
 			Node<Cook*>*c=CooksInService.getHead();
-			while(c->getNext()){
+			while(c){
 				Cook*p=c->getItem();
 				if(p->isHurt()){
 					if(p->getCd()==TS){
