@@ -16,7 +16,7 @@ class Cook
 	bool isInj; // is injured
 	Order* preparing; // the order that is being currently prepared by this cook -Amer
 	int cooldownEnd; // the timestep at which the cook is available again after being unavailable
-	int ordersServed;
+	int ordersServedPreBreak; // number of orders served before the cook had his last break
 
 				  // Amer
 public:
@@ -40,12 +40,14 @@ public:
 					 // cool down means the down time of the cook, the time at which he cant take orders
 	int getCd();
 	int getOrdersServed();
+	void setOrdersServed(int);
 	bool isBreak();
 	bool isHurt();
 	void setHurt(bool);
 	void goOnAbreak(int);
-	void checkCd(int); //checks if the cooldown of the cooks has ended or not, 
+	void checkCd(int); //checks if the cooldown of the cook has ended or not, 
 	bool checkOrder(int, Order*&); // checks whether the order is finished or not.
+	
 	// by Hamzawi
 	void decreasespeedtohalf();//hamzawyi i will use it in cook health
 	void returnspeedtonormal();//hamzawy i will use it to return speed to its normal value after the cook has his medications

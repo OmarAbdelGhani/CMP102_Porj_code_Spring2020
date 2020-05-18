@@ -8,7 +8,7 @@ Cook::Cook()
 	isOnAbreak = false;
 	preparing = nullptr;
 	cooldownEnd = -1;
-	ordersServed = 0;
+	ordersServedPreBreak = 0;
 }
 
 
@@ -42,12 +42,12 @@ void Cook::setType(ORD_TYPE t)
 
 void Cook::SetSpeed(int x, int y) {
 
-	speed = rand() % (y-x+1) + x;
+	speed = rand() % (y - x + 1) + x;
 
 }
 void Cook::SetBreak(int x, int y) {
 
-	Break = rand() % (y-x+1) + x;
+	Break = rand() % (y - x + 1) + x;
 
 }
 
@@ -71,11 +71,12 @@ void Cook::setCd(int cd) {
 
 }
 void Cook::checkCd(int timestep) {
-	if (cooldownEnd <= timestep) {
+	if (cooldownEnd == timestep) {
+	//	cout << "cook with id " << ID << " of type " << type << " has returned from break/rest" << endl;
 		isAvailable = true;
 		isOnAbreak = false;
 		cooldownEnd = -1; // as a flag
-		
+
 	}
 }
 
@@ -93,9 +94,9 @@ void Cook::setHurt(bool damage) {
 
 void Cook::serveOrder(Order* _order, int& timeStep) {
 	isAvailable = false; // becuase the cook cant receive an order if he is serving another
-
+	cout << "cook with id " << ID << " of type " << type << "is now serving order " << _order->GetID() << endl;
 	preparing = _order; // order is currently being served
-	ordersServed++;
+	ordersServedPreBreak++;
 	_order->setStatus(SRV);
 	_order->Set_serveTime(timeStep);
 	// we now calculate the time taken to serve the order:
@@ -109,33 +110,36 @@ bool Cook::checkOrder(int timestep, Order*& finishedOrder) {
 		finishedOrder = nullptr;
 		return false;
 	}
-	else if (preparing->Get_finishtime() <= timestep) {
+	else if (preparing->Get_finishtime() == timestep) {
 		preparing->setStatus(DONE);
 		finishedOrder = preparing;
-		cout << "Order with ID " << preparing->GetID() << " finished" << endl;
+		cout << "Order with ID " << preparing->GetID() << " finished" <<"by cook id "<<ID<<" of type "<<type<< endl;
 		preparing = nullptr;
 		return true;
 	}
+	return false;
 }
 
 int Cook::getOrdersServed() {
-	return ordersServed;
+	return ordersServedPreBreak;
 }
-
+void Cook::setOrdersServed(int orders) {
+	ordersServedPreBreak = orders;
+}
 void Cook::goOnAbreak(int timeStep) {
 	cooldownEnd = timeStep + Break;
 	isAvailable = false;
 	isOnAbreak = true;
-	cout << "Cook with id " << ID << "Went on a break, and will comeback at timestep " << cooldownEnd << endl;
+	cout << "Cook with id " << ID << " of type " << type << " Went on a break, and will comeback at timestep " << cooldownEnd << endl;
 }
 
 void Cook::decreasespeedtohalf() {
 	speed = speed / 2;
 }
-void Cook::returnspeedtonormal(){
-	speed=speed*2;
+void Cook::returnspeedtonormal() {
+	speed = speed * 2;
 }
-Order* Cook::getpreparing(){
+Order* Cook::getpreparing() {
 	return preparing;
 
 }
