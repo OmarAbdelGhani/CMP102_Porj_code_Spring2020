@@ -165,6 +165,8 @@ public:
 	void adjustBreak();
 	//hamzawy
 	void cooksHealthEmergencyProblems(); 
+	Cook* getFirstveganCookinBreak();
+	Cook* getFirstveganCookInj();
 };
 
 #endif

@@ -228,25 +228,34 @@ void Restaurant::RunSimulation()
 			}
 			checkNormaltoVIP();
 			while (!VEGANOrder.isEmpty()) {//from here hamzawy
+				Order* currentOrder = VEGANOrder.getPtrToFront()->getItem();
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
+				if(currentOrder->getUrgency()){                       
 				if (getFirstAvailableCook(TYPE_VGAN)) {         //vegan order is serviced only by vegan cooks 
 					assigned = getFirstAvailableCook(TYPE_VGAN);
 
+				}else if(getFirstveganCookinBreak()){
+					assigned=getFirstveganCookinBreak();
+				}else{
+					assigned=getFirstveganCookInj();
+				}
+				}else{
+				if (getFirstAvailableCook(TYPE_VGAN)) {         
+					assigned = getFirstAvailableCook(TYPE_VGAN);
+
+				}
 				}
 
-
-				Order* currentOrder = VEGANOrder.getPtrToFront()->getItem();
-
-				if (assigned) { //cook the order if a cook is available
+					if (assigned) { //cook the order if a cook is available
 					assigned->serveOrder(currentOrder, TS);
 					CooksInService.InsertEnd(assigned);
 					Inservicelist.InsertEnd(currentOrder);
 					VEGANOrder.dequeue(currentOrder);
 					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
 					NoVegan++;
-				}else{
+					}else{
 					break;
-				}
+					}
 			}//to here
 
 			cooksHealthEmergencyProblems();//hamzawy
@@ -1133,3 +1142,30 @@ void Restaurant::cooksHealthEmergencyProblems() {
 	
 	}
 }
+
+
+Cook* Restaurant::getFirstveganCookinBreak(){
+Node<Cook*>*breakCook = VEGANcook.getHead();
+while (breakCook && breakCook->getItem()->isBreak() == false) {
+			breakCook = breakCook->getNext();
+}
+if (!breakCook) {
+	return nullptr;
+}
+else {
+	return breakCook->getItem();
+}
+}
+Cook* Restaurant::getFirstveganCookInj(){
+		Node<Cook*>*breakCook = VEGANcook.getHead();
+				while (breakCook && breakCook->getItem()->isHurt() == false) {
+			breakCook = breakCook->getNext();
+		}
+							if (!breakCook) {
+		return nullptr;
+	}
+	else {
+		return breakCook->getItem();
+	}
+	}
+	
