@@ -160,9 +160,10 @@ public:
 	Cook* getFirstCookInj();
 	void adjustCookCooldown();
 	void checkVIPtoUrgent();
+	void adjustBreak();
 	//ahmed sami
 	void checkNormaltoVIP();
-	void adjustBreak();
+	
 	//hamzawy
 	void cooksHealthEmergencyProblems(); 
 	Cook* getFirstveganCookinBreak();

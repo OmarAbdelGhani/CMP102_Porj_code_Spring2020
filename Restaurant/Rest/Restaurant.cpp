@@ -43,6 +43,7 @@ void Restaurant::RunSimulation()
 	case MODE_INTR:
 		// try changing to one
 		std::cout << "BEGIN MODE ONE : INTERACTIVE MODE" << endl;
+		adjustBreak();
 		while (!EventsQueue.isEmpty() || Inservicelist.getHead() || !normalorder.isEmpty() || !VEGANOrder.isEmpty() || !VIPorder.isEmpty()) {
 			std::cout << "*****TIMESTEP " << TS << " BEGIN*****" << endl;
 			if (!EventsQueue.isEmpty()) {
@@ -193,7 +194,7 @@ void Restaurant::RunSimulation()
 
 				if (assigned) { //cook the order if a cook is available
 					assigned->serveOrder(currentOrder, TS);
-					NoVIP++;//added by hamzawy
+					
 					CooksInService.InsertEnd(assigned);//added by hamzawy because i will use it in cooks health
 					Inservicelist.InsertEnd(currentOrder);
 					VIPorder.dequeue(currentOrder);
@@ -230,46 +231,51 @@ void Restaurant::RunSimulation()
 			while (!VEGANOrder.isEmpty()) {//from here hamzawy
 				Order* currentOrder = VEGANOrder.getPtrToFront()->getItem();
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
-				if(currentOrder->getUrgency()){                       
-				if (getFirstAvailableCook(TYPE_VGAN)) {         //vegan order is serviced only by vegan cooks 
-					assigned = getFirstAvailableCook(TYPE_VGAN);
+				if (currentOrder->getUrgency()) {
+					if (getFirstAvailableCook(TYPE_VGAN)) {         //vegan order is serviced only by vegan cooks 
+						assigned = getFirstAvailableCook(TYPE_VGAN);
 
-				}else if(getFirstveganCookinBreak()){
-					assigned=getFirstveganCookinBreak();
-				}else{
-					assigned=getFirstveganCookInj();
+					}
+					else if (getFirstveganCookinBreak()) {
+						assigned = getFirstveganCookinBreak();
+					}
+					else {
+						assigned = getFirstveganCookInj();
+					}
 				}
-				}else{
-				if (getFirstAvailableCook(TYPE_VGAN)) {         
-					assigned = getFirstAvailableCook(TYPE_VGAN);
+				else {
+					if (getFirstAvailableCook(TYPE_VGAN)) {
+						assigned = getFirstAvailableCook(TYPE_VGAN);
 
-				}
+					}
 				}
 
-					if (assigned) { //cook the order if a cook is available
+				if (assigned) { //cook the order if a cook is available
 					assigned->serveOrder(currentOrder, TS);
 					CooksInService.InsertEnd(assigned);
 					Inservicelist.InsertEnd(currentOrder);
 					VEGANOrder.dequeue(currentOrder);
 					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
 					NoVegan++;
-					}else{
+				}
+				else {
 					break;
-					}
+				}
 			}//to here
 
 			cooksHealthEmergencyProblems();//hamzawy
-			Node<Cook*>*c=CooksInService.getHead();
-			while(c){
-				Cook*p=c->getItem();
-				if(p->isHurt()){
-					if(p->getCd()==TS){
+			Node<Cook*>* c = CooksInService.getHead();
+			while (c) {
+				Cook* p = c->getItem();
+				if (p->isHurt()) {
+					if (p->getCd() == TS) {
 						p->setHurt(false);
 						p->returnspeedtonormal();
 					}
-					c=c->getNext();
-				}else{
-					c=c->getNext();
+					c = c->getNext();
+				}
+				else {
+					c = c->getNext();
 				}
 			}
 			int Anormal, Avegan, Avip;      //An is Available normal
@@ -311,7 +317,7 @@ void Restaurant::RunSimulation()
 			Order* finishedOrderNormal = nullptr;
 			Node<Cook*>* travNorm = NORMALcook.getHead();
 			while (travNorm) {
-				// make the vip cooks check if thier orders are finished or not
+				// make the normal cooks check if thier orders are finished or not
 				if (travNorm->getItem()->checkOrder(TS, finishedOrderNormal)) {
 					if (finishedOrderNormal) {
 						Finishedlist.InsertBeg(finishedOrderNormal);
@@ -334,7 +340,7 @@ void Restaurant::RunSimulation()
 				}
 				c1 = c1->getNext();
 			}//to here
-			adjustBreak();
+
 			checkVIPtoUrgent();
 			pGUI->waitForClick();
 			std::cout << "*****TIMESTEP " << TS << " END******" << endl;
@@ -863,56 +869,56 @@ int Restaurant::WaitVIP() {
 
 
 void  Restaurant::InitializeNormal() {
-	
+
 
 	//int first = 1;
-	Node<Cook*> *curr=NORMALcook.getHead();
-	
-	
-	while (curr){
+	Node<Cook*>* curr = NORMALcook.getHead();
+
+
+	while (curr) {
 		Cook* CurrCook = NORMALcook.getHead()->getItem();
 		CurrCook->SetBreak(BN_min, BN_max);
 		CurrCook->SetSpeed(SN_min, SN_max);
 		//NORMALcook.InsertEnd(CurrCook);
 		//NORMALcook.DeleteFirst();
-		curr=curr->getNext();
-		
-		
+		curr = curr->getNext();
+
+
 	}
 }
 void Restaurant::InitializeVIP() {
-	
-	Node<Cook*> *curr=VIPcook.getHead();
+
+	Node<Cook*>* curr = VIPcook.getHead();
 	//Cook* CurrCook = VIPcook.getHead()->getItem();
-	
-	while (curr){
-		Cook* CurrCook = NORMALcook.getHead()->getItem();
+
+	while (curr) {
+		Cook* CurrCook = VIPcook.getHead()->getItem();
 		CurrCook->SetBreak(BN_min, BN_max);
 		CurrCook->SetSpeed(SN_min, SN_max);
 		//NORMALcook.InsertEnd(CurrCook);
 		//NORMALcook.DeleteFirst();
-		curr=curr->getNext();
+		curr = curr->getNext();
 		//CurrCook=curr->getItem();
 	}
-	 
+
 
 
 }
 void Restaurant::InitializeVegan() {
-	
-	Node<Cook*> *curr=VEGANcook.getHead();
+
+	Node<Cook*>* curr = VEGANcook.getHead();
 	//Cook* CurrCook = VEGANcook.getHead()->getItem();
-	
-	while(curr){
-		Cook* CurrCook = NORMALcook.getHead()->getItem();
+
+	while (curr) {
+		Cook* CurrCook = VEGANcook.getHead()->getItem();
 		CurrCook->SetBreak(BN_min, BN_max);
 		CurrCook->SetSpeed(SN_min, SN_max);
 		//NORMALcook.InsertEnd(CurrCook);
 		//NORMALcook.DeleteFirst();
-		curr=curr->getNext();
+		curr = curr->getNext();
 		//CurrCook=curr->getItem();
 	}
-	
+
 
 }
 void Restaurant::getAvailableCooksNo(int& VIP, int& vegan, int& normal) { // counts the number of available cooks of each type
@@ -947,7 +953,7 @@ void Restaurant::getAvailableCooksNo(int& VIP, int& vegan, int& normal) { // cou
 Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 	if (orderType == TYPE_VIP) {
 		Node<Cook*>* readyCook = VIPcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false) {
+		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() || readyCook->getItem()->isHurt())) {
 			readyCook = readyCook->getNext();
 		}
 		if (!readyCook) {
@@ -957,7 +963,7 @@ Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 	}
 	else if (orderType == TYPE_VGAN) {
 		Node<Cook*>* readyCook = VEGANcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false) {
+		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() || readyCook->getItem()->isHurt())) {
 			readyCook = readyCook->getNext();
 		}
 		if (!readyCook) {
@@ -967,7 +973,7 @@ Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 	}
 	else {
 		Node<Cook*>* readyCook = NORMALcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false) {
+		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() || readyCook->getItem()->isHurt())) {
 			readyCook = readyCook->getNext();
 		}
 		if (!readyCook) {
@@ -1083,21 +1089,22 @@ void Restaurant::checkNormaltoVIP() {
 }
 void Restaurant::adjustBreak() {
 	Node<Cook*>* trav = VIPcook.getHead();
-	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt()) {
-		if (trav->getItem()->getOrdersServed() % BO == 0 && trav->getItem()->getOrdersServed() != 0) {
+	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt() && !trav->getItem()->getpreparing()) {
+		if (trav->getItem()->getOrdersServed() == BO && trav->getItem()->getOrdersServed() != 0) {
 			trav->getItem()->goOnAbreak(TS);
+			trav->getItem()->setOrdersServed(0);
 		}
 		trav = trav->getNext();
 	}
 	trav = NORMALcook.getHead();
-	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt()) {
+	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt() && !trav->getItem()->getpreparing()) {
 		if (trav->getItem()->getOrdersServed() % BO == 0 && trav->getItem()->getOrdersServed() != 0) {
 			trav->getItem()->goOnAbreak(TS);
 		}
 		trav = trav->getNext();
 	}
 	trav = VEGANcook.getHead();
-	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt()) {
+	while (trav && trav->getItem()->getStatus() && !trav->getItem()->isBreak() && !trav->getItem()->isHurt() && !trav->getItem()->getpreparing()) {
 		if (trav->getItem()->getOrdersServed() % BO == 0 && trav->getItem()->getOrdersServed() != 0) {
 			trav->getItem()->goOnAbreak(TS);
 		}
@@ -1110,64 +1117,65 @@ void Restaurant::OutputOrder(Order* O) {
 
 }
 void Restaurant::cooksHealthEmergencyProblems() {
-	
+
 	Node<Cook*>* c = CooksInService.getHead();//get first
-	int x=0;
+	int x = 0;
 	if (!c) {
 		return;
 	}
-	
-	
-		//busy cook and if R<or=ingprob then make this cook injured by decreasing its speed to half and make him rest for a rest period
-	
-		int R = rand() % 10;
-		while (x==0&&c){
-			Cook* q = c->getItem();
-			
-			if ((R <= InjProb)&&(!q->isHurt())) {
+
+
+	//busy cook and if R<or=ingprob then make this cook injured by decreasing its speed to half and make him rest for a rest period
+
+	int R = rand() % 10;
+	while (x == 0 && c) {
+		Cook* q = c->getItem();
+
+		if ((R <= InjProb) && (!q->isHurt())) {
 
 			q->setHurt(true);
 			q->decreasespeedtohalf();
-			x++;
-				if(q->getpreparing()->getStatus()==DONE){
+			cout << "cook with id " << q->GetID() << " of type " << q->GetType() << " did an oopsie";
+				x++;
+			if (q->getpreparing()->getStatus() == DONE) {
 				q->setCd(RstPrd + TS);
 			}
-			
+
+		}
+		else if (q->isHurt()) {
+			if (q->getpreparing()->getStatus() == DONE) {
+				q->setCd(RstPrd + TS);
+				c = c->getNext();
 			}
-			else if (q->isHurt()) {
-				if (q->getpreparing()->getStatus() == DONE) {
-					q->setCd(RstPrd + TS);
-					c = c->getNext();
-				}
-			}
-			c=c->getNext();
-	
+		}
+		c = c->getNext();
+
 	}
 }
 
 
-Cook* Restaurant::getFirstveganCookinBreak(){
-Node<Cook*>*breakCook = VEGANcook.getHead();
-while (breakCook && breakCook->getItem()->isBreak() == false) {
-			breakCook = breakCook->getNext();
-}
-if (!breakCook) {
-	return nullptr;
-}
-else {
-	return breakCook->getItem();
-}
-}
-Cook* Restaurant::getFirstveganCookInj(){
-		Node<Cook*>*breakCook = VEGANcook.getHead();
-				while (breakCook && breakCook->getItem()->isHurt() == false) {
-			breakCook = breakCook->getNext();
-		}
-							if (!breakCook) {
+Cook* Restaurant::getFirstveganCookinBreak() {
+	Node<Cook*>* breakCook = VEGANcook.getHead();
+	while (breakCook && breakCook->getItem()->isBreak() == false) {
+		breakCook = breakCook->getNext();
+	}
+	if (!breakCook) {
 		return nullptr;
 	}
 	else {
 		return breakCook->getItem();
 	}
+}
+Cook* Restaurant::getFirstveganCookInj() {
+	Node<Cook*>* breakCook = VEGANcook.getHead();
+	while (breakCook && breakCook->getItem()->isHurt() == false) {
+		breakCook = breakCook->getNext();
 	}
-	
+	if (!breakCook) {
+		return nullptr;
+	}
+	else {
+		return breakCook->getItem();
+	}
+}
+
