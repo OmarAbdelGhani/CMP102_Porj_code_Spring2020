@@ -335,6 +335,7 @@ void Restaurant::RunSimulation()
 				c1 = c1->getNext();
 			}//to here
 			adjustBreak();
+			checkVIPtoUrgent();
 			pGUI->waitForClick();
 			std::cout << "*****TIMESTEP " << TS << " END******" << endl;
 			TS++; // increment time
@@ -1060,6 +1061,7 @@ void Restaurant::checkVIPtoUrgent() {
 	while (trav) {
 		if (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT) {
 			trav->getItem()->setUrgency(true);
+			cout << "Order with id " << trav->getItem()->GetID() << " is now urgent" << endl;
 		}
 		trav = trav->getNext();
 	}
