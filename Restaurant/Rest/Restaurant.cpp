@@ -193,9 +193,10 @@ void Restaurant::RunSimulation()
 
 
 				if (assigned) { //cook the order if a cook is available
+					CooksInService.InsertEnd(assigned);//added by hamzawy because i will use it in cooks health
 					assigned->serveOrder(currentOrder, TS);
 
-					CooksInService.InsertEnd(assigned);//added by hamzawy because i will use it in cooks health
+					
 					Inservicelist.InsertEnd(currentOrder);
 					VIPorder.dequeue(currentOrder);
 					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));//added by hamzawy
@@ -218,8 +219,9 @@ void Restaurant::RunSimulation()
 				}
 				Order* currentOrder = normalorder.getPtrToFront()->getItem();
 				if (assigned) { //cook the order if a cook is available
-					assigned->serveOrder(currentOrder, TS);
 					CooksInService.InsertEnd(assigned);//added by hamzawy
+					assigned->serveOrder(currentOrder, TS);
+					
 					Inservicelist.InsertEnd(currentOrder);
 					normalorder.dequeue(currentOrder);
 					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
@@ -251,8 +253,9 @@ void Restaurant::RunSimulation()
 				}
 
 				if (assigned) { //cook the order if a cook is available
-					assigned->serveOrder(currentOrder, TS);
 					CooksInService.InsertEnd(assigned);
+					assigned->serveOrder(currentOrder, TS);
+					
 					Inservicelist.InsertEnd(currentOrder);
 					VEGANOrder.dequeue(currentOrder);
 					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
