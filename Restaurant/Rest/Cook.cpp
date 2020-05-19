@@ -41,12 +41,12 @@ void Cook::setType(ORD_TYPE t)
 
 
 void Cook::SetSpeed(int x, int y) {
-	srand;
+	srand(this->ID);
 	speed = rand() % (y - x + 1) + x;
 
 }
 void Cook::SetBreak(int x, int y) {
-	srand;
+	srand(this->ID);
 	Break = rand() % (y - x + 1) + x;
 
 }
