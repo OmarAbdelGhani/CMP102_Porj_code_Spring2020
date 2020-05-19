@@ -94,6 +94,9 @@ void Cook::setHurt(bool damage) {
 
 void Cook::serveOrder(Order* _order, int& timeStep) {
 	isAvailable = false; // becuase the cook cant receive an order if he is serving another
+	if (preparing) {
+		return;
+	}
 	cout << "cook with id " << ID << " of type " << type << "is now serving order " << _order->GetID() << endl;
 	preparing = _order; // order is currently being served
 	ordersServedPreBreak++;
