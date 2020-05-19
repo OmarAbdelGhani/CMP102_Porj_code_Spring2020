@@ -1020,19 +1020,28 @@ Cook* Restaurant::getFirstCookBreak() {
 Cook* Restaurant::getFirstCookInj() {
 	//this function returns the first cook that is on a break
 	Node<Cook*>* breakCook = VIPcook.getHead();
-	while (breakCook && breakCook->getItem()->isHurt() == false) {
+	while (breakCook) {
+		if (breakCook->getItem()->isHurt() && !breakCook->getItem()->getpreparing()) {
+			return breakCook->getItem();
+		}
 		breakCook = breakCook->getNext();
 	}
 	if (!breakCook) { // if there isn't a VIP cook on a break , look for a normal cook on a break
 		breakCook = NORMALcook.getHead();
-		while (breakCook && breakCook->getItem()->isHurt() == false) {
+		while (breakCook) {
+			if (breakCook->getItem()->isHurt() && !breakCook->getItem()->getpreparing()) {
+				return breakCook->getItem();
+			}
 			breakCook = breakCook->getNext();
 		}
 
 	}
-	if (!breakCook) { // if there isn't a VIP cook on a break , look for a normal cook on a break
+	if (!breakCook) { // if there isn't a normal cook on a break , look for a vegan cook on a break
 		breakCook = VEGANcook.getHead();
-		while (breakCook && breakCook->getItem()->isHurt() == false) {
+		while (breakCook) {
+			if (breakCook->getItem()->isHurt() && !breakCook->getItem()->getpreparing()) {
+				return breakCook->getItem();
+			}
 			breakCook = breakCook->getNext();
 		}
 
