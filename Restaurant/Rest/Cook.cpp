@@ -6,6 +6,7 @@ Cook::Cook()
 {
 	isAvailable = true;
 	isOnAbreak = false;
+	isInj=false;
 	preparing = nullptr;
 	cooldownEnd = -1;
 	ordersServedPreBreak = 0;

@@ -1,4 +1,4 @@
-﻿Build started 5/19/2020 10:13:51 PM.
+﻿Build started 5/21/2020 1:52:38 AM.
      1>Project "C:\Users\HPP\Documents\GitHub\CMP102_Porj_code_Spring2020\Restaurant\Restaurant.vcxproj" on node 2 (build target(s)).
        Project file contains ToolsVersion="14.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
      1>InitializeBuildStatus:
@@ -6,13 +6,13 @@
        ClCompile:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Rest\Restaurant.cpp
          Restaurant.cpp
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(548): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(581): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(635): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(556): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(589): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(643): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdlib.h(867) : see declaration of 'itoa'
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(866): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(1094): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(562): warning C4715: 'Restaurant::Getordertype' : not all control paths return a value
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(874): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(1117): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\rest\restaurant.cpp(570): warning C4715: 'Restaurant::Getordertype' : not all control paths return a value
      1>c:\users\hpp\documents\github\cmp102_porj_code_spring2020\restaurant\generic_ds\queue.h(203): warning C4715: 'Queue<Order *>::dequeueWithOrderID' : not all control paths return a value
          All outputs are up-to-date.
        ManifestResourceCompile:
@@ -76,4 +76,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.32
+Time Elapsed 00:00:03.95

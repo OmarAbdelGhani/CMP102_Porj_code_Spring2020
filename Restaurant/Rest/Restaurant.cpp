@@ -271,16 +271,24 @@ void Restaurant::RunSimulation()
 			while (c) {
 				Cook* p = c->getItem();
 				if (p->isHurt()) {
-					if (p->getCd() == TS) {
+					if ((p->getCd() == TS)&&(!p->getpreparing())) {
 						p->setHurt(false);
 						p->returnspeedtonormal();
+						//Cook*f=p;
+						//p=c->getNext()->getItem();
+						c=c->getNext();
+						CooksInService.DeleteNode(p);
+					}else{
+						c=c->getNext();
 					}
-					c = c->getNext();
+					
 				}
 				else {
 					c = c->getNext();
 				}
+		
 			}
+			
 			int Anormal, Avegan, Avip;      //An is Available normal
 			getAvailableCooksNo(Avip, Avegan, Anormal);
 			this->FillDrawingList();
@@ -1060,19 +1068,25 @@ Cook* Restaurant::getFirstCookInj() {
 void Restaurant::adjustCookCooldown() {
 	Node<Cook*>* travVIP = VIPcook.getHead();
 	while (travVIP) {
+		if(!travVIP->getItem()->getpreparing()){//hamzawy
 		travVIP->getItem()->checkCd(TS);
+		}
 		travVIP = travVIP->getNext();
 	}
 
 	Node<Cook*>* travVGAN = VEGANcook.getHead();
-	while (travVGAN) {
+	while (travVGAN){
+		if(!travVGAN->getItem()->getpreparing()){//hamzawy
 		travVGAN->getItem()->checkCd(TS);
+		}
 		travVGAN = travVGAN->getNext();
 	}
 
 	Node<Cook*>* travNRM = NORMALcook.getHead();
 	while (travNRM) {
+		if(!travNRM->getItem()->getpreparing()){//hamzawy
 		travNRM->getItem()->checkCd(TS);
+		}
 		travNRM = travNRM->getNext();
 	}
 
@@ -1147,7 +1161,7 @@ void Restaurant::cooksHealthEmergencyProblems() {
 
 	//busy cook and if R<or=ingprob then make this cook injured by decreasing its speed to half and make him rest for a rest period
 
-	int R = rand() % 10;
+	int R = 0;
 	while (x == 0 && c) {
 		Cook* q = c->getItem();
 
@@ -1155,21 +1169,27 @@ void Restaurant::cooksHealthEmergencyProblems() {
 
 			q->setHurt(true);
 			q->decreasespeedtohalf();
+			if(q->getpreparing()){
+			q->getpreparing()->Set_finishTime(TS+(q->getpreparing()->Get_finishtime()-TS)*2);
+			}
 			cout << "cook with id " << q->GetID() << " of type " << q->GetType() << " did an oopsie";
 			x++;
-			if (q->getpreparing()->getStatus() == DONE) {
+			
+			if (!q->getpreparing()) {
 				q->setCd(RstPrd + TS);
 			}
-
+			
+	
 		}
 		else if (q->isHurt()) {
-			if (q->getpreparing()->getStatus() == DONE) {
+			
+			if (!q->getpreparing()) {
 				q->setCd(RstPrd + TS);
-				c = c->getNext();
+				//c = c->getNext();
 			}
+		
 		}
-		c = c->getNext();
-
+		c=c->getNext();
 	}
 }
 
