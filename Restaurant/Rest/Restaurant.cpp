@@ -321,6 +321,7 @@ void Restaurant::RunSimulation()
 					if (finishedOrder) {
 						Finishedlist.InsertBeg(finishedOrder);
 						Inservicelist.DeleteNode(finishedOrder);
+						OutputOrder(finishedOrder);
 						ServiceTime += ((finishedOrder->Get_finishtime()) - (finishedOrder->Get_servetime()));//added by hamzawy
 					}
 				}
@@ -334,6 +335,7 @@ void Restaurant::RunSimulation()
 					if (finishedOrderNormal) {
 						Finishedlist.InsertBeg(finishedOrderNormal);
 						Inservicelist.DeleteNode(finishedOrderNormal);
+						OutputOrder(finishedOrderNormal);
 						ServiceTime += ((finishedOrderNormal->Get_finishtime()) - (finishedOrderNormal->Get_servetime()));//added by samy
 					}
 				}
@@ -347,6 +349,7 @@ void Restaurant::RunSimulation()
 					if (finishedOrdervegan) {
 						Finishedlist.InsertBeg(finishedOrdervegan);
 						Inservicelist.DeleteNode(finishedOrdervegan);
+						OutputOrder(finishedOrdervegan);
 						ServiceTime += ((finishedOrdervegan->Get_finishtime()) - (finishedOrdervegan->Get_servetime()));
 					}
 				}
