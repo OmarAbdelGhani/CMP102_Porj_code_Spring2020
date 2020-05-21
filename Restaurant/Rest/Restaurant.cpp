@@ -1110,12 +1110,16 @@ void Restaurant::checkNormaltoVIP() {
 		return;
 	}
 	while (trav) {
-		if (TS - (trav->getItem()->Get_Arrtime()) >= AutoP) {
+		if (TS - (trav->getItem()->Get_Arrtime()) >= AutoP)
+		{
 			Order* currentOrder = trav->getItem();
+			trav = trav->getNext();
 			normalorder.dequeue(currentOrder);
 			currentOrder->calc_priority();
 			VIPorder.enqueue(currentOrder, currentOrder->GetPriority());
 		}
+		else
+		
 		trav = trav->getNext();
 	}
 }
