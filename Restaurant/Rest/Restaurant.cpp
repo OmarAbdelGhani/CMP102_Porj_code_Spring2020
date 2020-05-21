@@ -11,7 +11,8 @@ using namespace std;
 Restaurant::Restaurant()
 {
 	pGUI = NULL;
-	NoInj=0;
+	
+	
 }
 
 void Restaurant::RunSimulation()
@@ -24,6 +25,7 @@ void Restaurant::RunSimulation()
 	NoNormal = 0; NoVegan = 0;   NoVIP = 0;
 	WaitingTime = 0;  ServiceTime = 0;
 	NoUrgent = 0;  NoAutoPromoted = 0;
+	NoInj=0;
 
 	LinkedList<Order*>Inservicelist1;
 	InitializeNormal();
@@ -200,7 +202,7 @@ void Restaurant::RunSimulation()
 					
 					Inservicelist.InsertEnd(currentOrder);
 					VIPorder.dequeue(currentOrder);
-					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));//added by hamzawy
+					//WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));//added by hamzawy
 				}
 				else {
 					break;
@@ -225,7 +227,7 @@ void Restaurant::RunSimulation()
 					
 					Inservicelist.InsertEnd(currentOrder);
 					normalorder.dequeue(currentOrder);
-					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
+				//	WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
 					NoNormal++;
 				}
 
@@ -259,7 +261,7 @@ void Restaurant::RunSimulation()
 					
 					Inservicelist.InsertEnd(currentOrder);
 					VEGANOrder.dequeue(currentOrder);
-					WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
+				//	WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
 					NoVegan++;
 				}
 				else {
@@ -322,7 +324,7 @@ void Restaurant::RunSimulation()
 						Finishedlist.InsertBeg(finishedOrder);
 						Inservicelist.DeleteNode(finishedOrder);
 						OutputOrder(finishedOrder);
-						ServiceTime += ((finishedOrder->Get_finishtime()) - (finishedOrder->Get_servetime()));//added by hamzawy
+						//ServiceTime += ((finishedOrder->Get_finishtime()) - (finishedOrder->Get_servetime()));//added by hamzawy
 					}
 				}
 				travVIP = travVIP->getNext();
@@ -336,7 +338,7 @@ void Restaurant::RunSimulation()
 						Finishedlist.InsertBeg(finishedOrderNormal);
 						Inservicelist.DeleteNode(finishedOrderNormal);
 						OutputOrder(finishedOrderNormal);
-						ServiceTime += ((finishedOrderNormal->Get_finishtime()) - (finishedOrderNormal->Get_servetime()));//added by samy
+						//ServiceTime += ((finishedOrderNormal->Get_finishtime()) - (finishedOrderNormal->Get_servetime()));//added by samy
 					}
 				}
 				travNorm = travNorm->getNext();
@@ -350,7 +352,7 @@ void Restaurant::RunSimulation()
 						Finishedlist.InsertBeg(finishedOrdervegan);
 						Inservicelist.DeleteNode(finishedOrdervegan);
 						OutputOrder(finishedOrdervegan);
-						ServiceTime += ((finishedOrdervegan->Get_finishtime()) - (finishedOrdervegan->Get_servetime()));
+						//ServiceTime += ((finishedOrdervegan->Get_finishtime()) - (finishedOrdervegan->Get_servetime()));
 					}
 				}
 				c1 = c1->getNext();
@@ -908,8 +910,8 @@ void Restaurant::InitializeVIP() {
 
 	while (curr) {
 		Cook* CurrCook = VIPcook.getHead()->getItem();
-		CurrCook->SetBreak(BN_min, BN_max);
-		CurrCook->SetSpeed(SN_min, SN_max);
+		CurrCook->SetBreak(BV_min, BV_max);
+		CurrCook->SetSpeed(SV_min, SV_max);
 		//NORMALcook.InsertEnd(CurrCook);
 		//NORMALcook.DeleteFirst();
 		curr = curr->getNext();
@@ -926,8 +928,8 @@ void Restaurant::InitializeVegan() {
 
 	while (curr) {
 		Cook* CurrCook = VEGANcook.getHead()->getItem();
-		CurrCook->SetBreak(BN_min, BN_max);
-		CurrCook->SetSpeed(SN_min, SN_max);
+		CurrCook->SetBreak(BG_min, BG_max);
+		CurrCook->SetSpeed(SG_min, SG_max);
 		//NORMALcook.InsertEnd(CurrCook);
 		//NORMALcook.DeleteFirst();
 		curr = curr->getNext();
@@ -1155,8 +1157,9 @@ void Restaurant::adjustBreak() {
 }
 
 void Restaurant::OutputOrder(Order* O) {
-	Ofile << O->Get_finishtime() << "\t" << O->GetID() << "\t" << O->Get_Arrtime() << "\t" << O->Get_servetime() - O->Get_servetime() << "\t" << O->Get_servetime() << endl;
-
+	Ofile << O->Get_finishtime() << "\t" << O->GetID() << "\t" << O->Get_Arrtime() << "\t" << O->Get_servetime() - O->Get_Arrtime() << "\t" << O->Get_finishtime()-O->Get_servetime() << endl;
+	WaitingTime+=O->Get_servetime() - O->Get_Arrtime();
+	ServiceTime+=O->Get_finishtime()-O->Get_servetime();
 }
 void Restaurant::cooksHealthEmergencyProblems() {
 
@@ -1168,14 +1171,16 @@ void Restaurant::cooksHealthEmergencyProblems() {
 
 
 	//busy cook and if R<or=ingprob then make this cook injured by decreasing its speed to half and make him rest for a rest period
-	srand(InjProb);
-	int R = rand() % (InjProb - 0 + 1) + 0;
+	srand(time(0));
+	float R =( (rand() % 100) );
+	R=R/100;
 	while (x == 0 && c) {
 		Cook* q = c->getItem();
 
 		if ((R <= InjProb) && (!q->isHurt())) {
 
 			q->setHurt(true);
+			NoInj++;
 			q->decreasespeedtohalf();
 			if(q->getpreparing()){
 			q->getpreparing()->Set_finishTime(TS+(q->getpreparing()->Get_finishtime()-TS)*2);

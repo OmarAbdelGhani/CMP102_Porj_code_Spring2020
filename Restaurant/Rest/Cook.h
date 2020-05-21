@@ -2,6 +2,7 @@
 #include"Order.h"
 #include "..\Defs.h"
 #include <stdlib.h> 
+#include<time.h>
 
 #pragma once
 class Cook

@@ -12,6 +12,7 @@
 #include "..\Cancellation_event.h"
 #include "..\PromotionEvent.h"
 #include <fstream>
+#include <time.h>
 
 
 
@@ -77,7 +78,7 @@ private:
 	int BV_min;          //Min break of vip
 	int BV_max;			//Max break of vip
 
-	int InjProb;        //Injury probability of cook
+	float InjProb;        //Injury probability of cook
 	int RstPrd;          //Rest period of the injured cook
 
 	int AutoP;    //TIME TO PROMOT NORMAL ORDER TP VIP
@@ -89,8 +90,8 @@ private:
 	int NoVIP;		//No of VIP	  Orders
 	int NoInj;      //No of injured cooks
 
-	int WaitingTime;  //Total Waiting time
-	int ServiceTime;  //Total serving time
+	float WaitingTime;  //Total Waiting time
+	float ServiceTime;  //Total serving time
 
 	int NoUrgent;  //Total urgent orders
 	int NoAutoPromoted; //Total number of auto promoted orders
