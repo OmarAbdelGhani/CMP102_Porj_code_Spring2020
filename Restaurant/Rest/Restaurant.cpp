@@ -1110,12 +1110,16 @@ void Restaurant::checkNormaltoVIP() {
 		return;
 	}
 	while (trav) {
-		if (TS - (trav->getItem()->Get_Arrtime()) >= AutoP) {
+		if (TS - (trav->getItem()->Get_Arrtime()) >= AutoP)
+		{
 			Order* currentOrder = trav->getItem();
+			trav = trav->getNext();
 			normalorder.dequeue(currentOrder);
 			currentOrder->calc_priority();
 			VIPorder.enqueue(currentOrder, currentOrder->GetPriority());
 		}
+		else
+		
 		trav = trav->getNext();
 	}
 }
@@ -1160,8 +1164,8 @@ void Restaurant::cooksHealthEmergencyProblems() {
 
 
 	//busy cook and if R<or=ingprob then make this cook injured by decreasing its speed to half and make him rest for a rest period
-
-	int R = 0;
+	srand(InjProb);
+	int R = rand() % (InjProb - 0 + 1) + 0;
 	while (x == 0 && c) {
 		Cook* q = c->getItem();
 
