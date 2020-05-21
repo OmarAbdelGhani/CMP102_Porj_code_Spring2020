@@ -11,6 +11,7 @@ using namespace std;
 Restaurant::Restaurant()
 {
 	pGUI = NULL;
+	NoInj=0;
 }
 
 void Restaurant::RunSimulation()
@@ -375,10 +376,10 @@ void Restaurant::RunSimulation()
 	pGUI->PrintMessage("Finished,click to continue");
 	pGUI->waitForClick();
 	//AMER: Uncomment when ready
-	//Ofile << "Orders: " << NoNormal + NoVegan + NoVIP << "[Norm:" << NoNormal << ", Veg:" << NoVegan << ", VIP:" << NoVIP << "]" << endl;
-	//Ofile << "cooks:" << V + N + G << "[Norm:" << N << ", Veg:" << G << ", VIP:" << V << ",  injured:" << NoInj << "]" << endl;
-	//Ofile << "Avg Wait = " << WaitingTime / (NoNormal + NoVegan + NoVIP) << ",  Avg Serv = " << ServiceTime / (NoNormal + NoVegan + NoVIP) << endl;
-	//Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: " << NoAutoPromoted / (NoNormal + NoVegan + NoVIP) * 100 << "%" << endl;
+	Ofile << "Orders: " << NoNormal + NoVegan + NoVIP << "[Norm:" << NoNormal << ", Veg:" << NoVegan << ", VIP:" << NoVIP << "]" << endl;
+	Ofile << "cooks:" << V + N + G << "[Norm:" << N << ", Veg:" << G << ", VIP:" << V << ",  injured:" << NoInj << "]" << endl;
+	Ofile << "Avg Wait = " << WaitingTime / (NoNormal + NoVegan + NoVIP) << ",  Avg Serv = " << ServiceTime / (NoNormal + NoVegan + NoVIP) << endl;
+	Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: " << NoAutoPromoted / (NoNormal + NoVegan + NoVIP) * 100 << "%" << endl;
 }
 
 
