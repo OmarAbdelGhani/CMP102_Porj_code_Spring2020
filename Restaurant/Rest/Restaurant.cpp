@@ -150,13 +150,36 @@ void Restaurant::RunSimulation()
 			// w 3adelto feha 7aba el mfrood tb2o 5alasto goz2 el order handling
 			
 			
-			adjustCookCooldown(); // at the end of each timestep this function makes sure that every cook
+			adjustCookCooldown(); // at the end--->beggining of each timestep this function makes sure that every cook
 			// returns to work when his cooldown ends (remember to add breaks and injuries too)
 			//(hamzawy changed the place of this because of the logic)	//		Then Omar AbdelGhani Changed it
 			//Should be in the beginning of the time step instead of end to be available to use
 
 			checkVIPtoUrgent(); //Omar AbdelGhani Changed Place
 			//Also should be in the beginning of time step
+			cooksHealthEmergencyProblems();//hamzawy
+			Node<Cook*>* c = CooksInService.getHead();
+			while (c) {
+				Cook* p = c->getItem();
+				if (p->isHurt()) {
+					if ((p->getCd() == TS)&&(!p->getpreparing())) {
+						p->setHurt(false);
+						p->returnspeedtonormal();
+						//Cook*f=p;
+						//p=c->getNext()->getItem();
+						c=c->getNext();
+						CooksInService.DeleteNode(p);
+					}else{
+						c=c->getNext();
+					}
+					
+				}
+				else {
+					c = c->getNext();
+				}
+		
+			}
+
 
 			while (!VIPorder.isEmpty()) {
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
@@ -274,28 +297,7 @@ void Restaurant::RunSimulation()
 				}
 			}//to here
 
-			cooksHealthEmergencyProblems();//hamzawy
-			Node<Cook*>* c = CooksInService.getHead();
-			while (c) {
-				Cook* p = c->getItem();
-				if (p->isHurt()) {
-					if ((p->getCd() == TS)&&(!p->getpreparing())) {
-						p->setHurt(false);
-						p->returnspeedtonormal();
-						//Cook*f=p;
-						//p=c->getNext()->getItem();
-						c=c->getNext();
-						CooksInService.DeleteNode(p);
-					}else{
-						c=c->getNext();
-					}
-					
-				}
-				else {
-					c = c->getNext();
-				}
-		
-			}
+			
 			
 			
 			
