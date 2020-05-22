@@ -9,7 +9,7 @@ class Cook
 {
 	int ID;
 	ORD_TYPE type;	//for each order type there is a corresponding type (VIP, Normal, Vegan)
-	int speed;		//dishes it can prepare in one clock tick (in one timestep)
+	float speed;		//dishes it can prepare in one clock tick (in one timestep)
 	int Break;		//Break time for each cook
 	bool isAvailable; // is set to false whenever a cook isnt availble to receive a new order , ie: (injured, on a break, etc...) -Amer
 					  // it is set to true by defualt

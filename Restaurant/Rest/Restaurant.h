@@ -136,7 +136,7 @@ public:
 	void InitializeVegan();
 	//to initialize cooks of each type with data entered in the file
 
-	Order CancelById(int);      //For order Cancellation
+	Order* CancelById(int);      //For order Cancellation
 	int WaitNormal();         //Counts number of waiting Orders
 	int WaitVegan();			//Counts number of waiting vegan orders
 	int WaitVIP();				//Counts number of waiting vip orders

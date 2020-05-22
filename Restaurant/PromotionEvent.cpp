@@ -5,8 +5,9 @@ PromotionEvent::PromotionEvent(int eventTime, int ID,double m):Event(eventTime,I
 	MoneyPaid=m;
 }
 	 void PromotionEvent::Execute(Restaurant* r){
-		Order O= r->CancelById(OrderID);
-		 r->AddToVIPArray(&O);
+		Order *O= r->CancelById(OrderID);
+		if(O)
+		r->AddToVIPArray(O);
 	}
 
 PromotionEvent::~PromotionEvent(void)

@@ -32,7 +32,7 @@ void Restaurant::RunSimulation()
 	InitializeVIP();
 	InitializeVegan();
 
-	TS = 1;
+	TS = 0;
 	string ts;
 	string Nn, Nv, Ng;
 	int x = 1; // a variable to know after 5 time steps
@@ -40,10 +40,7 @@ void Restaurant::RunSimulation()
 	string ve;// to count the number of waiting  vegan orders
 	string n;// to count the number of waiting  normal orders
 	//bool first=true;
-	switch (mode)	//Add a function for each mode in next phases
-	{
-
-	case MODE_INTR:
+		//Add a function for each mode in next phases
 		// try changing to one
 		std::cout << "BEGIN MODE ONE : INTERACTIVE MODE" << endl;
 
@@ -151,7 +148,15 @@ void Restaurant::RunSimulation()
 			// ay so2al kalemony messenger aw whatsapp y3ny
 			// el mfrood lw 5adto copy w paste mn el functions de
 			// w 3adelto feha 7aba el mfrood tb2o 5alasto goz2 el order handling
+			
+			
+			adjustCookCooldown(); // at the end of each timestep this function makes sure that every cook
+			// returns to work when his cooldown ends (remember to add breaks and injuries too)
+			//(hamzawy changed the place of this because of the logic)	//		Then Omar AbdelGhani Changed it
+			//Should be in the beginning of the time step instead of end to be available to use
 
+			checkVIPtoUrgent(); //Omar AbdelGhani Changed Place
+			//Also should be in the beginning of time step
 
 			while (!VIPorder.isEmpty()) {
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
@@ -292,29 +297,12 @@ void Restaurant::RunSimulation()
 		
 			}
 			
-			int Anormal, Avegan, Avip;      //An is Available normal
-			getAvailableCooksNo(Avip, Avegan, Anormal);
-			this->FillDrawingList();
-			pGUI->UpdateInterface();
-			pGUI->ResetDrawingList();
-			n = to_string(long double(this->WaitNormal()));
-			ve = to_string(long double(this->WaitVegan()));
-			v = to_string(long double(this->WaitVIP()));
-			ts = to_string((long double(TS)));
-			Nn = to_string(long double(Anormal));
-			Nv = to_string(long double(Avip));
-			Ng = to_string(long double((Avegan)));
-			pGUI->PrintMessage("Ts: " + ts); //here you should also print i (timestep)
-			pGUI->PrintMessage("No. of Available Normal Cooks: " + Nn, 670);
-			pGUI->PrintMessage("No. of Available Vegan Cooks: " + Ng, 690);
-			pGUI->PrintMessage("No. of Available VIP Cooks: " + Nv, 710);
-			pGUI->PrintMessage("No of Waiting Normal Orders: " + n, 730);
-			pGUI->PrintMessage("No of Waiting Vegan Orders: " + ve, 750);
-			pGUI->PrintMessage("No of Waiting VIP Orders: " + v, 770);
+			
+			
 
-			adjustCookCooldown(); // at the end of each timestep this function makes sure that every cook
+			//adjustCookCooldown(); // at the end of each timestep this function makes sure that every cook
 								  // returns to work when his cooldown ends (remember to add breaks and injuries too)
-			std::cout << "Cook cooldown adjusted" << endl;
+			//std::cout << "Cook cooldown adjusted" << endl;
 			Order* finishedOrder = nullptr;
 			Node<Cook*>* travVIP = VIPcook.getHead();
 			while (travVIP) {
@@ -357,19 +345,63 @@ void Restaurant::RunSimulation()
 				}
 				c1 = c1->getNext();
 			}//to here
-		adjustCookCooldown(); // at the end of each timestep this function makes sure that every cook
-			//(hamzawy changed the place of this because of the logic)					  // returns to work when his cooldown ends (remember to add breaks and injuries too)
+		
 			adjustBreak();
-			checkVIPtoUrgent();
-			pGUI->waitForClick();
+			
+			//pGUI->waitForClick();
 			std::cout << "*****TIMESTEP " << TS << " END******" << endl;
-			TS++; // increment time
-
-		}
-
-
+			 // increment time
+			int Anormal, Avegan, Avip;   //Available Normal,Vegan, and VIP
+		
+		switch(mode){
+		case MODE_INTR:
+			this->FillDrawingList();
+			pGUI->UpdateInterface();
+			pGUI->ResetDrawingList();
+			    //An is Available normal
+			getAvailableCooksNo(Avip, Avegan, Anormal);
+			n = to_string(long double(this->WaitNormal()));
+			ve = to_string(long double(this->WaitVegan()));
+			v = to_string(long double(this->WaitVIP()));
+			ts = to_string((long double(TS)));
+			Nn = to_string(long double(Anormal));
+			Nv = to_string(long double(Avip));
+			Ng = to_string(long double((Avegan)));
+			pGUI->PrintMessage("Ts: " + ts); //here you should also print i (timestep)
+			pGUI->PrintMessage("No. of Available Normal Cooks: " + Nn, 670);
+			pGUI->PrintMessage("No. of Available Vegan Cooks: " + Ng, 690);
+			pGUI->PrintMessage("No. of Available VIP Cooks: " + Nv, 710);
+			pGUI->PrintMessage("No of Waiting Normal Orders: " + n, 730);
+			pGUI->PrintMessage("No of Waiting Vegan Orders: " + ve, 750);
+			pGUI->PrintMessage("No of Waiting VIP Orders: " + v, 770);
+			pGUI->waitForClick();
+			TS++;
 		break;
 	case MODE_STEP:
+		this->FillDrawingList();
+			pGUI->UpdateInterface();
+			pGUI->ResetDrawingList();
+			
+			getAvailableCooksNo(Avip, Avegan, Anormal);
+			//this->FillDrawingList();
+			//pGUI->UpdateInterface();
+			//pGUI->ResetDrawingList();
+			n = to_string(long double(this->WaitNormal()));
+			ve = to_string(long double(this->WaitVegan()));
+			v = to_string(long double(this->WaitVIP()));
+			ts = to_string((long double(TS)));
+			Nn = to_string(long double(Anormal));
+			Nv = to_string(long double(Avip));
+			Ng = to_string(long double((Avegan)));
+		pGUI->PrintMessage("Ts: " + ts); //here you should also print i (timestep)
+			pGUI->PrintMessage("No. of Available Normal Cooks: " + Nn, 670);
+			pGUI->PrintMessage("No. of Available Vegan Cooks: " + Ng, 690);
+			pGUI->PrintMessage("No. of Available VIP Cooks: " + Nv, 710);
+			pGUI->PrintMessage("No of Waiting Normal Orders: " + n, 730);
+			pGUI->PrintMessage("No of Waiting Vegan Orders: " + ve, 750);
+			pGUI->PrintMessage("No of Waiting VIP Orders: " + v, 770);
+		Sleep(1000);
+		TS++;
 		break;
 	case MODE_SLNT:
 		break;
@@ -377,11 +409,16 @@ void Restaurant::RunSimulation()
 		Just_A_Demo();
 
 	};
-	this->FillDrawingList();
-	pGUI->UpdateInterface();
-	pGUI->ResetDrawingList();
-	pGUI->PrintMessage("Finished,click to continue");
-	pGUI->waitForClick();
+		}
+	//this->FillDrawingList();
+	//pGUI->UpdateInterface();
+	//pGUI->ResetDrawingList();
+		if (mode==MODE_INTR)
+			pGUI->PrintMessage("Finished,click to continue");
+		else if (mode==MODE_STEP){
+			pGUI->PrintMessage("Finished,click to continue");
+			Sleep(1000);
+		}
 	//AMER: Uncomment when ready
 	Ofile << "Orders: " << NoNormal + NoVegan + NoVIP << "[Norm:" << NoNormal << ", Veg:" << NoVegan << ", VIP:" << NoVIP << "]" << endl;
 	Ofile << "cooks:" << V + N + G << "[Norm:" << N << ", Veg:" << G << ", VIP:" << V << ",  injured:" << NoInj << "]" << endl;
@@ -794,10 +831,12 @@ void Restaurant::LoadFile() {
 
 }
 
-Order Restaurant::CancelById(int id) {
+Order* Restaurant::CancelById(int id) {
 	Order* O;
-	normalorder.dequeueWithOrderID(id, O);
-	return (*O);
+	if(normalorder.dequeueWithOrderID(id, O))
+		return (O);
+	else
+		return nullptr;
 
 }
 void Restaurant::setNoNormal(int number) {
@@ -895,7 +934,7 @@ void  Restaurant::InitializeNormal() {
 
 
 	while (curr) {
-		Cook* CurrCook = NORMALcook.getHead()->getItem();
+		Cook* CurrCook = curr->getItem();
 		CurrCook->SetBreak(BN_min, BN_max);
 		CurrCook->SetSpeed(SN_min, SN_max);
 		//NORMALcook.InsertEnd(CurrCook);
@@ -911,7 +950,7 @@ void Restaurant::InitializeVIP() {
 	//Cook* CurrCook = VIPcook.getHead()->getItem();
 
 	while (curr) {
-		Cook* CurrCook = VIPcook.getHead()->getItem();
+		Cook* CurrCook = curr->getItem();
 		CurrCook->SetBreak(BV_min, BV_max);
 		CurrCook->SetSpeed(SV_min, SV_max);
 		//NORMALcook.InsertEnd(CurrCook);
@@ -929,7 +968,7 @@ void Restaurant::InitializeVegan() {
 	//Cook* CurrCook = VEGANcook.getHead()->getItem();
 
 	while (curr) {
-		Cook* CurrCook = VEGANcook.getHead()->getItem();
+		Cook* CurrCook = curr->getItem();
 		CurrCook->SetBreak(BG_min, BG_max);
 		CurrCook->SetSpeed(SG_min, SG_max);
 		//NORMALcook.InsertEnd(CurrCook);
