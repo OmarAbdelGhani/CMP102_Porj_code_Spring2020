@@ -1145,7 +1145,7 @@ void Restaurant::checkVIPtoUrgent() {
 		return;
 	}
 	while (trav) {
-		if (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT) {
+		if (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT && !trav->getItem()->getUrgency()) {
 			trav->getItem()->setUrgency(true);
 			cout << "Order with id " << trav->getItem()->GetID() << " is now urgent" << endl;
 		}
