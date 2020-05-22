@@ -357,6 +357,8 @@ void Restaurant::RunSimulation()
 				}
 				c1 = c1->getNext();
 			}//to here
+		adjustCookCooldown(); // at the end of each timestep this function makes sure that every cook
+			//(hamzawy changed the place of this because of the logic)					  // returns to work when his cooldown ends (remember to add breaks and injuries too)
 			adjustBreak();
 			checkVIPtoUrgent();
 			pGUI->waitForClick();
@@ -970,7 +972,7 @@ void Restaurant::getAvailableCooksNo(int& VIP, int& vegan, int& normal) { // cou
 Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 	if (orderType == TYPE_VIP) {
 		Node<Cook*>* readyCook = VIPcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() || readyCook->getItem()->isHurt())) {
+		while (readyCook && readyCook->getItem()->getStatus() == false && (!readyCook->getItem()->isBreak() || !readyCook->getItem()->isHurt())) {
 			readyCook = readyCook->getNext();
 		}
 		if (!readyCook) {
@@ -980,7 +982,7 @@ Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 	}
 	else if (orderType == TYPE_VGAN) {
 		Node<Cook*>* readyCook = VEGANcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() || readyCook->getItem()->isHurt())) {
+		while (readyCook && readyCook->getItem()->getStatus() == false && (!readyCook->getItem()->isBreak() || !readyCook->getItem()->isHurt())) {
 			readyCook = readyCook->getNext();
 		}
 		if (!readyCook) {
@@ -990,7 +992,7 @@ Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 	}
 	else {
 		Node<Cook*>* readyCook = NORMALcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() || readyCook->getItem()->isHurt())) {
+		while (readyCook && readyCook->getItem()->getStatus() == false && (!readyCook->getItem()->isBreak() || !readyCook->getItem()->isHurt())) {
 			readyCook = readyCook->getNext();
 		}
 		if (!readyCook) {

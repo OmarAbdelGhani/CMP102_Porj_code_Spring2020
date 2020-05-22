@@ -5,12 +5,7 @@ Order::Order(int id, ORD_TYPE r_Type)
 	ID = (id > 0 && id < 1000) ? id : 0;	//1<ID<999
 	type = r_Type;
 	isUrgent = false;
-	if (r_Type == TYPE_VIP) {
-		calc_priority();
-	}
-	else {
-		priority = 0;
-	}
+	
 	status = WAIT;
 }
 
@@ -103,9 +98,10 @@ int Order::Get_finishtime()
 
 void Order::calc_priority()
 {
-	int p;
-	p = (24 - ArrTime) + totalMoney + Order_Size;
-	priority = p;
+	//int p;
+	//p = (24 - ArrTime) + totalMoney + Order_Size;
+	
+	priority = 2 * totalMoney - Order_Size; // AMER
 
 }
 
