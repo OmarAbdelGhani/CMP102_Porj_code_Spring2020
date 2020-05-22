@@ -404,6 +404,7 @@ void Restaurant::RunSimulation()
 		TS++;
 		break;
 	case MODE_SLNT:
+		TS++;
 		break;
 	case MODE_DEMO:
 		Just_A_Demo();
