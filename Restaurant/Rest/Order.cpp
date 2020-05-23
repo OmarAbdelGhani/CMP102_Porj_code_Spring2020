@@ -139,12 +139,8 @@ bool Order::getUrgency() {
 }
 void Order::setUrgency(bool urgency) {
 	isUrgent = urgency;
-	
 }
 
 int Order::GetPriority() {
 	return priority;
-}
-void Order::setPriority(int priority) {
-	this->priority = priority;
 }
