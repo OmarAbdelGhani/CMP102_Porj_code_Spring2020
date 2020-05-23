@@ -149,7 +149,25 @@ void Restaurant::RunSimulation()
 			// el mfrood lw 5adto copy w paste mn el functions de
 			// w 3adelto feha 7aba el mfrood tb2o 5alasto goz2 el order handling
 			
-			
+			cooksHealthEmergencyProblems();//hamzawy
+						Node<Cook*>* c = CooksInService.getHead();
+			while (c) {
+				Cook* p = c->getItem();
+				//if (p->isHurt()) {
+					if (p->getCd() == TS) {
+						if(p->isHurt()){
+						p->setHurt(false);
+						p->returnspeedtonormal();
+						}//Cook*f=p;
+						//p=c->getNext()->getItem();
+						c=c->getNext();
+						CooksInService.DeleteNode(p);
+					}else{
+						c=c->getNext();
+					}
+			}
+				
+	
 			adjustCookCooldown(); // at the end--->beggining of each timestep this function makes sure that every cook
 			// returns to work when his cooldown ends (remember to add breaks and injuries too)
 			//(hamzawy changed the place of this because of the logic)	//		Then Omar AbdelGhani Changed it
@@ -157,29 +175,50 @@ void Restaurant::RunSimulation()
 
 			checkVIPtoUrgent(); //Omar AbdelGhani Changed Place
 			//Also should be in the beginning of time step
-			cooksHealthEmergencyProblems();//hamzawy
-			Node<Cook*>* c = CooksInService.getHead();
-			while (c) {
-				Cook* p = c->getItem();
-				if (p->isHurt()) {
-					if ((p->getCd() == TS)&&(!p->getpreparing())) {
-						p->setHurt(false);
-						p->returnspeedtonormal();
-						//Cook*f=p;
-						//p=c->getNext()->getItem();
-						c=c->getNext();
-						CooksInService.DeleteNode(p);
-					}else{
-						c=c->getNext();
-					}
-					
-				}
-				else {
-					c = c->getNext();
-				}
-		
-			}
+			
 
+					Order* finishedOrder = nullptr;
+			Node<Cook*>* travVIP = VIPcook.getHead();
+			while (travVIP) {
+				// make the vip cooks check if thier orders are finished or not
+				if (travVIP->getItem()->checkOrder(TS, finishedOrder)) {
+					if (finishedOrder) {
+						Finishedlist.InsertBeg(finishedOrder);
+						Inservicelist.DeleteNode(finishedOrder);
+						OutputOrder(finishedOrder);
+						//ServiceTime += ((finishedOrder->Get_finishtime()) - (finishedOrder->Get_servetime()));//added by hamzawy
+					}
+				}
+				travVIP = travVIP->getNext();
+			}
+			Order* finishedOrderNormal = nullptr;
+			Node<Cook*>* travNorm = NORMALcook.getHead();
+			while (travNorm) {
+				// make the normal cooks check if thier orders are finished or not
+				if (travNorm->getItem()->checkOrder(TS, finishedOrderNormal)) {
+					if (finishedOrderNormal) {
+						Finishedlist.InsertBeg(finishedOrderNormal);
+						Inservicelist.DeleteNode(finishedOrderNormal);
+						OutputOrder(finishedOrderNormal);
+						//ServiceTime += ((finishedOrderNormal->Get_finishtime()) - (finishedOrderNormal->Get_servetime()));//added by samy
+					}
+				}
+				travNorm = travNorm->getNext();
+			}
+			Order* finishedOrdervegan = nullptr;//from here hamzawy
+			Node<Cook*>* c1 = VEGANcook.getHead();
+			while (c1) {
+				// make the vegan cooks check if thier orders are finished or not
+				if (c1->getItem()->checkOrder(TS, finishedOrdervegan)) {
+					if (finishedOrdervegan) {
+						Finishedlist.InsertBeg(finishedOrdervegan);
+						Inservicelist.DeleteNode(finishedOrdervegan);
+						OutputOrder(finishedOrdervegan);
+						//ServiceTime += ((finishedOrdervegan->Get_finishtime()) - (finishedOrdervegan->Get_servetime()));
+					}
+				}
+				c1 = c1->getNext();
+			}//to here
 
 			while (!VIPorder.isEmpty()) {
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
@@ -264,24 +303,12 @@ void Restaurant::RunSimulation()
 			while (!VEGANOrder.isEmpty()) {//from here hamzawy
 				Order* currentOrder = VEGANOrder.getPtrToFront()->getItem();
 				Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
-				if (currentOrder->getUrgency()) {
-					if (getFirstAvailableCook(TYPE_VGAN)) {         //vegan order is serviced only by vegan cooks 
-						assigned = getFirstAvailableCook(TYPE_VGAN);
 
-					}
-					else if (getFirstveganCookinBreak()) {
-						assigned = getFirstveganCookinBreak();
-					}
-					else {
-						assigned = getFirstveganCookInj();
-					}
-				}
-				else {
 					if (getFirstAvailableCook(TYPE_VGAN)) {
 						assigned = getFirstAvailableCook(TYPE_VGAN);
 
 					}
-				}
+				
 
 				if (assigned) { //cook the order if a cook is available
 					CooksInService.InsertEnd(assigned);
@@ -305,48 +332,7 @@ void Restaurant::RunSimulation()
 			//adjustCookCooldown(); // at the end of each timestep this function makes sure that every cook
 								  // returns to work when his cooldown ends (remember to add breaks and injuries too)
 			//std::cout << "Cook cooldown adjusted" << endl;
-			Order* finishedOrder = nullptr;
-			Node<Cook*>* travVIP = VIPcook.getHead();
-			while (travVIP) {
-				// make the vip cooks check if thier orders are finished or not
-				if (travVIP->getItem()->checkOrder(TS, finishedOrder)) {
-					if (finishedOrder) {
-						Finishedlist.InsertBeg(finishedOrder);
-						Inservicelist.DeleteNode(finishedOrder);
-						OutputOrder(finishedOrder);
-						//ServiceTime += ((finishedOrder->Get_finishtime()) - (finishedOrder->Get_servetime()));//added by hamzawy
-					}
-				}
-				travVIP = travVIP->getNext();
-			}
-			Order* finishedOrderNormal = nullptr;
-			Node<Cook*>* travNorm = NORMALcook.getHead();
-			while (travNorm) {
-				// make the normal cooks check if thier orders are finished or not
-				if (travNorm->getItem()->checkOrder(TS, finishedOrderNormal)) {
-					if (finishedOrderNormal) {
-						Finishedlist.InsertBeg(finishedOrderNormal);
-						Inservicelist.DeleteNode(finishedOrderNormal);
-						OutputOrder(finishedOrderNormal);
-						//ServiceTime += ((finishedOrderNormal->Get_finishtime()) - (finishedOrderNormal->Get_servetime()));//added by samy
-					}
-				}
-				travNorm = travNorm->getNext();
-			}
-			Order* finishedOrdervegan = nullptr;//from here hamzawy
-			Node<Cook*>* c1 = VEGANcook.getHead();
-			while (c1) {
-				// make the vegan cooks check if thier orders are finished or not
-				if (c1->getItem()->checkOrder(TS, finishedOrdervegan)) {
-					if (finishedOrdervegan) {
-						Finishedlist.InsertBeg(finishedOrdervegan);
-						Inservicelist.DeleteNode(finishedOrdervegan);
-						OutputOrder(finishedOrdervegan);
-						//ServiceTime += ((finishedOrdervegan->Get_finishtime()) - (finishedOrdervegan->Get_servetime()));
-					}
-				}
-				c1 = c1->getNext();
-			}//to here
+	
 		
 			adjustBreak();
 			
@@ -1118,28 +1104,34 @@ Cook* Restaurant::getFirstCookInj() {
 void Restaurant::adjustCookCooldown() {
 	Node<Cook*>* travVIP = VIPcook.getHead();
 	while (travVIP) {
-		if(!travVIP->getItem()->getpreparing()){//hamzawy
+		//if(travVIP->getItem()->getpreparing()){
+			//if(travVIP->getItem()->getpreparing()->Get_finishtime()==TS){//hamzawy
 		travVIP->getItem()->checkCd(TS);
-		}
+		//}
+		//}
 		travVIP = travVIP->getNext();
+	
 	}
-
 	Node<Cook*>* travVGAN = VEGANcook.getHead();
 	while (travVGAN){
-		if(!travVGAN->getItem()->getpreparing()){//hamzawy
+		//if(travVGAN->getItem()->getpreparing()){
+			//if(travVGAN->getItem()->getpreparing()->Get_finishtime()==TS){//hamzawy
 		travVGAN->getItem()->checkCd(TS);
-		}
+		//}
+		//}
 		travVGAN = travVGAN->getNext();
+	
 	}
-
 	Node<Cook*>* travNRM = NORMALcook.getHead();
 	while (travNRM) {
-		if(!travNRM->getItem()->getpreparing()){//hamzawy
+		//if(travNRM->getItem()->getpreparing()){
+			//if(travNRM->getItem()->getpreparing()->Get_finishtime()==TS){//hamzawy
 		travNRM->getItem()->checkCd(TS);
-		}
+		//}
+		//}
 		travNRM = travNRM->getNext();
 	}
-
+	
 }
 void Restaurant::checkVIPtoUrgent() {
 	Node<Order*>* trav = VIPorder.getPtrToFront();
@@ -1222,30 +1214,25 @@ void Restaurant::cooksHealthEmergencyProblems() {
 		Cook* q = c->getItem();
 
 		if ((R <= InjProb) && (!q->isHurt())) {
-
+			if((q->getpreparing()->Get_finishtime()!=TS)){
 			q->setHurt(true);
 			NoInj++;
 			q->decreasespeedtohalf();
 			if(q->getpreparing()){
 			q->getpreparing()->Set_finishTime(TS+(q->getpreparing()->Get_finishtime()-TS)*2);
+			q->setCd(q->getpreparing()->Get_finishtime()+RstPrd);
 			}
+			
 			cout << "cook with id " << q->GetID() << " of type " << q->GetType() << " did an oopsie";
 			x++;
-			
-			if (!q->getpreparing()) {
-				q->setCd(RstPrd + TS);
 			}
 			
-	
-		}
-		else if (q->isHurt()) {
-			
-			if (!q->getpreparing()) {
+			/*if (q->getpreparing()->Get_finishtime()==TS) {
 				q->setCd(RstPrd + TS);
-				//c = c->getNext();
-			}
-		
+			}*/
+			
 		}
+
 		c=c->getNext();
 	}
 }
