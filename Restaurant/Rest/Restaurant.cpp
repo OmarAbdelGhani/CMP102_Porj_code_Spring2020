@@ -349,7 +349,7 @@ void Restaurant::RunSimulation()
 			adjustBreak();
 			
 			//pGUI->waitForClick();
-			std::cout << "*****TIMESTEP " << TS << " END******" << endl;
+			std::cout << "*****TIMESTEP " << TS << " END*******" << endl<<endl;
 			 // increment time
 			int Anormal, Avegan, Avip;   //Available Normal,Vegan, and VIP
 		
@@ -1147,7 +1147,9 @@ void Restaurant::checkVIPtoUrgent() {
 	while (trav) {
 		if (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT && !trav->getItem()->getUrgency()) {
 			trav->getItem()->setUrgency(true);
+			trav->getItem()->Set_ORD_Type(TYPE_URG)
 			cout << "Order with id " << trav->getItem()->GetID() << " is now urgent" << endl;
+			
 		}
 		trav = trav->getNext();
 	}
@@ -1227,11 +1229,13 @@ void Restaurant::cooksHealthEmergencyProblems() {
 			if(q->getpreparing()){
 			q->getpreparing()->Set_finishTime(TS+(q->getpreparing()->Get_finishtime()-TS)*2);
 			}
-			cout << "cook with id " << q->GetID() << " of type " << q->GetType() << " did an oopsie";
+			cout << "cook with id " << q->GetID() << " of type " << q->GetType() << " got injured ";
 			x++;
 			
 			if (!q->getpreparing()) {
-				q->setCd(RstPrd + TS);
+				int cdEnd = RstPrd + TS;
+				q->setCd(cdEnd);
+			
 			}
 			
 	
@@ -1239,7 +1243,9 @@ void Restaurant::cooksHealthEmergencyProblems() {
 		else if (q->isHurt()) {
 			
 			if (!q->getpreparing()) {
-				q->setCd(RstPrd + TS);
+				int cdEnd = RstPrd + TS;
+				q->setCd(cdEnd);
+				
 				//c = c->getNext();
 			}
 		
