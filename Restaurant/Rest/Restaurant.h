@@ -37,8 +37,8 @@ private:
 	// TODO: Add More Data Members As Needed
 	//
 	Queue<Order*> VEGANOrder;  //  vegan queues
-	Queue<Order*>normalorder; //  vip linkedlist 
-	//Amer: I believe this was unintentional , remove this comment and edit the one above
+	Queue<Order*>normalorder;  
+	Queue<Order*>UrgentOrder;
 	priorityQueue<Order*>VIPorder; // priority queue of vip
 	LinkedList<Cook*>VIPcook;
 	LinkedList<Cook*>NORMALcook;
