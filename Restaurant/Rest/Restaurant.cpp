@@ -405,7 +405,8 @@ void Restaurant::RunSimulation()
 		if (mode==MODE_INTR)
 			pGUI->PrintMessage("Finished,click to continue");
 		else if (mode==MODE_STEP){
-			pGUI->PrintMessage("Finished,click to continue");
+			pGUI->PrintMessage("Finished,program will now exit");
+
 			Sleep(1000);
 		}
 	//AMER: Uncomment when ready
@@ -1141,6 +1142,8 @@ void Restaurant::checkVIPtoUrgent() {
 	while (trav) {
 		if (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT && !trav->getItem()->getUrgency()) {
 			trav->getItem()->setUrgency(true);
+			trav->getItem()->Set_ORD_Type(TYPE_URG);
+			NoUrgent++;
 			cout << "Order with id " << trav->getItem()->GetID() << " is now urgent" << endl;
 		}
 		trav = trav->getNext();

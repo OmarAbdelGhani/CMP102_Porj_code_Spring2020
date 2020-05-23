@@ -172,6 +172,7 @@ bool Queue<T>::dequeueWithOrderID(int ID, T& removed) { // bta5od el id w pass b
 
 	if (isEmpty()) {
 		return false; // OPERATION FAILED!!
+		removed = nullptr;
 	}
 
 	if (getPtrToFront()->getItem()->GetID() == ID) {
@@ -185,7 +186,7 @@ bool Queue<T>::dequeueWithOrderID(int ID, T& removed) { // bta5od el id w pass b
 
 	Node<T>* trav = getPtrToFront();
 	Node<T>* trav2 = trav->getNext();
-	while (trav2->getNext() != NULL) {
+	while (trav2) {
 		if (trav2->getItem()->GetID() == ID) {
 			trav->setNext(trav2->getNext());
 			removed = trav2->getItem();
@@ -200,6 +201,8 @@ bool Queue<T>::dequeueWithOrderID(int ID, T& removed) { // bta5od el id w pass b
 
 
 	}
+	removed = nullptr;
+	return false;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 

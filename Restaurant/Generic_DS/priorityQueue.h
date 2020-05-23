@@ -11,18 +11,18 @@ public:
 		frontPtr = nullptr;
 		backPtr = nullptr;
 	}
-	//hhhhhhhhhhhhhhhhhhhhhh
+
 
 
 	priorityQueue<T>(const priorityQueue<T>& src) {
 		frontPtr = nullptr;
 		backPtr = nullptr;
 		rNode<T>* pNode = src.frontPtr;
-		
+
 		while (pNode) {
-			enqueue(pNode->getItem(),pNode->getPriority());
+			enqueue(pNode->getItem(), pNode->getPriority());
 			pNode = pNode->getNext();
-			
+
 		}
 
 	}
@@ -86,7 +86,7 @@ public:
 						return;
 					}
 					else {
-						
+
 
 					}*/
 
@@ -152,7 +152,7 @@ public:
 		return true;
 
 	}
-	bool priorityQueue<T>::dequeueWithOrderID(int ID, Order removed) { // bta5od el id w pass by refernce variable esmo removed dh ele hyt7t
+	bool priorityQueue<T>::dequeueWithOrderID(int ID, Order& removed) { // bta5od el id w pass by refernce variable esmo removed dh ele hyt7t
 													// feh el order el mal8y
 		if (isEmpty()) {
 			return false; // OPERATION FAILED!!
@@ -169,7 +169,7 @@ public:
 
 		rNode<T>* trav = getPtrToFront();
 		rNode<T>* trav2 = trav->getNext();
-		while (trav2->getNext() != NULL) {
+		while (trav2) {
 			if (trav2->getItem()->GetID() == ID) {
 				trav->setNext(trav2->getNext());
 				removed = trav2->getItem();
@@ -184,6 +184,8 @@ public:
 
 
 		}
+		removed = nullptr;
+		return false;
 	}
 
 	bool peekFrontItem(T& frntEntry) const
@@ -195,7 +197,7 @@ public:
 		return true;
 
 	}
-	
+
 	rNode<T>* getPtrToFront() {
 		return frontPtr;
 	}
