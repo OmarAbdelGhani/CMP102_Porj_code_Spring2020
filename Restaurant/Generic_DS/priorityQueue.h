@@ -187,6 +187,23 @@ public:
 		removed = nullptr;
 		return false;
 	}
+	void reQueue() {
+		priorityQueue<T> aux; //Auxillary b2a w bta3 ya rab akon kateb auxillary s7
+		T item;
+		rNode<T>* frontNode = getPtrToFront();
+		while (!isEmpty()) {
+			dequeue(item);
+			aux.enqueue(item, frontNode->getPriority());
+			frontNode = getPtrToFront();
+		}
+		frontNode = aux.getPtrToFront();
+		while (!aux.isEmpty()) {
+			aux.dequeue(item);
+			enqueue(item, frontNode->getPriority());
+			frontNode = aux.getPtrToFront();
+		}
+
+	}
 
 	bool peekFrontItem(T& frntEntry) const
 	{

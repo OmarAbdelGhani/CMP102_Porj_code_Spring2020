@@ -101,7 +101,7 @@ void Cook::serveOrder(Order* _order, int& timeStep) {
 		return;
 	}
 	
-	cout << "cook with id " << ID << " of type " << type << "is now serving order " << _order->GetID() << endl;
+	cout << "cook with id " << ID << " of type " << type << " is now serving order " << _order->GetID() << endl;
 	preparing = _order; // order is currently being served
 	ordersServedPreBreak++;
 	_order->setStatus(SRV);

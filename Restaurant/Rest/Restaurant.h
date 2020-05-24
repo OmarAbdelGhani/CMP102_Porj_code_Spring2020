@@ -38,7 +38,6 @@ private:
 	//
 	Queue<Order*> VEGANOrder;  //  vegan queues
 	Queue<Order*>normalorder;  
-	Queue<Order*>UrgentOrder;
 	priorityQueue<Order*>VIPorder; // priority queue of vip
 	LinkedList<Cook*>VIPcook;
 	LinkedList<Cook*>NORMALcook;

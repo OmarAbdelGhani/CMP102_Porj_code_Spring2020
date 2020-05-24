@@ -67,7 +67,7 @@ public:
 	bool is_canceled();
 
 	int GetPriority();
-
+	void setPriority(float);
 	void promotion(double extramoney);
 	bool getUrgency();
 	void setUrgency(bool);

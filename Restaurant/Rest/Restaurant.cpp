@@ -173,6 +173,7 @@ void Restaurant::RunSimulation()
 		// returns to work when his cooldown ends (remember to add breaks and injuries too)
 		//(hamzawy changed the place of this because of the logic)	//		Then Omar AbdelGhani Changed it
 		//Should be in the beginning of the time step instead of end to be available to use
+		// enama meen ele 3amal el function b2a? : Amer
 
 		checkVIPtoUrgent(); //Omar AbdelGhani Changed Place
 		//Also should be in the beginning of time step
@@ -1143,18 +1144,20 @@ void Restaurant::adjustCookCooldown() {
 
 }
 void Restaurant::checkVIPtoUrgent() {
-	Node<Order*>* trav = VIPorder.getPtrToFront();
+	rNode<Order*>* trav = VIPorder.getPtrToFront();
+	rNode<Order*>* travHold;
 	if (!trav) {
 		return;
 	}
 	while (trav) {
 		if (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT && !trav->getItem()->getUrgency()) {
 			trav->getItem()->setUrgency(true);
-			trav->getItem()->Set_ORD_Type(TYPE_URG);
+			trav->getItem()->setPriority(INT_MAX);
+			trav->getItem()->Set_ORD_Type(TYPE_URG); // to change color
+			travHold = trav;
+			VIPorder.reQueue();
+			trav = travHold;
 			NoUrgent++;
-			Order ord = *trav->getItem();
-			UrgentOrder.enqueue(&ord);
-
 			cout << "Order with id " << trav->getItem()->GetID() << " is now urgent" << endl;
 		}
 		trav = trav->getNext();
@@ -1237,7 +1240,7 @@ void Restaurant::cooksHealthEmergencyProblems() {
 					q->setCd(q->getpreparing()->Get_finishtime() + RstPrd);
 				}
 
-				cout << "cook with id " << q->GetID() << " of type " << q->GetType() << " did an oopsie";
+				cout << "cook with id " << q->GetID() << " of type " << q->GetType() << " did an oopsie"<<endl;
 				x++;
 			}
 
