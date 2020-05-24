@@ -67,7 +67,7 @@ public:
 	//	return maxPriority;
 	//}
 
-	void enqueue(const T& newEntry, float priority) {
+	void enqueue(const T& newEntry, int priority) {
 		rNode<T>* newNodePtr = new rNode<T>(newEntry, priority);
 
 		if (isEmpty()) { // The queue is empty
@@ -123,7 +123,16 @@ public:
 
 	}
 
-
+	void enqueueNoPriority(T item) {
+		rNode<T>* newNodePtr = new rNode<T>(item);
+		
+		if (isEmpty())
+			frontPtr = newNodePtr;
+		else
+			backPtr->setNext(newNodePtr);
+		backPtr = newNodePtr;
+		
+	}
 
 	bool isEmpty() const
 	{
