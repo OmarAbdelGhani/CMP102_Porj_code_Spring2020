@@ -1144,8 +1144,8 @@ void Restaurant::adjustCookCooldown() {
 
 }
 void Restaurant::checkVIPtoUrgent() {
-	rNode<Order*>* trav = VIPorder.getPtrToFront();
-	rNode<Order*>* travHold;
+	Node<Order*>* trav = VIPorder.getPtrToFront();
+	Node<Order*>* travHold;
 	if (!trav) {
 		return;
 	}
@@ -1154,9 +1154,8 @@ void Restaurant::checkVIPtoUrgent() {
 			trav->getItem()->setUrgency(true);
 			trav->getItem()->setPriority(INT_MAX);
 			trav->getItem()->Set_ORD_Type(TYPE_URG); // to change color
-			travHold = trav;
 			VIPorder.reQueue();
-			trav = travHold;
+			trav = VIPorder.getPtrToFront();
 			NoUrgent++;
 			cout << "Order with id " << trav->getItem()->GetID() << " is now urgent" << endl;
 		}
@@ -1240,7 +1239,7 @@ void Restaurant::cooksHealthEmergencyProblems() {
 					q->setCd(q->getpreparing()->Get_finishtime() + RstPrd);
 				}
 
-				cout << "cook with id " << q->GetID() << " of type " << q->GetType() << " did an oopsie"<<endl;
+				cout << "cook with id " << q->GetID() << " of type " << q->GetType() << " got injured "<<" and will come back at timestep "<< q->getpreparing()->Get_finishtime() + RstPrd <<endl;
 				x++;
 			}
 
