@@ -1,11 +1,11 @@
 #include "Order.h"
-
+#include<iostream>
 Order::Order(int id, ORD_TYPE r_Type)
 {
 	ID = (id > 0 && id < 1000) ? id : 0;	//1<ID<999
 	type = r_Type;
 	isUrgent = false;
-
+	promTime = INT_MAX;
 	status = WAIT;
 }
 
@@ -144,6 +144,12 @@ void Order::setUrgency(bool urgency) {
 int Order::GetPriority() {
 	return priority;
 }
-void Order::setPriority(float priority) {
+void Order::setPriority(int priority) {
 	this->priority = priority;
+}
+int Order::getPromTime() {
+	return promTime;
+}
+void Order::setPromTime(int prom) {
+	promTime = prom;
 }

@@ -6,11 +6,11 @@ template<typename T>
 class rNode :public Node<T> // rNode Means : ranked node
 							// as you can see, rNode is a child of Node
 {
-	float priority;
+	int priority;
 	rNode* next;
 
 public:
-	rNode(const T& data, float priority = 0) :Node<T>(data) { // This CTOR intializes the priority of the node with ZERO, its default Value,
+	rNode(const T& data, int priority = 0) :Node<T>(data) { // This CTOR intializes the priority of the node with ZERO, its default Value,
 													// While assigning data to the node.
 		this->priority = priority;
 		next = nullptr;
@@ -22,7 +22,7 @@ public:
 		priority = 0;
 	}
 
-	rNode(const T& data, rNode<T>* nextNodePtr, float priority = 0) { // This CTOR assigns data to the node, it's next node in the chain,
+	rNode(const T& data, rNode<T>* nextNodePtr, int priority = 0) { // This CTOR assigns data to the node, it's next node in the chain,
 																	// and its priority.
 		Node<T>::setItem(data);
 		this->priority = priority;
@@ -39,11 +39,11 @@ public:
 		next = nextNodePtr;
 	}
 
-	float getPriority() {
+	int getPriority() {
 		return priority;
 	}
 
-	void setPriority(float priority) {
+	void setPriority(int priority) {
 		this->priority = priority;
 	}
 
