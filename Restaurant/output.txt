@@ -1,9 +1,10 @@
-4	75	3	0	1
-7	76	6	0	1
-10	77	9	0	1
-13	78	12	0	1
-18	80	17	0	1
-Orders: 5[Norm:0, Veg:0, VIP:5]
-cooks:22[Norm:1, Veg:1, VIP:20,  injured:0]
-Avg Wait = 0,  Avg Serv = 1
+10	1	7	0	3
+11	3	9	0	2
+12	2	9	1	2
+19	4	12	0	7
+23	3	19	0	4
+30	6	25	0	5
+Orders: 6[Norm:3, Veg:2, VIP:1]
+cooks:3[Norm:1, Veg:1, VIP:1,  injured:0]
+Avg Wait = 0.166667,  Avg Serv = 3.83333
 Urgent orders: 0,   Auto-promoted: 0%
