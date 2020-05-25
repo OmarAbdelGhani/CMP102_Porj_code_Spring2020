@@ -176,7 +176,7 @@ void Restaurant::RunSimulation()
 		//Should be in the beginning of the time step instead of end to be available to use
 		// enama meen ele 3amal el function b2a? : Amer
 
-	//	checkVIPtoUrgent(); //Omar AbdelGhani Changed Place
+		checkVIPtoUrgent(); //Omar AbdelGhani Changed Place
 		//Also should be in the beginning of time step
 		// then amer put it back right where it belongs
 
@@ -224,7 +224,7 @@ void Restaurant::RunSimulation()
 			c1 = c1->getNext();
 		}//to here
 		adjustBreak();
-		checkVIPtoUrgent();
+	//	checkVIPtoUrgent();
 		while (!VIPorder.isEmpty()) {
 			Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
 			Order* currentOrder = VIPorder.getPtrToFront()->getItem();
@@ -262,7 +262,7 @@ void Restaurant::RunSimulation()
 
 				}
 			}
-			if (assigned && currentOrder->getStatus() == WAIT) { //cook the order if a cook is available
+			if (assigned && currentOrder->getStatus() == WAIT && !assigned->getpreparing()) { //cook the order if a cook is available
 				CooksInService.InsertEnd(assigned);//added by hamzawy because i will use it in cooks health
 				assigned->serveOrder(currentOrder, TS);
 
@@ -1001,7 +1001,7 @@ void Restaurant::getAvailableCooksNo(int& VIP, int& vegan, int& normal) { // cou
 Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 	if (orderType == TYPE_VIP) {
 		Node<Cook*>* readyCook = VIPcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false && (!readyCook->getItem()->isBreak() || !readyCook->getItem()->isHurt())) {
+		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() || readyCook->getItem()->isHurt())) {
 			readyCook = readyCook->getNext();
 		}
 		if (!readyCook) {
@@ -1011,7 +1011,7 @@ Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 	}
 	else if (orderType == TYPE_VGAN) {
 		Node<Cook*>* readyCook = VEGANcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false && (!readyCook->getItem()->isBreak() || !readyCook->getItem()->isHurt())) {
+		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() || readyCook->getItem()->isHurt())) {
 			readyCook = readyCook->getNext();
 		}
 		if (!readyCook) {
@@ -1021,7 +1021,7 @@ Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 	}
 	else {
 		Node<Cook*>* readyCook = NORMALcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false && (!readyCook->getItem()->isBreak() || !readyCook->getItem()->isHurt())) {
+		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() ||readyCook->getItem()->isHurt())) {
 			readyCook = readyCook->getNext();
 		}
 		if (!readyCook) {
@@ -1156,6 +1156,7 @@ void Restaurant::checkVIPtoUrgent() {
 			VIPorder.reQueue();
 			trav = VIPorder.getPtrToFront();
 			NoUrgent++;
+			
 
 		}
 		trav = trav->getNext();

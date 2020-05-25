@@ -202,13 +202,13 @@ public:
 		rNode<T>* frontNode = getPtrToFront();
 		while (!isEmpty()) {
 			dequeue(item);
-			aux.enqueue(item, frontNode->getPriority());
+			aux.enqueue(item, item->GetPriority());
 			frontNode = getPtrToFront();
 		}
 		frontNode = aux.getPtrToFront();
 		while (!aux.isEmpty()) {
 			aux.dequeue(item);
-			enqueue(item, frontNode->getPriority());
+			enqueue(item, item->GetPriority());
 			frontNode = aux.getPtrToFront();
 		}
 
