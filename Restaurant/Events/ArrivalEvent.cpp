@@ -40,7 +40,7 @@ void ArrivalEvent::Execute(Restaurant* pRest)
 		pOrd->calc_priority();
 		pRest->AddToVIPArray(pOrd);
 
-		cout << "VIP order with ID "<<OrderID<<" added to VIParray"<<endl;
+		//cout << "VIP order with ID "<<OrderID<<" added to VIParray"<<endl;
 	}
 	
 	

@@ -224,7 +224,7 @@ void Restaurant::RunSimulation()
 			c1 = c1->getNext();
 		}//to here
 		adjustBreak();
-	//	checkVIPtoUrgent();
+		//	checkVIPtoUrgent();
 		while (!VIPorder.isEmpty()) {
 			Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
 			Order* currentOrder = VIPorder.getPtrToFront()->getItem();
@@ -284,11 +284,9 @@ void Restaurant::RunSimulation()
 													// code snippet.
 				assigned = getFirstAvailableCook(TYPE_NRM);
 			}
-			else {
-				break;
-			}
+			
 			Order* currentOrder = normalorder.getPtrToFront()->getItem();
-			if (assigned) { //cook the order if a cook is available
+			if (assigned && currentOrder->getStatus() == WAIT && !assigned->getpreparing()) { //cook the order if a cook is available
 				CooksInService.InsertEnd(assigned);//added by hamzawy
 				assigned->serveOrder(currentOrder, TS);
 
@@ -296,6 +294,9 @@ void Restaurant::RunSimulation()
 				normalorder.dequeue(currentOrder);
 				//	WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
 				NoNormal++;
+			}
+			else {
+				break;
 			}
 
 		}
@@ -310,7 +311,7 @@ void Restaurant::RunSimulation()
 			}
 
 
-			if (assigned) { //cook the order if a cook is available
+			if (assigned && currentOrder->getStatus() == WAIT && !assigned->getpreparing()) { //cook the order if a cook is available
 				CooksInService.InsertEnd(assigned);
 				assigned->serveOrder(currentOrder, TS);
 
@@ -1001,34 +1002,29 @@ void Restaurant::getAvailableCooksNo(int& VIP, int& vegan, int& normal) { // cou
 Cook* Restaurant::getFirstAvailableCook(ORD_TYPE orderType) {
 	if (orderType == TYPE_VIP) {
 		Node<Cook*>* readyCook = VIPcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() || readyCook->getItem()->isHurt())) {
+		while (readyCook) {
+			if (readyCook->getItem()->getStatus() && !readyCook->getItem()->isBreak() && !readyCook->getItem()->isBreak() && !readyCook->getItem()->getpreparing())
+				return readyCook->getItem();
 			readyCook = readyCook->getNext();
 		}
-		if (!readyCook) {
-			return nullptr;
-		}
-		return readyCook->getItem();
 	}
 	else if (orderType == TYPE_VGAN) {
 		Node<Cook*>* readyCook = VEGANcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() || readyCook->getItem()->isHurt())) {
+		while (readyCook) {
+			if (readyCook->getItem()->getStatus() && !readyCook->getItem()->isBreak() && !readyCook->getItem()->isBreak() && !readyCook->getItem()->getpreparing())
+				return readyCook->getItem();
 			readyCook = readyCook->getNext();
 		}
-		if (!readyCook) {
-			return nullptr;
-		}
-		return readyCook->getItem();
 	}
 	else {
 		Node<Cook*>* readyCook = NORMALcook.getHead();
-		while (readyCook && readyCook->getItem()->getStatus() == false && (readyCook->getItem()->isBreak() ||readyCook->getItem()->isHurt())) {
+		while (readyCook) {
+			if (readyCook->getItem()->getStatus() && !readyCook->getItem()->isBreak() && !readyCook->getItem()->isBreak() && !readyCook->getItem()->getpreparing())
+				return readyCook->getItem();
 			readyCook = readyCook->getNext();
 		}
-		if (!readyCook) {
-			return nullptr;
-		}
-		return readyCook->getItem();
 	}
+	return nullptr;
 }
 Cook* Restaurant::getFirstCookBreak() {
 	//this function returns the first cook that is on a break
@@ -1074,7 +1070,7 @@ Cook* Restaurant::getFirstCookInj() {
 		}
 		breakCook = breakCook->getNext();
 	}
-	if (!breakCook) { 
+	if (!breakCook) {
 		breakCook = NORMALcook.getHead();
 		while (breakCook) {
 			if (breakCook->getItem()->isHurt() && !breakCook->getItem()->getpreparing()) {
@@ -1084,7 +1080,7 @@ Cook* Restaurant::getFirstCookInj() {
 		}
 
 	}
-	if (!breakCook) { 
+	if (!breakCook) {
 		breakCook = VEGANcook.getHead();
 		while (breakCook) {
 			if (breakCook->getItem()->isHurt() && !breakCook->getItem()->getpreparing()) {
@@ -1150,13 +1146,13 @@ void Restaurant::checkVIPtoUrgent() {
 				trav->getItem()->setPriority(INT_MAX - trav->getItem()->Get_Arrtime());
 				trav->setPriority(INT_MAX - trav->getItem()->Get_Arrtime());
 			}
-			
+
 			trav->getItem()->Set_ORD_Type(TYPE_URG); // to change color
 			cout << "Order with id " << trav->getItem()->GetID() << " is now urgent" << endl;
 			VIPorder.reQueue();
 			trav = VIPorder.getPtrToFront();
 			NoUrgent++;
-			
+
 
 		}
 		trav = trav->getNext();
