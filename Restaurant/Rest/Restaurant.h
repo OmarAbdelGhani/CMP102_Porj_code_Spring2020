@@ -84,10 +84,12 @@ private:
 	int VIP_WT;   //time to turn VIP to urgent
 	int M;        // NO of Events in file
 
-	int NoNormal;    //No of Nomral Orders
-	int NoVegan;	//No of Vegan Orders
-	int NoVIP;		//No of VIP	  Orders
-	int NoInj;      //No of injured cooks
+	float NoNormal;    //No of Nomral Orders
+	float NoVegan;	//No of Vegan Orders
+	float NoVIP;		//No of VIP	  Orders
+	float NoInj;      //No of injured cooks
+	//Float to diplay percentage of AutoPromoted Orders
+
 
 	float WaitingTime;  //Total Waiting time
 	float ServiceTime;  //Total serving time

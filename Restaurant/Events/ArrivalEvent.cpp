@@ -32,13 +32,19 @@ void ArrivalEvent::Execute(Restaurant* pRest)
 	pOrd->Set_Money(OrdMoney);
 	pOrd->SetDistance(OrdDistance);
 
-	if (OrdType == TYPE_NRM)
+	if (OrdType == TYPE_NRM){
 		pRest->AddNormalToQueue(pOrd);
-	else if (OrdType == TYPE_VGAN)
+		pRest->setNoNormal(pRest->getNoNormal()+1);
+	}
+	else if (OrdType == TYPE_VGAN){
 		pRest->AddToVeganQueue(pOrd);
+		pRest->setNoVegan(pRest->getNoVegan()+1);
+	}
 	else if (OrdType == TYPE_VIP) {
 		pOrd->calc_priority();
 		pRest->AddToVIPArray(pOrd);
+		pRest->setNoVIP(pRest->getNoVIP()+1);
+	}
 
 		//cout << "VIP order with ID "<<OrderID<<" added to VIParray"<<endl;
 	}
@@ -48,4 +54,3 @@ void ArrivalEvent::Execute(Restaurant* pRest)
 	///Remove the next code lines in phases 1&2
 	//Order* pOrd = new Order(OrderID,OrdType);
 	//pRest->AddtoDemoQueue(pOrd);
-}

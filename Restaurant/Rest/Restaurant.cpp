@@ -293,7 +293,7 @@ void Restaurant::RunSimulation()
 				Inservicelist.InsertEnd(currentOrder);
 				normalorder.dequeue(currentOrder);
 				//	WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
-				NoNormal++;
+				//NoNormal++;
 			}
 			else {
 				break;
@@ -318,7 +318,7 @@ void Restaurant::RunSimulation()
 				Inservicelist.InsertEnd(currentOrder);
 				VEGANOrder.dequeue(currentOrder);
 				//	WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
-				NoVegan++;
+				//NoVegan++;
 			}
 			else {
 				break;
@@ -414,7 +414,7 @@ void Restaurant::RunSimulation()
 	Ofile << "Orders: " << NoNormal + NoVegan + NoVIP << "[Norm:" << NoNormal << ", Veg:" << NoVegan << ", VIP:" << NoVIP << "]" << endl;
 	Ofile << "cooks:" << V + N + G << "[Norm:" << N << ", Veg:" << G << ", VIP:" << V << ",  injured:" << NoInj << "]" << endl;
 	Ofile << "Avg Wait = " << WaitingTime / (NoNormal + NoVegan + NoVIP) << ",  Avg Serv = " << ServiceTime / (NoNormal + NoVegan + NoVIP) << endl;
-	Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: " << NoAutoPromoted / (NoNormal + NoVegan + NoVIP) * 100 << "%" << endl;
+	Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: " << (NoAutoPromoted / (NoNormal + NoVegan + NoVIP) )* 100 << "%" << endl;
 }
 
 
@@ -524,6 +524,8 @@ void Restaurant::FillDrawingList()
 	int current;
 	Cook* curr;
 	first = NORMALcook.getHead()->getItem()->GetID();
+	 
+	if (NORMALcook.getHead()){           //to make sure list isnot empty
 	do {
 		curr = NORMALcook.getHead()->getItem();
 		if (curr->getStatus())
@@ -533,7 +535,9 @@ void Restaurant::FillDrawingList()
 		curr = NORMALcook.getHead()->getItem();
 		current = curr->GetID();
 	} while (first != current);
-
+	}
+	
+	if(VEGANcook.getHead()){
 	first = VEGANcook.getHead()->getItem()->GetID();
 	do {
 		curr = VEGANcook.getHead()->getItem();
@@ -544,7 +548,9 @@ void Restaurant::FillDrawingList()
 		curr = VEGANcook.getHead()->getItem();
 		current = curr->GetID();
 	} while (first != current);
-
+	}
+	 
+	if(VIPcook.getHead()){
 	first = VIPcook.getHead()->getItem()->GetID();
 	do {
 		curr = VIPcook.getHead()->getItem();
@@ -556,7 +562,7 @@ void Restaurant::FillDrawingList()
 		current = curr->GetID();
 	} while (first != current);
 
-
+	}
 
 
 }
@@ -590,7 +596,7 @@ void Restaurant::AddNormalToQueue(Order* po)
 void Restaurant::AddToVIPArray(Order* ord)
 {
 	VIPorder.enqueue(ord, ord->GetPriority());
-	setNoVIP(getNoVIP() + 1);
+	//setNoVIP(getNoVIP() + 1);
 	VIPorder.reQueue();
 }
 

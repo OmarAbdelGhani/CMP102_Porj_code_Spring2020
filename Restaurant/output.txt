@@ -1,0 +1,10 @@
+6	1	1	0	5
+8	2	1	4	3
+11	4	1	7	3
+11	3	1	5	5
+14	5	1	10	3
+14	6	1	10	3
+Orders: 6[Norm:6, Veg:0, VIP:0]
+cooks:2[Norm:1, Veg:0, VIP:1,  injured:1]
+Avg Wait = 6,  Avg Serv = 3.66667
+Urgent orders: 5,   Auto-promoted: 83.3333%
