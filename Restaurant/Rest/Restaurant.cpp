@@ -1159,6 +1159,7 @@ void Restaurant::checkNormaltoVIP() {
 			normalorder.dequeue(currentOrder);
 			currentOrder->calc_priority();
 			VIPorder.enqueue(currentOrder, currentOrder->GetPriority());
+			AutoP++;
 		}
 		else
 		
