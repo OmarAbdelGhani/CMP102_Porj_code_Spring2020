@@ -284,6 +284,9 @@ void Restaurant::RunSimulation()
 													// code snippet.
 				assigned = getFirstAvailableCook(TYPE_NRM);
 			}
+			else {
+				assigned = getFirstAvailableCook(TYPE_VIP);
+			}
 			
 			Order* currentOrder = normalorder.getPtrToFront()->getItem();
 			if (assigned && currentOrder->getStatus() == WAIT && !assigned->getpreparing()) { //cook the order if a cook is available
