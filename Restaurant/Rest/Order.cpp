@@ -131,7 +131,7 @@ void Order::promotion(double extramoney)
 	{
 		type = TYPE_VIP;
 		totalMoney += extramoney;
-		priority += extramoney;
+		calc_priority();
 	}
 }
 bool Order::getUrgency() {
