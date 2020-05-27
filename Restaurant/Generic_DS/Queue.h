@@ -126,8 +126,10 @@ bool Queue<T>::enqueue(const T& newEntry)
 {
 	Node<T>* newNodePtr = new Node<T>(newEntry);
 	// Insert the new node
-	if (isEmpty())
+	if (isEmpty()){
 		frontPtr = newNodePtr; // The queue is empty
+		backPtr=frontPtr;
+	}
 	else
 		backPtr->setNext(newNodePtr); // The queue was not empty
 	backPtr = newNodePtr; // New node is at back
@@ -188,6 +190,8 @@ bool Queue<T>::dequeueWithOrderID(int ID, T& removed) { // bta5od el id w pass b
 	Node<T>* trav2 = trav->getNext();
 	while (trav2) {
 		if (trav2->getItem()->GetID() == ID) {
+			if(backPtr==trav2)
+				backPtr=trav;
 			trav->setNext(trav2->getNext());
 			removed = trav2->getItem();
 			delete trav2;

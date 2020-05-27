@@ -6,8 +6,10 @@ PromotionEvent::PromotionEvent(int eventTime, int ID,double m):Event(eventTime,I
 }
 	 void PromotionEvent::Execute(Restaurant* r){
 		Order *O= r->CancelById(OrderID);
-		if(O)
+		if(O){
 		r->AddToVIPArray(O);
+		O->Set_ORD_Type(TYPE_VIP);
+		}
 	}
 
 PromotionEvent::~PromotionEvent(void)

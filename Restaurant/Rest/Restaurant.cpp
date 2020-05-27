@@ -21,6 +21,7 @@ void Restaurant::RunSimulation()
 	PROG_MODE	mode = pGUI->getGUIMode();
 	LoadFile();
 	Ofile.open("output.txt", ios::out); //initialization of outputfile
+	Ofile<<"FT\tID\tAT\tWT\tST"<<endl;
 	//Initialize all count variables by zero, ex NoNormal,NoVegan and so on   By Omar AbdelGhani
 	NoNormal = 0; NoVegan = 0;   NoVIP = 0;
 	WaitingTime = 0;  ServiceTime = 0;
@@ -479,13 +480,16 @@ void Restaurant::FillDrawingList()
 			ve++;//here you should print ve
 		} while (!(VEGANOrder.isEmpty()) && !(y == VEGANOrder.getPtrToFront()->getItem()->GetID()));
 	}
+
 	if (!normalorder.isEmpty()) {
 		z = normalorder.getPtrToFront()->getItem()->GetID();
 		do {
-			pGUI->AddToDrawingList(normalorder.getPtrToFront()->getItem());
+		//	pGUI->AddToDrawingList(normalorder.getPtrToFront()->getItem());
 			Order* r = normalorder.getPtrToFront()->getItem();
+			Order r1=*r;
 			normalorder.enqueue(r);
 			normalorder.dequeue(r);
+			pGUI->AddToDrawingList(&r1);
 			n++;//here you should print n
 		} while (!(normalorder.isEmpty()) && !(z == normalorder.getPtrToFront()->getItem()->GetID()));
 	}
