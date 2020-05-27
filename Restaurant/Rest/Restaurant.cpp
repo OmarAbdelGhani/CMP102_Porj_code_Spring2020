@@ -44,7 +44,7 @@ void Restaurant::RunSimulation()
 	//bool first=true;
 		//Add a function for each mode in next phases
 		// try changing to one
-	std::cout << "BEGIN MODE ONE : INTERACTIVE MODE" << endl;
+
 
 	while (!EventsQueue.isEmpty() || Inservicelist.getHead() || !normalorder.isEmpty() || !VEGANOrder.isEmpty() || !VIPorder.isEmpty()) {
 		std::cout << "*****TIMESTEP " << TS << " BEGIN*****" << endl;
@@ -150,6 +150,9 @@ void Restaurant::RunSimulation()
 		// ay so2al kalemony messenger aw whatsapp y3ny
 		// el mfrood lw 5adto copy w paste mn el functions de
 		// w 3adelto feha 7aba el mfrood tb2o 5alasto goz2 el order handling
+		
+		// BUG WORKAROUND!!
+		
 
 		cooksHealthEmergencyProblems();//hamzawy
 		Node<Cook*>* c = CooksInService.getHead();
@@ -342,7 +345,7 @@ void Restaurant::RunSimulation()
 
 
 		//pGUI->waitForClick();
-		std::cout << "*****TIMESTEP " << TS << " END******" << endl;
+		std::cout << "*****TIMESTEP " << TS << " END*******" << endl << endl;
 		// increment time
 		int Anormal, Avegan, Avip;   //Available Normal,Vegan, and VIP
 
@@ -602,9 +605,10 @@ void Restaurant::AddNormalToQueue(Order* po)
 
 void Restaurant::AddToVIPArray(Order* ord)
 {
+
 	VIPorder.enqueue(ord, ord->GetPriority());
 	//setNoVIP(getNoVIP() + 1);
-	VIPorder.reQueue();
+//	VIPorder.reQueue();
 }
 
 ORD_TYPE Restaurant::Getordertype(char ordtype)
@@ -1149,17 +1153,20 @@ void Restaurant::checkVIPtoUrgent() {
 		return;
 	}
 	while (trav) {
-		if ((TS - (trav->getItem()->getPromTime()) >= VIP_WT || (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT)) && !trav->getItem()->getUrgency()) {
+		if ((TS - trav->getItem()->getPromTime() >= VIP_WT || (TS - trav->getItem()->Get_Arrtime() >= VIP_WT && trav->getItem()->getPromTime() == INT_MAX)) && !trav->getItem()->getUrgency()) {
+			/* old condition :
+			(TS - (trav->getItem()->getPromTime()) >= VIP_WT || (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT)) && !trav->getItem()->getUrgency()
+			*/
 			trav->getItem()->setUrgency(true);
-					if (trav->getItem()->getPromTime() != INT_MAX) {
-						trav->getItem()->setPriority(INT_MAX - trav->getItem()->getPromTime());
-						trav->setPriority(INT_MAX - trav->getItem()->getPromTime());
-					}
-					else {
-						trav->getItem()->setPriority(INT_MAX - trav->getItem()->Get_Arrtime());
-						trav->setPriority(INT_MAX - trav->getItem()->Get_Arrtime());
-					}
-		
+			if (trav->getItem()->getPromTime() != INT_MAX) {
+				trav->getItem()->setPriority(INT_MAX - trav->getItem()->getPromTime());
+				trav->setPriority(INT_MAX - trav->getItem()->getPromTime());
+			}
+			else {
+				trav->getItem()->setPriority(INT_MAX - trav->getItem()->Get_Arrtime());
+				trav->setPriority(INT_MAX - trav->getItem()->Get_Arrtime());
+			}
+
 			trav->getItem()->Set_ORD_Type(TYPE_URG); // to change color
 			cout << "Order with id " << trav->getItem()->GetID() << " is now urgent" << endl;
 			VIPorder.reQueue();
@@ -1177,15 +1184,16 @@ void Restaurant::checkNormaltoVIP() {
 		return;
 	}
 	while (trav) {
-		if (TS - (trav->getItem()->Get_Arrtime()) >= AutoP)
+		if ((TS - (trav->getItem()->Get_Arrtime()) >= AutoP) && trav->getItem()->getPromTime() == INT_MAX)
 		{
 			Order* currentOrder = trav->getItem();
 			trav = trav->getNext();
 			currentOrder->Set_ORD_Type(TYPE_VIP);
 			currentOrder->setPromTime(TS);
-			normalorder.dequeue(currentOrder);
 			currentOrder->calc_priority();
+			normalorder.dequeue(currentOrder);
 			VIPorder.enqueue(currentOrder, currentOrder->GetPriority());
+			//AddToVIPArray(currentOrder);
 			NoAutoPromoted++;
 		}
 		else

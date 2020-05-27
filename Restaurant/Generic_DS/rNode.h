@@ -10,8 +10,7 @@ class rNode :public Node<T> // rNode Means : ranked node
 	rNode* next;
 
 public:
-	rNode(const T& data, int priority = 0) :Node<T>(data) { // This CTOR intializes the priority of the node with ZERO, its default Value,
-													// While assigning data to the node.
+	rNode(const T& data, int priority ) :Node<T>(data) { 
 		this->priority = priority;
 		next = nullptr;
 		Node<T>::setItem(data);
