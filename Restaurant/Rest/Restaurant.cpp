@@ -420,8 +420,14 @@ void Restaurant::RunSimulation()
 	//AMER: Uncomment when ready
 	Ofile << "Orders: " << NoNormal + NoVegan + NoVIP << "[Norm:" << NoNormal << ", Veg:" << NoVegan << ", VIP:" << NoVIP << "]" << endl;
 	Ofile << "cooks:" << V + N + G << "[Norm:" << N << ", Veg:" << G << ", VIP:" << V << ",  injured:" << NoInj << "]" << endl;
+	if((NoNormal + NoVegan + NoVIP)!=0)
 	Ofile << "Avg Wait = " << WaitingTime / (NoNormal + NoVegan + NoVIP) << ",  Avg Serv = " << ServiceTime / (NoNormal + NoVegan + NoVIP) << endl;
+	else
+		Ofile << "Avg Wait =  0 ,  Avg Serv = 0"<<endl;
+	if(NoNormal!=0)
 	Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: " << (NoAutoPromoted / (NoNormal + NoVegan + NoVIP)) * 100 << "%" << endl;
+	else
+		Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: 0%" << endl;
 }
 
 
