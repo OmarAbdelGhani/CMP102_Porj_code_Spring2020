@@ -72,23 +72,15 @@ public:
 
 		if (isEmpty()) { // The queue is empty
 			frontPtr = newNodePtr;
-			backPtr = newNodePtr;
+			backPtr = frontPtr;
 			return;
 		}
 		else {
 			rNode<T>* trav = frontPtr;
 
 			while (trav) {
-				if (newNodePtr->getPriority() > trav->getPriority()) {
-					/*if (trav = frontPtr) {
-						newNodePtr->setNext(trav->getNext());
-						trav->setNext(newNodePtr);
-						return;
-					}
-					else {
-
-
-					}*/
+				if (newNodePtr->getPriority() > trav->getPriority()) { 
+					
 
 					if (trav == frontPtr) {
 						newNodePtr->setNext(trav);
@@ -116,7 +108,7 @@ public:
 					trav = trav->getNext();
 
 				}
-
+				
 			}
 		}
 
@@ -124,7 +116,7 @@ public:
 	}
 
 	void enqueueNoPriority(T item) {
-		rNode<T>* newNodePtr = new rNode<T>(item);
+		rNode<T>* newNodePtr = new rNode<T>(item , item->GetPriority());
 		
 		if (isEmpty())
 			frontPtr = newNodePtr;
@@ -147,7 +139,7 @@ public:
 		if (isEmpty())
 			return false;
 
-		Node<T>* nodeToDeletePtr = frontPtr;
+		rNode<T>* nodeToDeletePtr = frontPtr;
 		frntEntry = frontPtr->getItem();
 		frontPtr = frontPtr->getNext();
 		// Queue is not empty; remove front

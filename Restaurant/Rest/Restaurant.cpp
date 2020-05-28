@@ -21,7 +21,7 @@ void Restaurant::RunSimulation()
 	PROG_MODE	mode = pGUI->getGUIMode();
 	LoadFile();
 	Ofile.open("output.txt", ios::out); //initialization of outputfile
-	Ofile<<"FT\tID\tAT\tWT\tST"<<endl;
+	Ofile << "FT\tID\tAT\tWT\tST" << endl;
 	//Initialize all count variables by zero, ex NoNormal,NoVegan and so on   By Omar AbdelGhani
 	NoNormal = 0; NoVegan = 0;   NoVIP = 0;
 	WaitingTime = 0;  ServiceTime = 0;
@@ -44,7 +44,7 @@ void Restaurant::RunSimulation()
 	//bool first=true;
 		//Add a function for each mode in next phases
 		// try changing to one
-	std::cout << "BEGIN MODE ONE : INTERACTIVE MODE" << endl;
+
 
 	while (!EventsQueue.isEmpty() || Inservicelist.getHead() || !normalorder.isEmpty() || !VEGANOrder.isEmpty() || !VIPorder.isEmpty()) {
 		std::cout << "*****TIMESTEP " << TS << " BEGIN*****" << endl;
@@ -150,6 +150,9 @@ void Restaurant::RunSimulation()
 		// ay so2al kalemony messenger aw whatsapp y3ny
 		// el mfrood lw 5adto copy w paste mn el functions de
 		// w 3adelto feha 7aba el mfrood tb2o 5alasto goz2 el order handling
+		
+		// BUG WORKAROUND!!
+		
 
 		cooksHealthEmergencyProblems();//hamzawy
 		Node<Cook*>* c = CooksInService.getHead();
@@ -288,7 +291,7 @@ void Restaurant::RunSimulation()
 			else {
 				assigned = getFirstAvailableCook(TYPE_VIP);
 			}
-			
+
 			Order* currentOrder = normalorder.getPtrToFront()->getItem();
 			if (assigned && currentOrder->getStatus() == WAIT && !assigned->getpreparing()) { //cook the order if a cook is available
 				CooksInService.InsertEnd(assigned);//added by hamzawy
@@ -342,7 +345,7 @@ void Restaurant::RunSimulation()
 
 
 		//pGUI->waitForClick();
-		std::cout << "*****TIMESTEP " << TS << " END******" << endl;
+		std::cout << "*****TIMESTEP " << TS << " END*******" << endl << endl;
 		// increment time
 		int Anormal, Avegan, Avip;   //Available Normal,Vegan, and VIP
 
@@ -417,8 +420,14 @@ void Restaurant::RunSimulation()
 	//AMER: Uncomment when ready
 	Ofile << "Orders: " << NoNormal + NoVegan + NoVIP << "[Norm:" << NoNormal << ", Veg:" << NoVegan << ", VIP:" << NoVIP << "]" << endl;
 	Ofile << "cooks:" << V + N + G << "[Norm:" << N << ", Veg:" << G << ", VIP:" << V << ",  injured:" << NoInj << "]" << endl;
+	if((NoNormal + NoVegan + NoVIP)!=0)
 	Ofile << "Avg Wait = " << WaitingTime / (NoNormal + NoVegan + NoVIP) << ",  Avg Serv = " << ServiceTime / (NoNormal + NoVegan + NoVIP) << endl;
-	Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: " << (NoAutoPromoted / (NoNormal + NoVegan + NoVIP) )* 100 << "%" << endl;
+	else
+		Ofile << "Avg Wait =  0 ,  Avg Serv = 0"<<endl;
+	if(NoNormal!=0)
+	Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: " << (NoAutoPromoted / (NoNormal + NoVegan + NoVIP)) * 100 << "%" << endl;
+	else
+		Ofile << "Urgent orders: " << NoUrgent << ",   Auto-promoted: 0%" << endl;
 }
 
 
@@ -484,9 +493,9 @@ void Restaurant::FillDrawingList()
 	if (!normalorder.isEmpty()) {
 		z = normalorder.getPtrToFront()->getItem()->GetID();
 		do {
-		//	pGUI->AddToDrawingList(normalorder.getPtrToFront()->getItem());
+			//	pGUI->AddToDrawingList(normalorder.getPtrToFront()->getItem());
 			Order* r = normalorder.getPtrToFront()->getItem();
-			Order r1=*r;
+			Order r1 = *r;
 			normalorder.enqueue(r);
 			normalorder.dequeue(r);
 			pGUI->AddToDrawingList(&r1);
@@ -531,43 +540,43 @@ void Restaurant::FillDrawingList()
 	int current;
 	Cook* curr;
 	first = NORMALcook.getHead()->getItem()->GetID();
-	 
-	if (NORMALcook.getHead()){           //to make sure list isnot empty
-	do {
-		curr = NORMALcook.getHead()->getItem();
-		if (curr->getStatus())
-			pGUI->AddToDrawingList(curr);
-		NORMALcook.InsertEnd(curr);
-		NORMALcook.DeleteFirst();
-		curr = NORMALcook.getHead()->getItem();
-		current = curr->GetID();
-	} while (first != current);
+
+	if (NORMALcook.getHead()) {           //to make sure list isnot empty
+		do {
+			curr = NORMALcook.getHead()->getItem();
+			if (curr->getStatus())
+				pGUI->AddToDrawingList(curr);
+			NORMALcook.InsertEnd(curr);
+			NORMALcook.DeleteFirst();
+			curr = NORMALcook.getHead()->getItem();
+			current = curr->GetID();
+		} while (first != current);
 	}
-	
-	if(VEGANcook.getHead()){
-	first = VEGANcook.getHead()->getItem()->GetID();
-	do {
-		curr = VEGANcook.getHead()->getItem();
-		if (curr->getStatus())
-			pGUI->AddToDrawingList(curr);
-		VEGANcook.InsertEnd(curr);
-		VEGANcook.DeleteFirst();
-		curr = VEGANcook.getHead()->getItem();
-		current = curr->GetID();
-	} while (first != current);
+
+	if (VEGANcook.getHead()) {
+		first = VEGANcook.getHead()->getItem()->GetID();
+		do {
+			curr = VEGANcook.getHead()->getItem();
+			if (curr->getStatus())
+				pGUI->AddToDrawingList(curr);
+			VEGANcook.InsertEnd(curr);
+			VEGANcook.DeleteFirst();
+			curr = VEGANcook.getHead()->getItem();
+			current = curr->GetID();
+		} while (first != current);
 	}
-	 
-	if(VIPcook.getHead()){
-	first = VIPcook.getHead()->getItem()->GetID();
-	do {
-		curr = VIPcook.getHead()->getItem();
-		if (curr->getStatus())
-			pGUI->AddToDrawingList(curr);
-		VIPcook.InsertEnd(curr);
-		VIPcook.DeleteFirst();
-		curr = VIPcook.getHead()->getItem();
-		current = curr->GetID();
-	} while (first != current);
+
+	if (VIPcook.getHead()) {
+		first = VIPcook.getHead()->getItem()->GetID();
+		do {
+			curr = VIPcook.getHead()->getItem();
+			if (curr->getStatus())
+				pGUI->AddToDrawingList(curr);
+			VIPcook.InsertEnd(curr);
+			VIPcook.DeleteFirst();
+			curr = VIPcook.getHead()->getItem();
+			current = curr->GetID();
+		} while (first != current);
 
 	}
 
@@ -602,9 +611,10 @@ void Restaurant::AddNormalToQueue(Order* po)
 
 void Restaurant::AddToVIPArray(Order* ord)
 {
+
 	VIPorder.enqueue(ord, ord->GetPriority());
 	//setNoVIP(getNoVIP() + 1);
-	VIPorder.reQueue();
+//	VIPorder.reQueue();
 }
 
 ORD_TYPE Restaurant::Getordertype(char ordtype)
@@ -1149,9 +1159,12 @@ void Restaurant::checkVIPtoUrgent() {
 		return;
 	}
 	while (trav) {
-		if ((TS - (trav->getItem()->getPromTime()) >= VIP_WT || (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT)) && !trav->getItem()->getUrgency()) {
+		if ((TS - trav->getItem()->getPromTime() >= VIP_WT || (TS - trav->getItem()->Get_Arrtime() >= VIP_WT && trav->getItem()->getPromTime() == INT_MAX)) && !trav->getItem()->getUrgency()) {
+			/* old condition :
+			(TS - (trav->getItem()->getPromTime()) >= VIP_WT || (TS - (trav->getItem()->Get_Arrtime()) >= VIP_WT)) && !trav->getItem()->getUrgency()
+			*/
 			trav->getItem()->setUrgency(true);
-			if (trav->getItem()->getPromTime() == -1) {
+			if (trav->getItem()->getPromTime() != INT_MAX) {
 				trav->getItem()->setPriority(INT_MAX - trav->getItem()->getPromTime());
 				trav->setPriority(INT_MAX - trav->getItem()->getPromTime());
 			}
@@ -1177,15 +1190,16 @@ void Restaurant::checkNormaltoVIP() {
 		return;
 	}
 	while (trav) {
-		if (TS - (trav->getItem()->Get_Arrtime()) >= AutoP)
+		if ((TS - (trav->getItem()->Get_Arrtime()) >= AutoP) && trav->getItem()->getPromTime() == INT_MAX)
 		{
 			Order* currentOrder = trav->getItem();
 			trav = trav->getNext();
 			currentOrder->Set_ORD_Type(TYPE_VIP);
 			currentOrder->setPromTime(TS);
-			normalorder.dequeue(currentOrder);
 			currentOrder->calc_priority();
+			normalorder.dequeue(currentOrder);
 			VIPorder.enqueue(currentOrder, currentOrder->GetPriority());
+			//AddToVIPArray(currentOrder);
 			NoAutoPromoted++;
 		}
 		else

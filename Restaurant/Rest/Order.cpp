@@ -6,7 +6,10 @@ Order::Order(int id, ORD_TYPE r_Type)
 	type = r_Type;
 	isUrgent = false;
 	promTime = INT_MAX;
+	priority = -1;
 	status = WAIT;
+	ServTime = -1;
+	FinishTime = -1;
 }
 
 Order::~Order()
@@ -131,7 +134,7 @@ void Order::promotion(double extramoney)
 	{
 		type = TYPE_VIP;
 		totalMoney += extramoney;
-		priority += extramoney;
+		calc_priority();
 	}
 }
 bool Order::getUrgency() {
@@ -142,6 +145,7 @@ void Order::setUrgency(bool urgency) {
 }
 
 int Order::GetPriority() {
+	
 	return priority;
 }
 void Order::setPriority(int priority) {

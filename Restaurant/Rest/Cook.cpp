@@ -120,7 +120,7 @@ bool Cook::checkOrder(int timestep, Order*& finishedOrder) {
 	else if (preparing->Get_finishtime() == timestep) {
 		preparing->setStatus(DONE);
 		finishedOrder = preparing;
-		cout << "Order with ID " << preparing->GetID() << " finished" <<"by cook id "<<ID<<" of type "<<type<< endl;
+		cout << "Order with ID " << preparing->GetID() << " finished " <<"by cook id "<<ID<<" of type "<<type<< endl;
 		preparing = nullptr;
 		return true;
 	}

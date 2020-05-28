@@ -31,6 +31,7 @@ void ArrivalEvent::Execute(Restaurant* pRest)
 	pOrd->Set_ArrTime(EventTime);
 	pOrd->Set_Money(OrdMoney);
 	pOrd->SetDistance(OrdDistance);
+	pOrd->calc_priority();
 
 	if (OrdType == TYPE_NRM){
 		pRest->AddNormalToQueue(pOrd);
@@ -41,7 +42,7 @@ void ArrivalEvent::Execute(Restaurant* pRest)
 		pRest->setNoVegan(pRest->getNoVegan()+1);
 	}
 	else if (OrdType == TYPE_VIP) {
-		pOrd->calc_priority();
+		
 		pRest->AddToVIPArray(pOrd);
 		pRest->setNoVIP(pRest->getNoVIP()+1);
 	}
