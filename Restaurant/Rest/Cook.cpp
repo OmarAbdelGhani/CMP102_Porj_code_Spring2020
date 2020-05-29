@@ -111,6 +111,8 @@ void Cook::serveOrder(Order* _order, int& timeStep) {
 														   // then rounded to the nearest time step
 	cooldownEnd = timeTaken + timeStep;
 	_order->Set_finishTime(_order->Get_servetime() + timeTaken);
+
+		
 }
 bool Cook::checkOrder(int timestep, Order*& finishedOrder) {
 	if (preparing == nullptr) {

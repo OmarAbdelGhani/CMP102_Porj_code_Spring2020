@@ -28,6 +28,9 @@ void Restaurant::RunSimulation()
 	NoUrgent = 0;  NoAutoPromoted = 0;
 	NoInj = 0;
 	NoInj = 0;
+	CurServNormal=0;
+	CurServVegan=0;
+	CurServVIP=0;
 
 	LinkedList<Order*>Inservicelist1;
 	InitializeNormal();
@@ -272,6 +275,7 @@ void Restaurant::RunSimulation()
 
 
 				Inservicelist.InsertEnd(currentOrder);
+				CurServVIP++;
 				VIPorder.dequeue(currentOrder);
 				//WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));//added by hamzawy
 			}
@@ -298,6 +302,7 @@ void Restaurant::RunSimulation()
 				assigned->serveOrder(currentOrder, TS);
 
 				Inservicelist.InsertEnd(currentOrder);
+				CurServNormal++;
 				normalorder.dequeue(currentOrder);
 				//	WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
 				//NoNormal++;
@@ -323,6 +328,7 @@ void Restaurant::RunSimulation()
 				assigned->serveOrder(currentOrder, TS);
 
 				Inservicelist.InsertEnd(currentOrder);
+				CurServVegan++;
 				VEGANOrder.dequeue(currentOrder);
 				//	WaitingTime += ((currentOrder->Get_servetime()) - (currentOrder->Get_Arrtime()));
 				//NoVegan++;
@@ -363,13 +369,13 @@ void Restaurant::RunSimulation()
 			Nn = to_string(long double(Anormal));
 			Nv = to_string(long double(Avip));
 			Ng = to_string(long double((Avegan)));
-			pGUI->PrintMessage("Ts: " + ts); //here you should also print i (timestep)
-			pGUI->PrintMessage("No. of Available Normal Cooks: " + Nn, 670);
-			pGUI->PrintMessage("No. of Available Vegan Cooks: " + Ng, 690);
-			pGUI->PrintMessage("No. of Available VIP Cooks: " + Nv, 710);
-			pGUI->PrintMessage("No of Waiting Normal Orders: " + n, 730);
-			pGUI->PrintMessage("No of Waiting Vegan Orders: " + ve, 750);
-			pGUI->PrintMessage("No of Waiting VIP Orders: " + v, 770);
+			pGUI->PrintMessage("Ts: " + to_string(TS)); //here you should also print i (timestep)
+			pGUI->PrintMessage("No. of Available Normal Cooks: " + to_string(Anormal), 670);
+			pGUI->PrintMessage("No. of Available Vegan Cooks: " + to_string(Avegan), 690);
+			pGUI->PrintMessage("No. of Available VIP Cooks: " + to_string(Avip), 710);
+			pGUI->PrintMessage("No of Waiting Normal Orders: " + to_string(WaitNormal())+"     No of Serving Normal Orders till now: "+to_string(CurServNormal), 730);
+			pGUI->PrintMessage("No of Waiting Vegan Orders: " + to_string(WaitVegan())+"     No of Serving Vegan Orders till now: "+to_string(CurServVegan), 750);
+			pGUI->PrintMessage("No of Waiting VIP Orders: " + to_string(WaitVIP())+"     No of Serving VIP Orders till now: "+to_string(CurServVIP), 770);
 			pGUI->waitForClick();
 			TS++;
 			break;
@@ -389,13 +395,13 @@ void Restaurant::RunSimulation()
 			Nn = to_string(long double(Anormal));
 			Nv = to_string(long double(Avip));
 			Ng = to_string(long double((Avegan)));
-			pGUI->PrintMessage("Ts: " + ts); //here you should also print i (timestep)
-			pGUI->PrintMessage("No. of Available Normal Cooks: " + Nn, 670);
-			pGUI->PrintMessage("No. of Available Vegan Cooks: " + Ng, 690);
-			pGUI->PrintMessage("No. of Available VIP Cooks: " + Nv, 710);
-			pGUI->PrintMessage("No of Waiting Normal Orders: " + n, 730);
-			pGUI->PrintMessage("No of Waiting Vegan Orders: " + ve, 750);
-			pGUI->PrintMessage("No of Waiting VIP Orders: " + v, 770);
+			pGUI->PrintMessage("Ts: " + to_string(TS)); //here you should also print i (timestep)
+			pGUI->PrintMessage("No. of Available Normal Cooks: " + to_string(Anormal), 670);
+			pGUI->PrintMessage("No. of Available Vegan Cooks: " + to_string(Avegan), 690);
+			pGUI->PrintMessage("No. of Available VIP Cooks: " + to_string(Avip), 710);
+			pGUI->PrintMessage("No of Waiting Normal Orders: " + to_string(WaitNormal())+"     No of Serving Normal Orders till now: "+to_string(CurServNormal), 730);
+			pGUI->PrintMessage("No of Waiting Vegan Orders: " + to_string(WaitVegan())+"     No of Serving Vegan Orders till now: "+to_string(CurServVegan), 750);
+			pGUI->PrintMessage("No of Waiting VIP Orders: " + to_string(WaitVIP())+"     No of Serving VIP Orders till now: "+to_string(CurServVIP), 770);
 			Sleep(1000);
 			TS++;
 			break;

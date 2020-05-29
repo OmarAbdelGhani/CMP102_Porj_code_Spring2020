@@ -97,6 +97,8 @@ private:
 	int NoUrgent;  //Total urgent orders
 	int NoAutoPromoted; //Total number of auto promoted orders
 
+	int CurServNormal,CurServVIP,CurServVegan; 
+
 	ofstream Ofile;
 
 
