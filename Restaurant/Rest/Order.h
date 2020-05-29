@@ -21,7 +21,7 @@ protected:
 	// TODO: Add More Data Members As Needed
 	//
 	int priority;
-	int Order_Size;
+	float Order_Size;
 	bool canceled;
 public:
 	Order(int ID, ORD_TYPE r_Type);
