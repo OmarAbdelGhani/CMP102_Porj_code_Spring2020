@@ -938,7 +938,7 @@ int Restaurant::WaitVIP() {
 	Order* d;
 	do {
 		VIPorder.dequeue(d);
-		VIPorder.enqueue(d, d->GetPriority());
+		VIPorder.enqueueNoPriority(d);
 		count++;
 		curr = (VIPorder.getPtrToFront()->getItem()->GetID());
 	} while (first != curr);
