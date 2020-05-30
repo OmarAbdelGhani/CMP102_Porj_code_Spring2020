@@ -100,7 +100,7 @@ private:
 	int CurServNormal,CurServVIP,CurServVegan; 
 
 	ofstream Ofile;
-
+	string Service;
 
 public:
 

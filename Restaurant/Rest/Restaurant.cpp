@@ -31,7 +31,7 @@ void Restaurant::RunSimulation()
 	CurServNormal=0;
 	CurServVegan=0;
 	CurServVIP=0;
-
+	Service=" ";
 	LinkedList<Order*>Inservicelist1;
 	InitializeNormal();
 	InitializeVIP();
@@ -186,7 +186,8 @@ void Restaurant::RunSimulation()
 		checkVIPtoUrgent(); //Omar AbdelGhani Changed Place
 		//Also should be in the beginning of time step
 		// then amer put it back right where it belongs
-
+		checkNormaltoVIP(); ///Omar AbdelGhani Changed Place
+		//Also should be in the beginning of time step
 
 		Order* finishedOrder = nullptr;
 		Node<Cook*>* travVIP = VIPcook.getHead();
@@ -230,7 +231,7 @@ void Restaurant::RunSimulation()
 			}
 			c1 = c1->getNext();
 		}//to here
-		adjustBreak();
+		
 		//	checkVIPtoUrgent();
 		while (!VIPorder.isEmpty()) {
 			Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
@@ -312,7 +313,7 @@ void Restaurant::RunSimulation()
 			}
 
 		}
-		checkNormaltoVIP();
+		
 		while (!VEGANOrder.isEmpty()) {//from here hamzawy
 			Order* currentOrder = VEGANOrder.getPtrToFront()->getItem();
 			Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
@@ -338,7 +339,7 @@ void Restaurant::RunSimulation()
 			}
 		}//to here
 
-
+		adjustBreak();
 
 
 
@@ -354,6 +355,40 @@ void Restaurant::RunSimulation()
 		std::cout << "*****TIMESTEP " << TS << " END*******" << endl << endl;
 		// increment time
 		int Anormal, Avegan, Avip;   //Available Normal,Vegan, and VIP
+		Service=" ";
+		Node<Cook*>* Cptr=CooksInService.getHead();
+		Node<Cook*>* UCook=nullptr;
+			
+		if(Cptr){
+			Order* Optr=Cptr->getItem()->getpreparing();
+			while(Optr&&Cptr){
+				if(Optr->Get_servetime()==TS){
+			if (Cptr->getItem()->GetType()==TYPE_NRM)
+				Service+="N"+to_string( Cptr->getItem()->GetID());
+			else if(Cptr->getItem()->GetType()==TYPE_VIP )
+				Service+="V"+to_string( Cptr->getItem()->GetID());
+			else if(Cptr->getItem()->GetType()==TYPE_VGAN)
+				Service+="G"+ to_string(Cptr->getItem()->GetID());
+
+			if(Optr->GetType()==TYPE_NRM)
+				Service+="N("+ to_string(Optr->GetID())+")";
+			else if(Optr->GetType()==TYPE_VIP)
+				Service+="V("+ to_string(Optr->GetID())+")";
+			else if(Optr->GetType()==TYPE_URG)
+				Service+="U("+ to_string(Optr->GetID())+")";
+			else if(Optr->GetType()==TYPE_VGAN)
+				Service+="G("+ to_string(Optr->GetID())+")";
+
+				}
+				Cptr=Cptr->getNext();
+				if(Cptr)
+					Optr=Cptr->getItem()->getpreparing();
+				else
+					Optr=nullptr;
+			}
+			
+		}
+
 
 		switch (mode) {
 		case MODE_INTR:
@@ -369,7 +404,7 @@ void Restaurant::RunSimulation()
 			Nn = to_string(long double(Anormal));
 			Nv = to_string(long double(Avip));
 			Ng = to_string(long double((Avegan)));
-			pGUI->PrintMessage("Ts: " + to_string(TS)); //here you should also print i (timestep)
+			pGUI->PrintMessage("Ts: " + to_string(TS)+"              "+Service); //here you should also print i (timestep)
 			pGUI->PrintMessage("No. of Available Normal Cooks: " + to_string(Anormal), 670);
 			pGUI->PrintMessage("No. of Available Vegan Cooks: " + to_string(Avegan), 690);
 			pGUI->PrintMessage("No. of Available VIP Cooks: " + to_string(Avip), 710);
@@ -377,7 +412,9 @@ void Restaurant::RunSimulation()
 			pGUI->PrintMessage("No of Waiting Vegan Orders: " + to_string(WaitVegan())+"     No of Serving Vegan Orders till now: "+to_string(CurServVegan), 750);
 			pGUI->PrintMessage("No of Waiting VIP Orders: " + to_string(WaitVIP())+"     No of Serving VIP Orders till now: "+to_string(CurServVIP), 770);
 			pGUI->waitForClick();
+			Service=" ";
 			TS++;
+			
 			break;
 		case MODE_STEP:
 			this->FillDrawingList();
@@ -395,7 +432,7 @@ void Restaurant::RunSimulation()
 			Nn = to_string(long double(Anormal));
 			Nv = to_string(long double(Avip));
 			Ng = to_string(long double((Avegan)));
-			pGUI->PrintMessage("Ts: " + to_string(TS)); //here you should also print i (timestep)
+			pGUI->PrintMessage("Ts: " + to_string(TS)+"              "+Service); //here you should also print i (timestep)
 			pGUI->PrintMessage("No. of Available Normal Cooks: " + to_string(Anormal), 670);
 			pGUI->PrintMessage("No. of Available Vegan Cooks: " + to_string(Avegan), 690);
 			pGUI->PrintMessage("No. of Available VIP Cooks: " + to_string(Avip), 710);
@@ -403,7 +440,9 @@ void Restaurant::RunSimulation()
 			pGUI->PrintMessage("No of Waiting Vegan Orders: " + to_string(WaitVegan())+"     No of Serving Vegan Orders till now: "+to_string(CurServVegan), 750);
 			pGUI->PrintMessage("No of Waiting VIP Orders: " + to_string(WaitVIP())+"     No of Serving VIP Orders till now: "+to_string(CurServVIP), 770);
 			Sleep(1000);
+			Service=" ";
 			TS++;
+			
 			break;
 		case MODE_SLNT:
 			TS++;
