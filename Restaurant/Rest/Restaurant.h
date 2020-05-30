@@ -100,7 +100,8 @@ private:
 	int CurServNormal,CurServVIP,CurServVegan; 
 
 	ofstream Ofile;
-	string Service;
+	string Service;  //String to store Cooks and serviced orders each time step
+	string name;  //name of input file
 
 public:
 

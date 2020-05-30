@@ -20,7 +20,7 @@ void Restaurant::RunSimulation()
 	pGUI = new GUI;
 	PROG_MODE	mode = pGUI->getGUIMode();
 	LoadFile();
-	Ofile.open("output.txt", ios::out); //initialization of outputfile
+	Ofile.open("output_"+name, ios::out); //initialization of outputfile
 	Ofile << "FT\tID\tAT\tWT\tST" << endl;
 	//Initialize all count variables by zero, ex NoNormal,NoVegan and so on   By Omar AbdelGhani
 	NoNormal = 0; NoVegan = 0;   NoVIP = 0;
@@ -800,7 +800,7 @@ void Restaurant::AddtoDemoQueue(Order* pOrd)
 //By OmarAbdelGhani
 
 void Restaurant::LoadFile() {
-	string name = pGUI->GetString();
+	this->name = pGUI->GetString();
 	ifstream IF(name, ios::in);
 	//IF.open("djSamy.txt",ios::in);
 	if (IF.is_open()) {
