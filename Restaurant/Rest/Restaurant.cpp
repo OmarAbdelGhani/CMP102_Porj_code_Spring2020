@@ -287,9 +287,9 @@ void Restaurant::RunSimulation()
 		while (!normalorder.isEmpty())
 		{
 			Cook* assigned = nullptr; // using nullptr as a flag later on in the code , nullptr here means no cook available
-			if (getFirstAvailableCook(TYPE_NRM)) {  //order service criteria, vip orders must be served
-													//with any available cook, we choose the cook in this
-													// code snippet.
+			if (getFirstAvailableCook(TYPE_NRM)) {  //order service criteria, normal orders must be served
+													//with  available cook(normal and vip)
+													
 				assigned = getFirstAvailableCook(TYPE_NRM);
 			}
 			else {
