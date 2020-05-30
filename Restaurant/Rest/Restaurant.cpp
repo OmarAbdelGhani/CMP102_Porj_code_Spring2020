@@ -20,7 +20,7 @@ void Restaurant::RunSimulation()
 	pGUI = new GUI;
 	PROG_MODE	mode = pGUI->getGUIMode();
 	LoadFile();
-	Ofile.open("output_"+name, ios::out); //initialization of outputfile
+	Ofile.open("Out_"+name, ios::out); //initialization of outputfile
 	Ofile << "FT\tID\tAT\tWT\tST" << endl;
 	//Initialize all count variables by zero, ex NoNormal,NoVegan and so on   By Omar AbdelGhani
 	NoNormal = 0; NoVegan = 0;   NoVIP = 0;
