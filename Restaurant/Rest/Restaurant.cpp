@@ -371,13 +371,13 @@ void Restaurant::RunSimulation()
 				Service+="G"+ to_string(Cptr->getItem()->GetID());
 
 			if(Optr->GetType()==TYPE_NRM)
-				Service+="N("+ to_string(Optr->GetID())+")";
+				Service+="(N"+ to_string(Optr->GetID())+")";
 			else if(Optr->GetType()==TYPE_VIP)
-				Service+="V("+ to_string(Optr->GetID())+")";
-			else if(Optr->GetType()==TYPE_URG)
-				Service+="U("+ to_string(Optr->GetID())+")";
+				Service+="(V"+ to_string(Optr->GetID())+")";
+		//	else if(Optr->GetType()==TYPE_URG)
+			//	Service+="U"+ to_string(Optr->GetID())+")";
 			else if(Optr->GetType()==TYPE_VGAN)
-				Service+="G("+ to_string(Optr->GetID())+")";
+				Service+="(G"+ to_string(Optr->GetID())+")";
 
 				}
 				Cptr=Cptr->getNext();
